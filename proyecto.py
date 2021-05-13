@@ -23,7 +23,7 @@ def main():
         screen.blit(image,(0,0))
         screen.blit(image2,(0,400))
         screen.blit(image1,pos)
-        pos=pos[0]+step[0],pos[1]+step[1]+a
+        pos=pos[0]+step[0],pos[1]+step[1]+(5*(a**2))
         a=a+1
         pygame.display.flip()
         
