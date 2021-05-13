@@ -13,6 +13,7 @@ def main():
     running=True
     pos= 200,400
     step= 2,-2
+    a=0
     while(running):
         ns=clock.tick(20)
         print(ns)
@@ -22,8 +23,9 @@ def main():
         screen.blit(image,(0,0))
         screen.blit(image2,(0,400))
         screen.blit(image1,pos)
-        pos=pos[0]+step[0],pos[1]+step[1]
+        pos=pos[0]+step[0],pos[1]+step[1]+a
+        a=a+1
         pygame.display.flip()
         
         
-main()#Proyecto de programacion
+main()
