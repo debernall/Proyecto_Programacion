@@ -12,10 +12,10 @@ def main():
     pygame.display.flip()
     running=True
     pos= 200,400
-    step= 15,-20
+    step= 50,-100
     a=0
     while(running):
-        ns=clock.tick(10)
+        ns=clock.tick(5)
         print(ns)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
