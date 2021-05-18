@@ -18,6 +18,7 @@ def main():
     pygame.init()
     screen= pygame.display.set_mode((948,720))
     clock=pygame.time.Clock()
+    pygame.display.set_caption('Juego grupo 3')
     
     #CARGA DE IMAGENES
     image = pygame.image.load("plano.jpg")          #Imagen de fondo
