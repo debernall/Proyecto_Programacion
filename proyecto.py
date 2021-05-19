@@ -9,6 +9,48 @@ import pygame
 import numpy as np
 
 
+
+def intro_game(): #Pantalla de intro
+    intro=True
+    blue=(2,12,207)
+    green=(22,234,72)
+    pygame.init()
+    screen= pygame.display.set_mode((948,720))
+    pygame.display.set_caption('Titulo')
+    
+    intro_background = pygame.image.load("fondo_intro.jpg") 
+    screen.blit(intro_background,(0,0))
+     
+    letra = pygame.font.SysFont('ravie', 90)                 #Genera la fuente del primer texto      
+    imagenTexto = letra.render('Título ',True, blue,green )  #Genera la imagen con el texto                             
+    rectanguloTexto = imagenTexto.get_rect()                 
+    rectanguloTexto.centerx = screen.get_rect().centerx     #Ubica el texto
+    rectanguloTexto.centery = 320
+    screen.blit(imagenTexto, rectanguloTexto)   #Pone la imagen con el texto en el programa
+
+
+    letra1 = pygame.font.SysFont('ravie', 30)                       
+    imagenTextoStart = letra1.render('Pulsa Espacio para jugar o Q para salir',True, blue,green  )                               
+    rectanguloTextoStart = imagenTextoStart.get_rect()           
+    rectanguloTextoStart.centerx = screen.get_rect().centerx     
+    rectanguloTextoStart.centery = 520
+    screen.blit(imagenTextoStart, rectanguloTextoStart)   
+    pygame.display.flip()
+
+    while(intro):                           
+        for event in pygame.event.get():            
+            if event.type == pygame.QUIT:           #Permite salir del juego desde la intro
+                pygame.quit()
+                quit()
+            
+            elif event.type == pygame.KEYDOWN:      #Tecla space para continuar
+                   intro=False 
+            elif event.type==pygame.K_q or event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
+                pygame.quit()
+                quit()
+    #Despues se agregarán botones al intro para acceder a unas instrucciones y/o a los niveles
+    #por lo que puede que eventualmente se deba agregar la intro dentro de la función main
+
 def rotate(surface, angle):
     rotated_surface=pygame.transform.rotozoom(surface,angle,1)
     rotated_rect = rotated_surface.get_rect(center=(64,537))
@@ -18,7 +60,7 @@ def main():
     pygame.init()
     screen= pygame.display.set_mode((948,720))
     clock=pygame.time.Clock()
-    pygame.display.set_caption('Juego grupo 3')
+    pygame.display.set_caption('Titulo')
     
     #CARGA DE IMAGENES
     image = pygame.image.load("plano.jpg")          #Imagen de fondo
@@ -84,7 +126,7 @@ def main():
         pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
 
         
-        
+intro_game()        #Ejecución de la intro
 main()                                                                          #Ejecución del juego
 
 #La pelota rebote, no solo paredes rigidas
