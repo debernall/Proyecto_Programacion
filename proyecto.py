@@ -37,7 +37,7 @@ def main():
     speedangle=0                                    #Variable que almacena la rotación del cañon
     a=0                                             #
     n=0                                             #
-    v0=40                                           #Velocidad inicial
+    v0=50                                           #Velocidad inicial
     t=0                                             #Variable de tiempo
     
     while(running):
@@ -51,7 +51,7 @@ def main():
                    v_x0=v0*np.cos(np.radians(angle))                            #Velocidad inicial en x
                    v_y0=-v0*np.sin(np.radians(angle))                           #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)
                    step=v_x0,v_y0                   #Tras presionar la tecla espacio 
-                   n=0.2
+                   n=1/ns
                elif event.key==pygame.K_LEFT:       #Tecla izquierda rotación en sentido positivo
                    speedangle=1
                elif event.key==pygame.K_RIGHT:      #Tecla derecha rotación en sentido negativo
@@ -75,13 +75,14 @@ def main():
 
         
         screen.blit(image1,pos)                     #Carga la imagen de la bala
-        pos=pos[0]+step[0],pos[1]+step[1]+(5*(a**2))                            #(x,y)=(x0+v_x0,y0+v_y0)
+        pos=pos[0]+step[0],pos[1]+step[1]+((9.8/2)*(t**2))                            #(x,y)=(x0+v_x0,y0+v_y0)
         a=a+n
-        #print(angle)
-        t=t+0.033                                    #El incremento 0.05 viene dado de la tasa tiempo_real/tiempo_maquina
         
+        t=t+n
+                                    #El incremento 0.05 viene dado de la tasa tiempo_real/tiempo_maquina
+        print(10/ns,a,n,t)
         pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
 
         
         
-main()#ahora si
+main()                                                                          #Ejecución del juego
