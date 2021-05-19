@@ -51,7 +51,7 @@ def main():
                    v_x0=v0*np.cos(np.radians(angle))                            #Velocidad inicial en x
                    v_y0=-v0*np.sin(np.radians(angle))                           #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)
                    step=v_x0,v_y0                   #Tras presionar la tecla espacio 
-                   n=10/ns
+                   n=1/ns
                elif event.key==pygame.K_LEFT:       #Tecla izquierda rotación en sentido positivo
                    speedangle=1
                elif event.key==pygame.K_RIGHT:      #Tecla derecha rotación en sentido negativo
@@ -86,3 +86,15 @@ def main():
         
         
 main()                                                                          #Ejecución del juego
+
+#La pelota rebote, no solo paredes rigidas
+#Colocar los limites
+#Pantalla de inicio y de game over                                 Nelson,
+#Cambiar el planeta del disparo, niveles
+#Incluir la resistencia del aire y la superficie de aterrizaje
+#Rotacion del cañon y la bola detras de la imagen del cañon
+#Cambiar los nombres de las variables de las imagenes
+#Cambiar el angulo inicial a negativo en lugar de cero
+#Colocar una barra para aumentar la velocidad
+#Rotacion usando otras librerias
+
