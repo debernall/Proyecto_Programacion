@@ -51,7 +51,7 @@ def main():
                    v_x0=v0*np.cos(np.radians(angle))                            #Velocidad inicial en x
                    v_y0=-v0*np.sin(np.radians(angle))                           #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)
                    step=v_x0,v_y0                   #Tras presionar la tecla espacio 
-                   n=1/ns
+                   n=10/ns
                elif event.key==pygame.K_LEFT:       #Tecla izquierda rotación en sentido positivo
                    speedangle=1
                elif event.key==pygame.K_RIGHT:      #Tecla derecha rotación en sentido negativo
