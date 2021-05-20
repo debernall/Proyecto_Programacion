@@ -7,6 +7,20 @@ This is a temporary script file.
 
 import pygame
 import numpy as np
+from pygame.constants import MOUSEBUTTONDOWN
+import sys
+
+def crear_boton(pantalla,boton,palabra):                #Función para crear botones como los de la intro, tambien se puede hacer una funcion para crear cualquier botón
+    yellow=(245, 245, 66)
+    green=(22,234,72)
+    blue=(2,12,207)
+    letra1 = pygame.font.SysFont('ravie', 30)       #Fuente de los botones
+    if boton.collidepoint(pygame.mouse.get_pos()):    #Cambia el color del boton si el cursor está sobre él  
+        pygame.draw.rect(pantalla,yellow,boton,0)
+    else:
+        pygame.draw.rect(pantalla,green,boton,0)      #Dibuja el boton cuando el cursor no está encima
+    texto=letra1.render(palabra,True,blue)      #Genera el texto del botón
+    pantalla.blit(texto,(boton.x+(boton.width-texto.get_width())/2,boton.y+(boton.height-texto.get_height())/2))    #Pone el botón en la pantalla y centra el texto.
 
 
 
@@ -20,6 +34,8 @@ def intro_game(): #Pantalla de intro
     
     intro_background = pygame.image.load("fondo_intro.jpg") 
     screen.blit(intro_background,(0,0))
+
+    
      
     letra = pygame.font.SysFont('ravie', 90)                 #Genera la fuente del primer texto      
     imagenTexto = letra.render('Título ',True, blue,green )  #Genera la imagen con el texto                             
@@ -28,28 +44,33 @@ def intro_game(): #Pantalla de intro
     rectanguloTexto.centery = 320
     screen.blit(imagenTexto, rectanguloTexto)   #Pone la imagen con el texto en el programa
 
-
-    letra1 = pygame.font.SysFont('ravie', 30)                       
-    imagenTextoStart = letra1.render('Pulsa Espacio para jugar o Q para salir',True, blue,green  )                               
-    rectanguloTextoStart = imagenTextoStart.get_rect()           
-    rectanguloTextoStart.centerx = screen.get_rect().centerx     
-    rectanguloTextoStart.centery = 520
-    screen.blit(imagenTextoStart, rectanguloTextoStart)   
-    pygame.display.flip()
+    
+    play=pygame.Rect(screen.get_rect().centerx-150/2,450,150,50)        #Figuras de los botones jugar y salir
+    exit=pygame.Rect(screen.get_rect().centerx-150/2,550,150,50)
 
     while(intro):                           
         for event in pygame.event.get():            
-            if event.type == pygame.QUIT:           #Permite salir del juego desde la intro
+            if event.type == pygame.QUIT  or event.type==pygame.K_ESCAPE:           #Permite salir del juego desde la intro
                 pygame.quit()
                 quit()
+
+            elif event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
+                pygame.quit()
+                quit()
+
+            elif event.type==MOUSEBUTTONDOWN and event.button==1:       #Si se hace click derecho:
+
+                if play.collidepoint(pygame.mouse.get_pos()):           #Si el click se hizo sobre el botón jugar, continuar con el juego
+                    intro=False
+                elif exit.collidepoint(pygame.mouse.get_pos()):         #Si el click se hiz en salir...
+                    pygame.quit()
+                    quit()
+                    
+        crear_boton(screen,play,'Jugar')        #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+        crear_boton(screen,exit,'Salir')
+        pygame.display.flip()
+               
             
-            elif event.type == pygame.KEYDOWN:      #Tecla space para continuar
-                   intro=False 
-            elif event.type==pygame.K_q or event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
-                pygame.quit()
-                quit()
-    #Despues se agregarán botones al intro para acceder a unas instrucciones y/o a los niveles
-    #por lo que puede que eventualmente se deba agregar la intro dentro de la función main
 
 def rotate(surface, angle):
     rotated_surface=pygame.transform.rotozoom(surface,angle,1)
