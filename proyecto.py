@@ -10,10 +10,12 @@ import numpy as np
 from pygame.constants import MOUSEBUTTONDOWN
 import sys
 
-def crear_boton(pantalla,boton,palabra):                #Función para crear botones como los de la intro, tambien se puede hacer una funcion para crear cualquier botón
-    yellow=(245, 245, 66)
-    green=(22,234,72)
-    blue=(2,12,207)
+yellow=(245, 245, 66)
+green=(22,234,72)
+blue=(2,12,207)
+
+def crear_boton(pantalla,boton,palabra):                #Función para crear botones como los de la intro
+    
     letra1 = pygame.font.SysFont('ravie', 30)       #Fuente de los botones
     if boton.collidepoint(pygame.mouse.get_pos()):    #Cambia el color del boton si el cursor está sobre él  
         pygame.draw.rect(pantalla,yellow,boton,0)
@@ -22,12 +24,13 @@ def crear_boton(pantalla,boton,palabra):                #Función para crear bot
     texto=letra1.render(palabra,True,blue)      #Genera el texto del botón
     pantalla.blit(texto,(boton.x+(boton.width-texto.get_width())/2,boton.y+(boton.height-texto.get_height())/2))    #Pone el botón en la pantalla y centra el texto.
 
-
+def crear_cuadro_de_texto(pantalla,cuadro,texto,fuente,color_fondo,color_texto):      #Funcion para realizar cualquier tipo de cuadro de texto
+    pygame.draw.rect(pantalla,color_fondo,cuadro,0)
+    txt=fuente.render(texto,True,color_texto)
+    pantalla.blit(txt,(cuadro.x+(cuadro.width-txt.get_width())/2,cuadro.y+(cuadro.height-txt.get_height())/2))
 
 def intro_game(): #Pantalla de intro
     intro=True
-    blue=(2,12,207)
-    green=(22,234,72)
     pygame.init()
     screen= pygame.display.set_mode((948,720))
     pygame.display.set_caption('Titulo')
@@ -90,7 +93,8 @@ def main():
     cañon=pygame.image.load("cañonx.png")          #Imagen de cañon
     recorte=pygame.image.load("planorecortado.jpg")    #Imagen recortada del fondo, que va entre el cañon y la bola para que no se vea la bola cuando no se ha disparado aun.
     explosion=pygame.image.load("explosión.png")    #imagen de la Explosón al disparar
-    
+    cuadro_angulo=pygame.Rect(0,0,250,50)
+    letra_cuadro_angulo=pygame.font.SysFont('arial', 30) 
     
     #POSICION DE IMAGENES Y VARAIABLES A UTILIZAR
     
@@ -181,7 +185,7 @@ def main():
            t=0
            n=0
             
-            
+        crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle),letra_cuadro_angulo,(0,0,0),(255,255,255))   #Agrega un cuadro de texto con el angulo.
        
             
                                     #El incremento 0.05 viene dado de la tasa tiempo_real/tiempo_maquina
