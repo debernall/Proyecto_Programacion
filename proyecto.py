@@ -55,18 +55,19 @@ def intro_game(): #Pantalla de intro
 
     while(intro):                           
         for event in pygame.event.get():            
-            if event.type == pygame.QUIT  or event.type==pygame.K_ESCAPE:           #Permite salir del juego desde la intro
+            if event.type == pygame.QUIT :           #Permite salir del juego desde la intro
                 pygame.quit()
                 quit()
-
-            elif event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
-                pygame.quit()
-                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
+                    pygame.quit()
+                    quit()
 
             elif event.type==MOUSEBUTTONDOWN and event.button==1:       #Si se hace click derecho:
 
                 if play.collidepoint(pygame.mouse.get_pos()):           #Si el click se hizo sobre el botón jugar, continuar con el juego
                     intro=False
+                    main()
                 elif exit.collidepoint(pygame.mouse.get_pos()):         #Si el click se hiz en salir...
                     pygame.quit()
                     quit()
@@ -75,8 +76,54 @@ def intro_game(): #Pantalla de intro
         crear_boton(screen,exit,'Salir',letra1,green,yellow,blue)
         crear_boton(screen,instructions,'Instrucciones',letra1,green,yellow,blue)
         pygame.display.flip()
-               
-            
+
+def outro():
+    pygame.init()
+    game_over=True
+    screen= pygame.display.set_mode((948,720))
+    pygame.display.set_caption('Titulo')
+    
+    intro_background = pygame.image.load("fondo_intro.jpg") 
+    screen.blit(intro_background,(0,0))
+
+    
+     
+    letra = pygame.font.SysFont('ravie', 90)                 #Genera la fuente del primer texto      
+    imagenTexto = letra.render('Fin del juego ',True, blue,green )  #Genera la imagen con el texto                             
+    rectanguloTexto = imagenTexto.get_rect()                 
+    rectanguloTexto.centerx = screen.get_rect().centerx     #Ubica el texto
+    rectanguloTexto.centery = 320
+    screen.blit(imagenTexto, rectanguloTexto)   #Pone la imagen con el texto en el programa
+
+    
+    replay=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)        #Figuras de los botones jugar y salir
+    exit1=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
+    credits=pygame.Rect(screen.get_rect().centerx-350/2,550,350,50)
+
+    while(game_over):                           
+        for event in pygame.event.get():            
+            if event.type == pygame.QUIT :           #Permite salir del juego desde la intro
+                pygame.quit()
+                quit()
+
+            elif event.type == pygame.KEYDOWN:
+                if event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
+                    pygame.quit()
+                    quit()
+
+            elif event.type==MOUSEBUTTONDOWN and event.button==1:       #Si se hace click derecho:
+
+                if replay.collidepoint(pygame.mouse.get_pos()):           #Si el click se hizo sobre el botón jugar, continuar con el juego
+                    game_over=False
+                    intro_game()
+                elif exit1.collidepoint(pygame.mouse.get_pos()):         #Si el click se hiz en salir...
+                    pygame.quit()
+                    quit()
+                    
+        crear_boton(screen,replay,'Volver a jugar',letra1,green,yellow,blue)        #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+        crear_boton(screen,exit1,'Salir',letra1,green,yellow,blue)
+        crear_boton(screen,credits,'Créditos',letra1,green,yellow,blue)
+        pygame.display.flip()        
 
 def rotate(surface, angle):
     rotated_surface=pygame.transform.rotozoom(surface,angle,1)
@@ -124,7 +171,8 @@ def main():
         ns=clock.tick(30)                           #Periodo de recarga de imagen
         for event in pygame.event.get():            
             if event.type == pygame.QUIT:           #Permite salir del juego
-                running = False
+                pygame.quit()
+                quit()
             
             elif event.type == pygame.KEYDOWN:      #Evento presionar tecla
                if event.key==pygame.K_SPACE:        #Tecla espacio 
@@ -141,6 +189,7 @@ def main():
                    speedangle=-1
                elif event.key==pygame.K_ESCAPE:     #Tecla escape sale del juego
                    running = False
+                   outro()
             
             elif event.type == pygame.KEYUP:        #Eventos dejar de presionar tecla
                
@@ -204,8 +253,7 @@ def main():
         pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
 
         
-intro_game()        #Ejecución de la intro
-main()                                                                          #Ejecución del juego
+intro_game()        #Ahora desde la función intro_game se llama la función main y desde main se puede llamar el outro(por ahora con la tecla esc porque aun no se puede perder o ganar en el juego)                                                                    
 
 #La pelota rebote, no solo paredes rigidas
 #Colocar los limites
