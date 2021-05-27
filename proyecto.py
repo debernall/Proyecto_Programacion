@@ -8,20 +8,21 @@ This is a temporary script file.
 import pygame
 import numpy as np
 from pygame.constants import MOUSEBUTTONDOWN
-import sys
+
 
 yellow=(245, 245, 66)
 green=(22,234,72)
 blue=(2,12,207)
+pygame.init()
+letra1 = pygame.font.SysFont('ravie', 30) 
 
-def crear_boton(pantalla,boton,palabra):                #Función para crear botones como los de la intro
-    
-    letra1 = pygame.font.SysFont('ravie', 30)       #Fuente de los botones
+def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_texto):                #Función para crear botones como los de la intro
+
     if boton.collidepoint(pygame.mouse.get_pos()):    #Cambia el color del boton si el cursor está sobre él  
-        pygame.draw.rect(pantalla,yellow,boton,0)
+        pygame.draw.rect(pantalla,color_fondo2,boton,0)
     else:
-        pygame.draw.rect(pantalla,green,boton,0)      #Dibuja el boton cuando el cursor no está encima
-    texto=letra1.render(palabra,True,blue)      #Genera el texto del botón
+        pygame.draw.rect(pantalla,color_fondo1,boton,0)      #Dibuja el boton cuando el cursor no está encima
+    texto=fuente.render(palabra,True,color_texto)      #Genera el texto del botón
     pantalla.blit(texto,(boton.x+(boton.width-texto.get_width())/2,boton.y+(boton.height-texto.get_height())/2))    #Pone el botón en la pantalla y centra el texto.
 
 def crear_cuadro_de_texto(pantalla,cuadro,texto,fuente,color_fondo,color_texto):      #Funcion para realizar cualquier tipo de cuadro de texto
@@ -48,8 +49,9 @@ def intro_game(): #Pantalla de intro
     screen.blit(imagenTexto, rectanguloTexto)   #Pone la imagen con el texto en el programa
 
     
-    play=pygame.Rect(screen.get_rect().centerx-150/2,450,150,50)        #Figuras de los botones jugar y salir
-    exit=pygame.Rect(screen.get_rect().centerx-150/2,550,150,50)
+    play=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)        #Figuras de los botones jugar y salir
+    exit=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
+    instructions=pygame.Rect(screen.get_rect().centerx-350/2,550,350,50)
 
     while(intro):                           
         for event in pygame.event.get():            
@@ -69,8 +71,9 @@ def intro_game(): #Pantalla de intro
                     pygame.quit()
                     quit()
                     
-        crear_boton(screen,play,'Jugar')        #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
-        crear_boton(screen,exit,'Salir')
+        crear_boton(screen,play,'Jugar',letra1,green,yellow,blue)        #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+        crear_boton(screen,exit,'Salir',letra1,green,yellow,blue)
+        crear_boton(screen,instructions,'Instrucciones',letra1,green,yellow,blue)
         pygame.display.flip()
                
             
