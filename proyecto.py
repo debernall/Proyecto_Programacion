@@ -59,7 +59,7 @@ def intro_game(): #Pantalla de intro
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN:
-                if event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
+                if event.type==pygame.K_ESCAPE:   #Tecla  esc sale del juego (NO ESTÁ FUNCIONANDO)
                     pygame.quit()
                     quit()
 
@@ -96,24 +96,24 @@ def outro():
     screen.blit(imagenTexto, rectanguloTexto)   #Pone la imagen con el texto en el programa
 
     
-    replay=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)        #Figuras de los botones jugar y salir
+    replay=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)        #Figuras de los botones volver a jugar y salir
     exit1=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
     credits=pygame.Rect(screen.get_rect().centerx-350/2,550,350,50)
 
     while(game_over):                           
         for event in pygame.event.get():            
-            if event.type == pygame.QUIT :           #Permite salir del juego desde la intro
+            if event.type == pygame.QUIT :           #Permite salir del juego desde la outro
                 pygame.quit()
                 quit()
 
             elif event.type == pygame.KEYDOWN:
-                if event.type==pygame.K_ESCAPE:   #Tecla q o esc sale del juego
+                if event.type==pygame.K_ESCAPE:   #Tecla  esc sale del juego (NO ESTÁ FUNCIONANDO)
                     pygame.quit()
                     quit()
 
             elif event.type==MOUSEBUTTONDOWN and event.button==1:       #Si se hace click derecho:
 
-                if replay.collidepoint(pygame.mouse.get_pos()):           #Si el click se hizo sobre el botón jugar, continuar con el juego
+                if replay.collidepoint(pygame.mouse.get_pos()):           #Si el click se hizo sobre el botón volver a  jugar, vuelve a la intro
                     game_over=False
                     intro_game()
                 elif exit1.collidepoint(pygame.mouse.get_pos()):         #Si el click se hiz en salir...
