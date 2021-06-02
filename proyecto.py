@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Spyder Editor
 
@@ -6,6 +7,7 @@ This is a temporary script file.
 """
 
 import pygame
+import random
 import numpy as np
 from pygame.constants import MOUSEBUTTONDOWN
 
@@ -140,15 +142,18 @@ def main():
     
     plano = pygame.image.load("enorme.jpg")          #Imagen de fondo
     bola=pygame.image.load("bolacañonpequeña.png")       #Imagen de bala
+   
     cañon=pygame.image.load("cañon5.png")          #Imagen de cañon
-    cañonrecorte=cañon.get_rect(center=(400,350))
-    #recorte=pygame.image.load("planorecortado.jpg")    #Imagen recortada del fondo, que va entre el cañon y la bola para que no se vea la bola cuando no se ha disparado aun.
+  
     explosion=pygame.image.load("explosión.png")    #imagen de la Explosón al disparar
+    objetivo=pygame.image.load("objetivop.png")
+    cuadro_velocidad=pygame.Rect(0,50,250,50)
+    letra_cuadro_velocidad=pygame.font.SysFont('arial',30)
     cuadro_angulo=pygame.Rect(0,0,250,50)
     letra_cuadro_angulo=pygame.font.SysFont('arial', 30) 
     
     #POSICION DE IMAGENES Y VARAIABLES A UTILIZAR
-    
+    posobjetivo= random.randrange(0,500), random.randrange(0,500)
     posplano=0,-1300
     screen.blit(plano,posplano)
     
@@ -165,7 +170,8 @@ def main():
     speedangle=0                                    #Variable que almacena la rotación del cañon
                                                 
     n=0                                             #
-    v0=150                                       #Velocidad inicial
+    v0=0                                      #Velocidad inicial
+    speedv0=0
     t=0                                             #Variable de tiempo
     while(running):
         ns=clock.tick(30)                           #Periodo de recarga de imagen
@@ -179,10 +185,16 @@ def main():
                    v_x0=v0*np.cos(np.radians(angle))                            #Velocidad inicial en x
                    v_y0=-v0*np.sin(np.radians(angle))                           #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)           
                    step=v_x0,v_y0                   #Tras presionar la tecla espacio 
-                   n=10/ns
+                   n=0.0303
+                   #n=10/ns
                    pos= 400,350  
                    
                    pos1=(450,250)                   #posición de la explosión al disparar
+               elif event.key==pygame.K_UP:       #Tecla izquierda rotación en sentido positivo
+                   speedv0=1
+               elif event.key==pygame.K_DOWN:      #Tecla derecha rotación en sentido negativo
+                   speedv0=-1
+                   
                elif event.key==pygame.K_LEFT:       #Tecla izquierda rotación en sentido positivo
                    speedangle=1
                elif event.key==pygame.K_RIGHT:      #Tecla derecha rotación en sentido negativo
@@ -193,63 +205,61 @@ def main():
             
             elif event.type == pygame.KEYUP:        #Eventos dejar de presionar tecla
                
-                    
-               if event.key==pygame.K_LEFT:         #Dejar de presionar tecla izquierda detiene la rotación
+               if event.key==pygame.K_UP:       #Tecla izquierda rotación en sentido positivo
+                   speedv0=0
+               elif event.key==pygame.K_DOWN:      #Tecla derecha rotación en sentido negativo
+                   speedv0=0    
+               elif event.key==pygame.K_LEFT:         #Dejar de presionar tecla izquierda detiene la rotación
                    speedangle=0
                elif event.key==pygame.K_RIGHT:      #Dejar de presionar tecla derecha detiene la rotación
                    speedangle=0
             
                 
         screen.blit(plano,posplano)                    #Carga la imagen de fondo tras cada paso del ciclo while
-        #screen.blit(bola,pos)                     #Carga la imagen de la bala
+                            
         posplano=posplano[0]-step[0],posplano[1]-step[1]-((9.8/2)*(t**2))                            #(x,y)=(x0+v_x0,y0+v_y0)
          
-            
-        
-        
+        screen.blit(objetivo,posobjetivo)
+        posobjetivo=posobjetivo[0]-step[0],posobjetivo[1]-step[1]-((9.8/2)*(t**2))
+        objetivorect=objetivo.get_rect(center=posobjetivo)
         screen.blit(explosion,pos1)                 #carga imagen explosón disparar 
         pos1=pos1[0]-step[0],pos1[1]-step[1]-((9.8/2)*(t**2))
-        screen.blit(bola,pos)
-        #screen.blit(recorte,(0,473))                #carga imagen del recorte para que no se vea la bola antes de disprar 
+        
+        screen.blit(bola,pos)     #carga la imagen de la bola
+        bolarect=bola.get_rect(center=pos)
         
         angle=angle+speedangle                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
-      
+        v0=v0 + speedv0
+        
         image2_rotated , image2_rotated_rect = rotate(cañon,angle)             #Rota el cañon
         poscañon=poscañon[0]-step[0],poscañon[1]-step[1]-((9.8/2)*(t**2))                            #(x,y)=(x0+v_x0,y0+v_y0)
         screen.blit(image2_rotated,poscañon)
                          
         t=t+n
-        
+        if bolarect.colliderect(objetivorect):
+            step=0,0
+            t=0
+            
+            print("colision")
         #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO O COSTADOS
-        if pos[0]>948 or pos[0]<0 :
+        if posplano[0]<-3440 or posplano[0]>= 400 :
             step= -step[0],step[1]
          
-        if posplano[1]<=-1400 :
-          #rebotar en la misma posición
-          #step= 0,-step[1]-1
-          #t=0
-            
-          #rebota y desliza horizontalmente  
-           posplano=(posplano[0],-1400)
+        if posplano[1]<=-1300 :
+           
+           posplano=(posplano[0],-1300)
           
-           #no funciona igual que step=0,0
-           #step[0]==0
-           #step[1]==0
-            
-           #la deja estatica dónde cae
            step=0,0
            
-           #rebota infitimante
-           #step[1]==-step[1]
            t=0
-           n=0
+           
             
-        crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle+22),letra_cuadro_angulo,(0,0,0),(255,255,255))   #Agrega un cuadro de texto con el angulo.
-       
+        crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle),letra_cuadro_angulo,(0,0,0),(255,255,255))   #Agrega un cuadro de texto con el angulo.
+        crear_cuadro_de_texto(screen,cuadro_velocidad,'Velocidad incial:'+str(v0),letra_cuadro_velocidad,(0,0,0),(255,255,255))
             
                                     #El incremento 0.05 viene dado de la tasa tiempo_real/tiempo_maquina
         
-        print(pos)
+        print(t,posplano)
         pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
 
         
