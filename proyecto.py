@@ -148,7 +148,8 @@ def main():
   
     explosion=pygame.image.load("explosión.png")    #imagen de la Explosón al disparar
     objetivo=pygame.image.load("objetivop.png")
-    cuadro_velocidad=pygame.Rect(0,50,250,50)
+    cuadro_posicion_objetivo=pygame.Rect(0,100,350,50)
+    cuadro_velocidad=pygame.Rect(0,50,350,50)
     letra_cuadro_velocidad=pygame.font.SysFont('arial',30)
     cuadro_angulo=pygame.Rect(0,0,250,50)
     letra_cuadro_angulo=pygame.font.SysFont('arial', 30) 
@@ -260,9 +261,9 @@ def main():
            t=0
            
           
-        crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle),letra_cuadro_angulo,(0,0,0),(255,255,255))   #Agrega un cuadro de texto con el angulo.
-        crear_cuadro_de_texto(screen,cuadro_velocidad,'Velocidad incial:'+str(v0),letra_cuadro_velocidad,(0,0,0),(255,255,255))
-            
+        crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle)+"°",letra_cuadro_angulo,(0,0,0),(255,255,255))   #Agrega un cuadro de texto con el angulo.
+        crear_cuadro_de_texto(screen,cuadro_velocidad,'Velocidad incial:'+str(v0)+"m/s",letra_cuadro_velocidad,(0,0,0),(255,255,255))
+        crear_cuadro_de_texto(screen,cuadro_posicion_objetivo,'coord. obj.(x,y):'+str(distancia[0])+"m"","+str(distancia[1])+"m",letra_cuadro_velocidad,(0,0,0),(255,255,255))
                                     #El incremento 0.05 viene dado de la tasa tiempo_real/tiempo_maquina
         
         print(distancia,posobjetivo,vi)
