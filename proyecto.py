@@ -281,14 +281,14 @@ def main():
         #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
         horizonte_rect=plano.get_rect(center=(posplano[0]+1900,posplano[1]+2750))       #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
         if bolarect.colliderect(horizonte_rect) and t>0.3:                              #t>0.3 evita rebotes debidos a una lectura anomala 
-            if step[1]>-0.001 and step[1]<0:
+            if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
                 step=(0,0)
                 outro('FIN DEL JUEGO','TIRO ERRADO')
                 
             else:
                 t=0
                 step=f_rebote(step,fact_perdida_choque)
-
+                
            
         #CUADROS DE TEXTO
         crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle)+"°",letra_cuadro_angulo,(0,0,0),(255,255,255))   #Agrega un cuadro de texto con el angulo.
@@ -296,7 +296,7 @@ def main():
         crear_cuadro_de_texto(screen,cuadro_posicion_objetivo,'Bala(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_cuadro_velocidad,(0,0,0),(255,255,255))
         crear_cuadro_de_texto(screen,cuadro_posicion_tiempo,str(int(t1))+'s',letra_cuadro_tiempo,(0,0,0),(255,255,255))
               
-        
+
         #print(distancia,posobjetivo,vi)
         pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
 
