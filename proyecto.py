@@ -136,7 +136,7 @@ def nueva_pos(pos_inicial,v,t,g):
     return pos_final
 
 def dibujar_img(list_img):
-    screen= pygame.display.set_mode((948,720))
+    screen= pygame.display.set_mode((800,700))
     for i in list_img:
         screen.blit(i[0],i[1])
     return 
@@ -149,7 +149,7 @@ def f_rebote(step,r):
 def main():
     #PROPIEDADES INICIALES PYGAME
     pygame.init()
-    screen= pygame.display.set_mode((948,720))
+    screen= pygame.display.set_mode((800,700))
     clock=pygame.time.Clock()
     #pygame.display.set_caption('JUEGO DE LANZAMIENTO')
     
