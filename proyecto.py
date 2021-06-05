@@ -16,8 +16,12 @@ from pygame.constants import MOUSEBUTTONDOWN
 yellow=(245, 245, 66)
 green=(22,234,72)
 blue=(2,12,207)
+black=(0,0,0)
+white=(255,255,255)
 pygame.init()
-letra1 = pygame.font.SysFont('ravie', 30) 
+letra_botones = pygame.font.SysFont('ravie', 30) 
+letra_titulos=pygame.font.SysFont('ravie', 80)  
+letra_letreros=pygame.font.SysFont('arial',30)    
 
 def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_texto):                #Función para crear botones como los de la intro
 
@@ -37,20 +41,13 @@ def intro_game(): #Pantalla de intro
     intro=True
     pygame.init()
     screen= pygame.display.set_mode((948,720))
-    pygame.display.set_caption('JUEGO DE LANZAMIENTO')
+    pygame.display.set_caption('Parabolic Shot')
     
     intro_background = pygame.image.load("fondo_intro.jpg") 
     screen.blit(intro_background,(0,0))
 
-    
-     
-    letra = pygame.font.SysFont('ravie', 90)                                    #Genera la fuente del primer texto      
-    imagenTexto = letra.render('JUEGO DE LANZAMIENTO',True, blue,green )                     #Genera la imagen con el texto                             
-    rectanguloTexto = imagenTexto.get_rect()                 
-    rectanguloTexto.centerx = screen.get_rect().centerx                         #Ubica el texto
-    rectanguloTexto.centery = 320
-    screen.blit(imagenTexto, rectanguloTexto)                                   #Pone la imagen con el texto en el programa
-
+    cuadro_titulo=pygame.Rect(screen.get_rect().centerx-450,320-50,900,100)
+    crear_cuadro_de_texto(screen,cuadro_titulo,'PARABOLIC SHOT',letra_titulos,green,blue) 
     
     play=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)                #Figuras de los botones jugar y salir
     exit=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
@@ -71,13 +68,13 @@ def intro_game(): #Pantalla de intro
                 if play.collidepoint(pygame.mouse.get_pos()):                   #Si el click se hizo sobre el botón jugar, continuar con el juego
                     intro=False
                     mundo.main(tierra)
-                elif exit.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hiz en salir...
+                elif exit.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo en salir...
                     pygame.quit()
                     quit()
                     
-        crear_boton(screen,play,'Jugar',letra1,green,yellow,blue)               #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
-        crear_boton(screen,exit,'Salir',letra1,green,yellow,blue)
-        crear_boton(screen,instructions,'Instrucciones',letra1,green,yellow,blue)
+        crear_boton(screen,play,'Jugar',letra_botones ,green,yellow,blue)               #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+        crear_boton(screen,exit,'Salir',letra_botones ,green,yellow,blue)
+        crear_boton(screen,instructions,'Instrucciones',letra_botones ,green,yellow,blue)
         pygame.display.flip()
 
 
@@ -89,7 +86,7 @@ class mundo:
         # self.yellow=(245, 245, 66)
         # self.green=(22,234,72)
         # self.blue=(2,12,207)
-        # self.letra1 = pygame.font.SysFont('ravie', 30) 
+        # self.letra_botones  = pygame.font.SysFont('ravie', 30) 
         
     
     def outro(self,titulo,estado):
@@ -101,17 +98,16 @@ class mundo:
         intro_background = pygame.image.load("fondo_intro.jpg") 
         screen.blit(intro_background,(0,0))
     
-        letra = pygame.font.SysFont('ravie', 90)                                    #Genera la fuente del primer texto      
-        imagenTexto = letra.render(estado,True,blue,green )              #Genera la imagen con el texto                             
+        imagenTexto = letra_titulos.render(estado,True,blue,green )              #Genera la imagen con el texto                             
         rectanguloTexto = imagenTexto.get_rect()                 
         rectanguloTexto.centerx = screen.get_rect().centerx                         #Ubica el texto
         rectanguloTexto.centery = 320
         screen.blit(imagenTexto, rectanguloTexto)                                   #Pone la imagen con el texto en el programa
     
-        
-        replay=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)              #Figuras de los botones volver a jugar y salir
-        exit1=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
-        credits=pygame.Rect(screen.get_rect().centerx-350/2,550,350,50)
+        re_intro=pygame.Rect(screen.get_rect().centerx-350/2,400,350,50.)
+        replay=pygame.Rect(screen.get_rect().centerx-350/2,480,350,50)              #Figuras de los botones del outro
+        credits=pygame.Rect(screen.get_rect().centerx-350/2,560,350,50)
+        exit1=pygame.Rect(screen.get_rect().centerx-350/2,640,350,50)
     
         while(game_over):                           
             for event in pygame.event.get():            
@@ -128,14 +124,18 @@ class mundo:
     
                     if replay.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo sobre el botón volver a  jugar, vuelve a la intro
                         game_over=False
-                        intro_game()
+                        mundo.main(tierra)
                     elif exit1.collidepoint(pygame.mouse.get_pos()):                #Si el click se hiz en salir...
                         pygame.quit()
                         quit()
+                    elif re_intro.collidepoint(pygame.mouse.get_pos()):
+                        game_over=False
+                        intro_game()
                         
-            crear_boton(screen,replay,'Volver a jugar',letra1,green,yellow,blue)    #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
-            crear_boton(screen,exit1,'Salir',letra1,green,yellow,blue)
-            crear_boton(screen,credits,'Créditos',letra1,green,yellow,blue)
+            crear_boton(screen,replay,'Volver a jugar',letra_botones ,green,yellow,blue)    #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+            crear_boton(screen,exit1,'Salir',letra_botones ,green,yellow,blue)
+            crear_boton(screen,credits,'Créditos',letra_botones ,green,yellow,blue)
+            crear_boton(screen,re_intro,"Volver a inicio",letra_botones,green,yellow,blue)
             pygame.display.flip()        
     
     def rotate(self,surface, angle):
@@ -175,13 +175,10 @@ class mundo:
         objetivo=pygame.image.load("objetivop.png")
         
         #CARACTERISTICAS DE LOS CUADROS DE TEXTO
-        cuadro_posicion_objetivo=pygame.Rect(0,100,350,50)
+        cuadro_posicion_objetivo=pygame.Rect(0,100,350,50)                          #(Posicion x, posicion y, ancho, alto)
         cuadro_velocidad=pygame.Rect(0,50,350,50)
-        letra_cuadro_velocidad=pygame.font.SysFont('arial',30)
         cuadro_angulo=pygame.Rect(0,0,250,50)
-        letra_cuadro_angulo=pygame.font.SysFont('arial', 30)
         cuadro_posicion_tiempo=pygame.Rect(700,0,150,50)
-        letra_cuadro_tiempo=pygame.font.SysFont('arial', 30)
         
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
@@ -304,10 +301,10 @@ class mundo:
                     
                
             #CUADROS DE TEXTO
-            crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle)+"°",letra_cuadro_angulo,(0,0,0),(255,255,255))   #Agrega un cuadro de texto con el angulo.
-            crear_cuadro_de_texto(screen,cuadro_velocidad,'Velocidad incial:'+str(v0)+"m/s",letra_cuadro_velocidad,(0,0,0),(255,255,255))
-            crear_cuadro_de_texto(screen,cuadro_posicion_objetivo,'coord.objivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_cuadro_velocidad,(0,0,0),(255,255,255))
-            crear_cuadro_de_texto(screen,cuadro_posicion_tiempo,str(int(t1))+'s',letra_cuadro_tiempo,(0,0,0),(255,255,255))
+            crear_cuadro_de_texto(screen,cuadro_angulo,'Ángulo:'+str(angle)+"°",letra_letreros,black,white)   #Agrega un cuadro de texto con el angulo.
+            crear_cuadro_de_texto(screen,cuadro_velocidad,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,black,white)
+            crear_cuadro_de_texto(screen,cuadro_posicion_objetivo,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,white)
+            crear_cuadro_de_texto(screen,cuadro_posicion_tiempo,str(int(t1))+'s',letra_letreros,black,white)
                   
             pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
     
@@ -315,4 +312,4 @@ class mundo:
 
 
 tierra=mundo()           
-intro_game()        #Ahora desde la función intro_game se llama la función main y desde main se puede llamar el outro(por ahora con la tecla esc porque aun no se puede perder o ganar en el juego)                                                                    
+intro_game()        #Ahora desde la función intro_game se llama la función main y desde main se puede llamar el outro                                                                 
