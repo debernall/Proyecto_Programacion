@@ -37,6 +37,38 @@ def crear_cuadro_de_texto(pantalla,cuadro,texto,fuente,color_fondo,color_texto):
     txt=fuente.render(texto,True,color_texto)
     pantalla.blit(txt,(cuadro.x+(cuadro.width-txt.get_width())/2,cuadro.y+(cuadro.height-txt.get_height())/2))
 
+def instrucciones():                                #Plantilla para las instrucciones que se haran luego
+    inst=True
+    pygame.init()
+    instrucciones1=pygame.display.set_mode((948,720))
+    intro_background = pygame.image.load("fondo_intro.jpg") 
+    instrucciones1.blit(intro_background,(0,0))
+    cuadro_inst1=pygame.Rect(instrucciones1.get_rect().centerx-300,220,600,100)
+    boton_volver_intro=pygame.Rect(instrucciones1.get_rect().centerx-150,610,300,100)
+    boton_siguiente=pygame.Rect(948-260,610,250,100)
+    boton_anterior=pygame.Rect(10,610,250,100)
+    crear_cuadro_de_texto(instrucciones1,cuadro_inst1,'Prueba cuadro instruccion',letra_botones ,green,blue)   
+    
+    while (inst):
+        for event in pygame.event.get():            
+            if event.type == pygame.QUIT :                                      
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key==pygame.K_ESCAPE:                                 
+                    quit()
+
+            elif event.type==MOUSEBUTTONDOWN and event.button==1:              
+
+                if boton_volver_intro.collidepoint(pygame.mouse.get_pos()):
+                    inst=False
+                    intro_game()
+        crear_boton(instrucciones1,boton_volver_intro,'Volver a inicio',letra_botones ,green,yellow,blue)
+        crear_boton(instrucciones1,boton_anterior,'Anterior',letra_botones ,green,yellow,blue)   
+        crear_boton(instrucciones1,boton_siguiente,'Siguiente',letra_botones ,green,yellow,blue) 
+        pygame.display.flip()
+
+
 def intro_game(): #Pantalla de intro
     intro=True
     pygame.init()
@@ -45,9 +77,11 @@ def intro_game(): #Pantalla de intro
     
     intro_background = pygame.image.load("fondo_intro.jpg") 
     screen.blit(intro_background,(0,0))
+    cuadro_parabolic=pygame.Rect(screen.get_rect().centerx-300,220-50,600,100)
+    cuadro_shot=pygame.Rect(screen.get_rect().centerx-200,320-50,400,100)
+    crear_cuadro_de_texto(screen,cuadro_parabolic,'PARABOLIC',letra_titulos,green,blue) 
+    crear_cuadro_de_texto(screen,cuadro_shot,'SHOT',letra_titulos,green,blue) 
 
-    cuadro_titulo=pygame.Rect(screen.get_rect().centerx-450,320-50,900,100)
-    crear_cuadro_de_texto(screen,cuadro_titulo,'PARABOLIC SHOT',letra_titulos,green,blue) 
     
     play=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)                #Figuras de los botones jugar y salir
     exit=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
@@ -63,19 +97,24 @@ def intro_game(): #Pantalla de intro
                     pygame.quit()
                     quit()
 
-            elif event.type==MOUSEBUTTONDOWN and event.button==1:               #Si se hace click derecho:
+            elif event.type==MOUSEBUTTONDOWN and event.button==1:               #Si se hace click izquierdo:
 
                 if play.collidepoint(pygame.mouse.get_pos()):                   #Si el click se hizo sobre el botón jugar, continuar con el juego
                     intro=False
                     mundo.main(tierra)
+                elif instructions.collidepoint(pygame.mouse.get_pos()):
+                    intro=False
+                    instrucciones()
                 elif exit.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo en salir...
                     pygame.quit()
                     quit()
+                
                     
         crear_boton(screen,play,'Jugar',letra_botones ,green,yellow,blue)               #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
         crear_boton(screen,exit,'Salir',letra_botones ,green,yellow,blue)
         crear_boton(screen,instructions,'Instrucciones',letra_botones ,green,yellow,blue)
         pygame.display.flip()
+
 
 
 #################################     CLASE MUNDO     ######################################
@@ -177,7 +216,7 @@ class mundo:
         #CARACTERISTICAS DE LOS CUADROS DE TEXTO
         cuadro_posicion_objetivo=pygame.Rect(0,100,350,50)                          #(Posicion x, posicion y, ancho, alto)
         cuadro_velocidad=pygame.Rect(0,50,350,50)
-        cuadro_angulo=pygame.Rect(0,0,250,50)
+        cuadro_angulo=pygame.Rect(0,0,350,50)
         cuadro_posicion_tiempo=pygame.Rect(700,0,150,50)
         
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
