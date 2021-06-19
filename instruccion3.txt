@@ -1,0 +1,6 @@
+Puedes aumentar o disminuir el ángulo de 
+inclinación del cañón utilizando
+ las teclas derecha o izquierda respectivamente. 
+ Así mismo puedes aumentar o disminuir
+la velocidad inicial de disparo utilizando las teclas
+ arriba o abajo respectivamente.
