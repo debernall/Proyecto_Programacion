@@ -1,5 +1,5 @@
 ¡Bienvenido a Parabolic Shot!,
 el propósito del juego es dispararle a un objetivo
-utilizando un cañón. Durante el transcurso
-del juego tendrás que cumplir este
-objetivo bajo distintas condiciones.
+utilizando un cañón como el de la imagen.
+Durante el transcurso del juego tendrás que 
+cumplir este objetivo bajo distintas condiciones.

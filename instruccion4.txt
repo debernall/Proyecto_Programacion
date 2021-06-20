@@ -1,3 +1,5 @@
-Para lograr acertar al objetivo puedes utilizar las
-ecuaciones de movimiento, ten en cuenta los parámetros
-presentados en la partes superior de tu pantalla.
+Para lograr acertar al objetivo puedes utilizar 
+las ecuaciones de movimiento presentadas 
+en la  imagen, para esto ten en  cuenta 
+los parámetros presentados en la 
+parte superior de tu pantalla.

@@ -1,5 +1,6 @@
-Para poder apuntar al objetivo, en la parte superior de
-tu pantalla podrás diferentes parámetros como 
-el ángulo de inclinación del cañón, la velocidad 
-inicial de disparo, la posición del objetivo respecto
- al cañón y la aceleración gravitacional del ambiente.
+Para poder apuntar a los objetivos, en la parte 
+superior de tu pantalla verás diferentes parámetros 
+como el ángulo de inclinación del cañón, la 
+velocidad  inicial de disparo,la posición del objetivo 
+respecto al cañón y laaceleración gravitacional 
+del ambiente, como se muestra en la imagen.

@@ -1,3 +1,4 @@
+from proyecto import intro_game
 import pygame
 import random
 import numpy as np
@@ -16,6 +17,7 @@ letra_titulos=pygame.font.SysFont('ravie', 80)
 letra_letreros=pygame.font.SysFont('arial',30)   
 letra_instrucciones= pygame.font.SysFont('comicsansms',30)
 lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
+lista_imagenes_inst=("cañon5.png","objetivop.png",0,'ecuaciones.png')
 
 def crear_cuadro_de_texto(pantalla,posx,posy,ancho,alto,texto,fuente,color_fondo,color_texto):      #Funcion para realizar cualquier tipo de cuadro de texto
     cuadro=pygame.Rect(posx,posy,ancho,alto)
@@ -47,10 +49,23 @@ def instrucciones_juego(numero_instruccion):
 
 
     c_texto=codecs.open(instruccion,'r','utf-8').readlines()
+    if numero_instruccion!=1:
+        if numero_instruccion== 3:
+            ancho=400
+        else:
+            ancho=200
+        
+        imagen_inst=pygame.transform.scale(pygame.image.load(lista_imagenes_inst[numero_instruccion]),[ancho,200])
+        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-ancho/2,350,ancho,200,' ',letra_botones,white,black)
+        screen_instrucciones.blit(imagen_inst,[screen_instrucciones.get_rect().centerx-ancho/2,350])
+        
+    else:
+        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-350/2,450,350,50,'Ángulo:25°',letra_letreros,white,black)
+
     for i in range(len(c_texto)):
         crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-400,100+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones ,blue,green)
 
-
+    crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-30,50,60,40,str(numero_instruccion+1)+'/4',letra_instrucciones,blue,green)   #Crea el cuadro que dice el numero de instruccion
 
     while (inst):
         for event in pygame.event.get():            
@@ -79,6 +94,6 @@ def instrucciones_juego(numero_instruccion):
         crear_boton(screen_instrucciones,boton_volver_intro,'Volver a inicio',letra_botones ,green,yellow,blue)
         crear_boton(screen_instrucciones,boton_anterior,'Anterior',letra_botones ,green,yellow,blue)   
         crear_boton(screen_instrucciones,boton_siguiente,'Siguiente',letra_botones ,green,yellow,blue) 
-        pygame.display.flip()
+        pygame.display.flip()  
 
-instrucciones_juego(0)
+intro_game(0)

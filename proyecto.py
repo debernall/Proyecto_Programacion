@@ -25,6 +25,7 @@ letra_titulos=pygame.font.SysFont('ravie', 80)
 letra_letreros=pygame.font.SysFont('arial',30)    
 letra_instrucciones= pygame.font.SysFont('comicsansms',30)
 lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
+lista_imagenes_inst=("cañon5.png",0,'teclas_inst.png','ecuaciones.png')
 
 def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_texto):                #Función para crear botones como los de la intro
 
@@ -42,21 +43,34 @@ def crear_cuadro_de_texto(pantalla,posx,posy,ancho,alto,texto,fuente,color_fondo
     pantalla.blit(txt,(cuadro.x+(cuadro.width-txt.get_width())/2,cuadro.y+(cuadro.height-txt.get_height())/2))
 
 def instrucciones_juego(numero_instruccion):
-    instruccion=lista_instrucciones[numero_instruccion]                                              #Selecciona una instruccion de la lista lista_instrucciones       
-    inst=True                                                                                        #Para mostrar o dejar de mostrar una instruccion
+    instruccion=lista_instrucciones[numero_instruccion]
+    inst=True
     pygame.init()
-    screen_instrucciones=pygame.display.set_mode((948,720))                                          #De pronto le cambio el fondo a las instrucciones
+    screen_instrucciones=pygame.display.set_mode((948,720))
     intro_background = pygame.image.load("fondo_intro.jpg")
 
-    screen_instrucciones.blit(intro_background,(0,0))                                                 
+    screen_instrucciones.blit(intro_background,(0,0))
     boton_volver_intro=pygame.Rect(screen_instrucciones.get_rect().centerx-150,610,300,100)
     boton_siguiente=pygame.Rect(948-260,610,250,100)
     boton_anterior=pygame.Rect(10,610,250,100)
 
 
-    c_texto=codecs.open(instruccion,'r','utf-8').readlines()                                         #Leer la instruccion deseada
-    for i in range(len(c_texto)):                                                                    #Por cada linea del archivo de la instruccion, hacer un cuadro de texto con el contenido de la linea
-        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-400,100+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones ,blue,green)    #El .rstrip() es para eliminar el salto de linea
+    c_texto=codecs.open(instruccion,'r','utf-8').readlines()
+    if numero_instruccion!=1:
+        if numero_instruccion== 3:
+            ancho=400
+        else:
+            ancho=200
+        
+        imagen_inst=pygame.transform.scale(pygame.image.load(lista_imagenes_inst[numero_instruccion]),[ancho,200])
+        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-ancho/2,350,ancho,200,' ',letra_botones,white,black)
+        screen_instrucciones.blit(imagen_inst,[screen_instrucciones.get_rect().centerx-ancho/2,350])
+        
+    else:
+        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-350/2,450,350,50,'Ángulo:25°',letra_letreros,white,black)
+
+    for i in range(len(c_texto)):
+        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-400,100+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones ,blue,green)
 
     crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-30,50,60,40,str(numero_instruccion+1)+'/4',letra_instrucciones,blue,green)   #Crea el cuadro que dice el numero de instruccion
 
@@ -71,16 +85,16 @@ def instrucciones_juego(numero_instruccion):
 
             elif event.type==MOUSEBUTTONDOWN and event.button==1:              
 
-                if boton_volver_intro.collidepoint(pygame.mouse.get_pos()):     #Boton para volver al intro
+                if boton_volver_intro.collidepoint(pygame.mouse.get_pos()):
                     inst=False
                     intro_game()
                 
                 elif boton_anterior.collidepoint(pygame.mouse.get_pos()):
                     
-                    if numero_instruccion-1 in range(len(lista_instrucciones)):         #Si existe una instruccion anterior a la actual:
-                        inst=False                                                      #Salir de la instruccion actual
-                        instrucciones_juego(numero_instruccion-1)                       #Entrar a la instruccion anterior
-                elif boton_siguiente.collidepoint(pygame.mouse.get_pos()):              #Lo mismo que la instruccion anterior pero con la instruccion siguiente
+                    if numero_instruccion-1 in range(len(lista_instrucciones)):
+                        inst=False
+                        instrucciones_juego(numero_instruccion-1)
+                elif boton_siguiente.collidepoint(pygame.mouse.get_pos()): 
                     if numero_instruccion+1 in range(len(lista_instrucciones)):
                         inst=False
                         instrucciones_juego(numero_instruccion+1)               
@@ -353,10 +367,10 @@ class mundo:
                     
                
             #CUADROS DE TEXTO
-            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,black,white)   #Agrega un cuadro de texto con el angulo.
-            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,black,white)
-            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,white)
-            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,black,white)
+            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,white,black)   #Agrega un cuadro de texto con el angulo.
+            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,white,black)
+            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,white,black)
+            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,white,black)
                   
             pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
     
