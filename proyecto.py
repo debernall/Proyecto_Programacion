@@ -230,7 +230,7 @@ class mundo:
         cañon=pygame.image.load("cañon5.png")                                       #Imagen de cañon
         explosion=pygame.image.load("explosión.png")                                #imagen de la Explosón al disparar
         objetivo=pygame.image.load("objetivop.png")
-        
+        sonidoexplosión=pygame.mixer.Sound("sonexp.mp3")
         
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
@@ -281,7 +281,7 @@ class mundo:
                             pos_bola=(400,350)  
                             pos_expl=(450,250)                                       #posición de la explosión al disparar
                             disparo=True
-                           
+                            sonidoexplosión.play()
                     elif event.key==pygame.K_UP and disparo==False:                  #Tecla izquierda rotación en sentido positivo
                         speedv0=1
                    
