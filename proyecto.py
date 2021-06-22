@@ -1,25 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jun 20 22:20:27 2021
-
-@author: ANDRES
-"""
-
-# -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-This is a temporary script file.
-"""
-
-
 import pygame
 import random
 import numpy as np
 from pygame.constants import MOUSEBUTTONDOWN
 import codecs
-
-from pygame.draw import rect
 
 
 ###############################    DECLARACIONES INICIALES        ##################################
@@ -31,7 +14,7 @@ white=(255,255,255)
 pygame.init()
 letra_botones = pygame.font.SysFont('ravie', 30) 
 letra_titulos=pygame.font.SysFont('ravie', 80)  
-letra_letreros=pygame.font.SysFont('arial',30)    
+letra_letreros=pygame.font.SysFont('arial',32)    
 letra_instrucciones= pygame.font.SysFont('comicsansms',30)
 lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
 lista_imagenes_inst=("cañon5.png",0,'teclas_inst.png','ecuaciones.png')
@@ -40,23 +23,17 @@ def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_te
 
     if boton.collidepoint(pygame.mouse.get_pos()):                              #Cambia el color del boton si el cursor está sobre él  
         pygame.draw.rect(pantalla,color_fondo2,boton,0)
-        pygame.draw.rect(pantalla,color_texto,boton,3)                          #Es para el borde
-
     else:
-        pygame.draw.rect(pantalla,color_fondo1,boton,0)   
-        pygame.draw.rect(pantalla,color_texto,boton,3)                          #Dibuja el boton cuando el cursor no está encima
-                                                            
+    
+        pygame.draw.rect(pantalla,black,boton,0)                         #Dibuja el boton cuando el cursor no está encima
     texto=fuente.render(palabra,True,color_texto)                               #Genera el texto del botón
     pantalla.blit(texto,(boton.x+(boton.width-texto.get_width())/2,boton.y+(boton.height-texto.get_height())/2))    #Pone el botón en la pantalla y centra el texto.
 
 def crear_cuadro_de_texto(pantalla,posx,posy,ancho,alto,texto,fuente,color_fondo,color_texto):      #Funcion para realizar cualquier tipo de cuadro de texto
     cuadro=pygame.Rect(posx,posy,ancho,alto)
-    pygame.draw.rect(pantalla,color_fondo,cuadro,0)
-    pygame.draw.rect(pantalla,color_texto,cuadro,3)                                #Es para el borde
-
+    #pygame.draw.rect(pantalla,color_fondo,cuadro,0)
     txt=fuente.render(texto,True,color_texto)
     pantalla.blit(txt,(cuadro.x+(cuadro.width-txt.get_width())/2,cuadro.y+(cuadro.height-txt.get_height())/2))
-
 def instrucciones_juego(numero_instruccion):
     instruccion=lista_instrucciones[numero_instruccion]
     inst=True
@@ -117,7 +94,6 @@ def instrucciones_juego(numero_instruccion):
         crear_boton(screen_instrucciones,boton_anterior,'Anterior',letra_botones ,green,yellow,blue)   
         crear_boton(screen_instrucciones,boton_siguiente,'Siguiente',letra_botones ,green,yellow,blue) 
         pygame.display.flip()
-
 def intro_game(): #Pantalla de intro
     intro=True
     pygame.init()
@@ -153,6 +129,7 @@ def intro_game(): #Pantalla de intro
                     
                 elif instructions.collidepoint(pygame.mouse.get_pos()):
                     intro=False
+                    sonidofondo.stop()
                     instrucciones_juego(0)
                 elif exit.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo en salir...
                     pygame.quit()
@@ -177,7 +154,7 @@ class mundo:
         # self.letra_botones  = pygame.font.SysFont('ravie', 30) 
         
     
-    def outro(self,titulo,estado):
+    def outro(self,titulo,estado,puntos):
         pygame.init()
         game_over=True
         screen= pygame.display.set_mode((948,720))
@@ -186,11 +163,17 @@ class mundo:
         intro_background = pygame.image.load("fondo_intro.jpg") 
         screen.blit(intro_background,(0,0))
     
-        imagenTexto = letra_titulos.render(estado,True,blue,green)              #Genera la imagen con el texto                             
+        imagenTexto = letra_titulos.render(estado,True,blue, )              #Genera la imagen con el texto                             
+        imagenTexto1 = letra_titulos.render("Acertaste "+puntos+" de  2",True,blue, )
+        
+        rectanguloTexto1 = imagenTexto1.get_rect()
+        rectanguloTexto1.centerx = screen.get_rect().centerx                         #Ubica el texto
+        rectanguloTexto1.centery = 200
         rectanguloTexto = imagenTexto.get_rect()                 
         rectanguloTexto.centerx = screen.get_rect().centerx                         #Ubica el texto
-        rectanguloTexto.centery = 320 
+        rectanguloTexto.centery = 320
         screen.blit(imagenTexto, rectanguloTexto)                                   #Pone la imagen con el texto en el programa
+        screen.blit(imagenTexto1, rectanguloTexto1)
     
         re_intro=pygame.Rect(screen.get_rect().centerx-350/2,400,350,50.)
         replay=pygame.Rect(screen.get_rect().centerx-350/2,480,350,50)              #Figuras de los botones del outro
@@ -212,7 +195,7 @@ class mundo:
     
                     if replay.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo sobre el botón volver a  jugar, vuelve a la intro
                         game_over=False
-                        mundo.main(tierra)
+                        mundo.main1(tierra)
                     elif exit1.collidepoint(pygame.mouse.get_pos()):                #Si el click se hiz en salir...
                         pygame.quit()
                         quit()
@@ -275,7 +258,7 @@ class mundo:
         sonidofondo.play()                                                                        #vector velocidad
         angle=0                                                                     #Declaración de variable ángulo del cañon
         speedangle=0 
-        n=0                                          
+        n=0                                             #
         v0=1                                                                       #Velocidad inicial
         g=0
         vi=0
@@ -284,7 +267,8 @@ class mundo:
         t1=0                                                                       #Variable de tiempo
         colision=False
         disparo=False
-        
+        pasar=0
+        puntos='0'
         while(running):
             ns=clock.tick(30)                                                       #Periodo de recarga de imagen
             for event in pygame.event.get():            
@@ -318,10 +302,14 @@ class mundo:
                         speedangle=1
                     elif event.key==pygame.K_RIGHT and disparo==False:               #Tecla derecha rotación en sentido negativo
                         speedangle=-1
+                    
+                    elif event.key==pygame.K_a and disparo==True:               
+                        pasar=1
+                    
                     elif event.key==pygame.K_ESCAPE:                                 #Tecla escape sale del juego
                         running = False
                         sonidofondo.stop()
-                        self.outro('FIN DEL JUEGO','FIN DEL JUEGO')        
+                        self.outro('FIN DEL JUEGO','FIN DEL JUEGO','0')        
                 elif event.type == pygame.KEYUP:                                    #Eventos dejar de presionar tecla
                    
                     if event.key==pygame.K_UP and disparo==False:                    #Tecla izquierda rotación en sentido positivo
@@ -354,28 +342,36 @@ class mundo:
                 step=(0,0)
                 t=0
                 colision=True
-                sonidofondo.stop()
-                self.main()
+                puntos='1'
+                crear_cuadro_de_texto(screen,250,350,350,50,'Buen tiro, presiona"a" para continiar',letra_letreros,black,green)
+                if pasar ==1: 
+                    
+                    
+                 sonidofondo.stop()
+                 self.main(puntos)
             
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
             if posplano[0]<-3440 or posplano[0]>= 400 :
+                crear_cuadro_de_texto(screen,250,350,350,50,'fallaste, presiona"a" para continiar',letra_letreros,black,green)
                 step=(0,0)
                 t=0
+                puntos='0'
+                if pasar ==1: 
+                 sonidofondo.stop()
+                 self.main(puntos)
                 
-                sonidofondo.stop()
-                self.main()
     
             
                     
                
             #CUADROS DE TEXTO
-            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,black,white)   #Agrega un cuadro de texto con el angulo.
-            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,black,white)
-            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,white)
-            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,black,white)
+            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,black,green)   #Agrega un cuadro de texto con el angulo.
+            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,black,green)
+            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,green)
+            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,black,green)
                   
             pygame.display.flip()
-    def main(self):
+    def main(self,puntos):
         #PROPIEDADES INICIALES PYGAME
         pygame.init()
         screen= pygame.display.set_mode((800,700))
@@ -494,8 +490,9 @@ class mundo:
                 step=(0,0)
                 t=0
                 colision=True
+                puntos='2'
                 sonidofondo.stop()
-                self.outro('TIRO ACERTADO','FELICITACIONES')
+                self.outro('TIRO ACERTADO','Felicitaciones',puntos)
             
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
             if posplano[0]<-3440 or posplano[0]>= 400 :
@@ -506,7 +503,7 @@ class mundo:
             if bolarect.colliderect(horizonte_rect) and t>0.3:                              #t>0.3 evita rebotes debidos a una lectura anomala 
                 if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
                     step=(0,0)
-                    self.outro('FIN DEL JUEGO','TIRO ERRADO')
+                    self.outro('FIN DEL JUEGO','Por poco amigo',puntos)
                     
                 else:
                     t=0
@@ -514,11 +511,11 @@ class mundo:
                     
                
             #CUADROS DE TEXTO
-            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,white,black)   #Agrega un cuadro de texto con el angulo.
-            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,white,black)
-            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,white,black)
-            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,white,black)
-                  
+            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,black,green)   #Agrega un cuadro de texto con el angulo.
+            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,black,green)
+            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,green)
+            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,black,green)
+            print(puntos)      
             pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
     
      
