@@ -19,6 +19,8 @@ import numpy as np
 from pygame.constants import MOUSEBUTTONDOWN
 import codecs
 
+from pygame.draw import rect
+
 
 ###############################    DECLARACIONES INICIALES        ##################################
 yellow=(245, 245, 66)
@@ -38,14 +40,20 @@ def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_te
 
     if boton.collidepoint(pygame.mouse.get_pos()):                              #Cambia el color del boton si el cursor está sobre él  
         pygame.draw.rect(pantalla,color_fondo2,boton,0)
+        pygame.draw.rect(pantalla,color_texto,boton,3)                          #Es para el borde
+
     else:
-        pygame.draw.rect(pantalla,color_fondo1,boton,0)                         #Dibuja el boton cuando el cursor no está encima
+        pygame.draw.rect(pantalla,color_fondo1,boton,0)   
+        pygame.draw.rect(pantalla,color_texto,boton,3)                          #Dibuja el boton cuando el cursor no está encima
+                                                            
     texto=fuente.render(palabra,True,color_texto)                               #Genera el texto del botón
     pantalla.blit(texto,(boton.x+(boton.width-texto.get_width())/2,boton.y+(boton.height-texto.get_height())/2))    #Pone el botón en la pantalla y centra el texto.
 
 def crear_cuadro_de_texto(pantalla,posx,posy,ancho,alto,texto,fuente,color_fondo,color_texto):      #Funcion para realizar cualquier tipo de cuadro de texto
     cuadro=pygame.Rect(posx,posy,ancho,alto)
     pygame.draw.rect(pantalla,color_fondo,cuadro,0)
+    pygame.draw.rect(pantalla,color_texto,cuadro,3)                                #Es para el borde
+
     txt=fuente.render(texto,True,color_texto)
     pantalla.blit(txt,(cuadro.x+(cuadro.width-txt.get_width())/2,cuadro.y+(cuadro.height-txt.get_height())/2))
 
@@ -178,10 +186,10 @@ class mundo:
         intro_background = pygame.image.load("fondo_intro.jpg") 
         screen.blit(intro_background,(0,0))
     
-        imagenTexto = letra_titulos.render(estado,True,blue,green )              #Genera la imagen con el texto                             
+        imagenTexto = letra_titulos.render(estado,True,blue,green)              #Genera la imagen con el texto                             
         rectanguloTexto = imagenTexto.get_rect()                 
         rectanguloTexto.centerx = screen.get_rect().centerx                         #Ubica el texto
-        rectanguloTexto.centery = 320
+        rectanguloTexto.centery = 320 
         screen.blit(imagenTexto, rectanguloTexto)                                   #Pone la imagen con el texto en el programa
     
         re_intro=pygame.Rect(screen.get_rect().centerx-350/2,400,350,50.)
@@ -267,7 +275,7 @@ class mundo:
         sonidofondo.play()                                                                        #vector velocidad
         angle=0                                                                     #Declaración de variable ángulo del cañon
         speedangle=0 
-        n=0                                             #
+        n=0                                          
         v0=1                                                                       #Velocidad inicial
         g=0
         vi=0
