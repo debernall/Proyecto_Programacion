@@ -503,6 +503,7 @@ class mundo:
             if bolarect.colliderect(horizonte_rect) and t>0.3:                              #t>0.3 evita rebotes debidos a una lectura anomala 
                 if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
                     step=(0,0)
+                    sonidofondo.stop()
                     self.outro('FIN DEL JUEGO','Por poco amigo',puntos)
                     
                 else:
