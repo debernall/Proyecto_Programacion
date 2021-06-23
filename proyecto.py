@@ -135,12 +135,13 @@ def intro_game(): #Pantalla de intro
                 if play.collidepoint(pygame.mouse.get_pos()):                   #Si el click se hizo sobre el botón jugar, continuar con el juego
                     intro=False
                     sonidofondo.stop()
-                    mundo.main(tierra)
+                    mundo.main(space)
                     
                 elif instructions.collidepoint(pygame.mouse.get_pos()):
                     intro=False
                     sonidofondo.stop()
                     instrucciones_juego(0)
+                    
                 elif exit.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo en salir...
                     pygame.quit()
                     quit()
@@ -484,6 +485,13 @@ class mundo:
             
             #ROTACION DEL CAÑON
             angle=angle+speedangle                                                  #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
+            #LIMITES DE ROTACION DEL CAÑON
+            if angle>=90:
+                angle=90
+            elif angle<=0:
+                angle=0
+            
+            
             v0=v0 + speedv0
             vi=(v0*10)/32
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)              #Rota el cañon
@@ -514,7 +522,12 @@ class mundo:
             
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
             if posplano[0]<-3440 or posplano[0]>= 400 :
-                step= -step[0],step[1]
+                sonidofondo.stop()
+                outro('FIN DEL JUEGO','Por poco amigo')
+            
+            elif posplano[1]>350:
+                sonidofondo.stop()
+                outro('FIN DEL JUEGO','Por poco amigo')
     
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
             horizonte_rect=plano.get_rect(center=(posplano[0]+1900,posplano[1]+2750))       #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
