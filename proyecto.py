@@ -19,6 +19,8 @@ letra_instrucciones= pygame.font.SysFont('comicsansms',30)
 lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
 lista_imagenes_inst=("img/cañon5.png",0,'img/teclas_inst.png','img/ecuaciones.png')
 puntos=0
+nivel=0
+next_level=False
 
 def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_texto,color_borde):                #Función para crear botones como los de la intro
 
@@ -136,7 +138,11 @@ def intro_game(): #Pantalla de intro
                 if play.collidepoint(pygame.mouse.get_pos()):                   #Si el click se hizo sobre el botón jugar, continuar con el juego
                     intro=False
                     sonidofondo.stop()
-                    mundo.main(space)
+                    return True
+                    # if nivel == 0:
+                    #     mundo.main(space)
+                    # print("salí aqui")
+                    # outro('XXXXX','YYYYYYYYYYYY')
                     
                 elif instructions.collidepoint(pygame.mouse.get_pos()):
                     intro=False
@@ -154,9 +160,17 @@ def intro_game(): #Pantalla de intro
         pygame.display.flip()
 
 
-def outro(titulo,estado):
+
+    
+    
+    
+    
+def outro(titulo,estado):         # OUTRO MANTIENE AL JUGADOR EN UN NIVEL HASTA QUE PASE
+    global nivel    
+    global next_level
+    print("estoy en outro")
     pygame.init()
-    game_over=True
+    game_over=True#***********************************************
     screen= pygame.display.set_mode((948,720))
     pygame.display.set_caption(titulo)
     
@@ -174,7 +188,9 @@ def outro(titulo,estado):
     rectanguloTexto.centery = 320
     screen.blit(imagenTexto, rectanguloTexto)                                   #Pone la imagen con el texto en el programa
     screen.blit(imagenTexto1, rectanguloTexto1)
-
+    
+    siguiente=pygame.Rect(screen.get_rect().centerx-350/2,320,350,50.)    
+    crear_boton(screen,siguiente,'Siguiente nivel',letra_botones ,green,yellow,blue,blue)
     re_intro=pygame.Rect(screen.get_rect().centerx-350/2,400,350,50.)
     replay=pygame.Rect(screen.get_rect().centerx-350/2,480,350,50)              #Figuras de los botones del outro
     credits=pygame.Rect(screen.get_rect().centerx-350/2,560,350,50)
@@ -195,19 +211,28 @@ def outro(titulo,estado):
 
                 if replay.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo sobre el botón volver a  jugar, vuelve a la intro
                     game_over=False
-                    mundo.main(tierra)
+                    return
+                elif siguiente.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo sobre el botón volver a  jugar, vuelve a la intro
+                    if next_level==True:
+                        game_over=False    
+                        nivel+=1
+                        return
+                    else:
+                        continue
                 elif exit1.collidepoint(pygame.mouse.get_pos()):                #Si el click se hiz en salir...
                     pygame.quit()
                     quit()
                 elif re_intro.collidepoint(pygame.mouse.get_pos()):
                     game_over=False
                     intro_game()
-                    
+        
+        
         crear_boton(screen,replay,'Volver a jugar',letra_botones ,green,yellow,blue,blue)    #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
         crear_boton(screen,exit1,'Salir',letra_botones ,green,yellow,blue,blue)
         crear_boton(screen,credits,'Créditos',letra_botones ,green,yellow,blue,blue)
         crear_boton(screen,re_intro,"Volver a inicio",letra_botones,green,yellow,blue,blue)
-        pygame.display.flip() 
+        pygame.display.flip()
+
 
 
 #################################     CLASE MUNDO     ######################################
@@ -389,11 +414,14 @@ class mundo:
     #         pygame.display.flip()
             
     def main(self):                      ################puntos
+        global puntos
+        global nivel
+        global next_level
+        
         #PROPIEDADES INICIALES PYGAME
         pygame.init()
         screen= pygame.display.set_mode((800,700))
         clock=pygame.time.Clock()
-        #pygame.display.set_caption('JUEGO DE LANZAMIENTO')
         
         #CARGA DE IMAGENES
         plano = pygame.image.load(self.mplano)         #####imagen fondo                               #Imagen de fondo
@@ -403,6 +431,7 @@ class mundo:
         objetivo=pygame.image.load("img/objetivop.png")
         sonidoexplosión=pygame.mixer.Sound("sound/sonexp.wav")
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
+        
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
         posplano=0,-1300
@@ -419,14 +448,12 @@ class mundo:
         speedangle=0                                                                #Variable que almacena la rotación del cañon                                         
         n=0                                             #
         v0=0                                                                        #Velocidad inicial
-        #g=3.06                                      ############ g
         vi=0
         speedv0=0
         t=0  
         t1=0                                                                       #Variable de tiempo
         colision=False
         disparo=False
-        #fact_perdida_choque=1.4                     ##########   perdida
         #pasar=0
         #puntos='0'    
         while(running):
@@ -464,14 +491,14 @@ class mundo:
                     elif event.key==pygame.K_RIGHT and disparo==False:               #Tecla derecha rotación en sentido negativo
                         speedangle=-1
                     
-                    # elif event.key==pygame.K_a and disparo==True:               
-                    #     pasar=1
+                    # elif event.key==pygame.K_a and colision==True:               
+                    #      nivel+=1
                         
                     elif event.key==pygame.K_ESCAPE:                                 #Tecla escape sale del juego
                         running = False
                         sonidofondo.stop()
-                        outro('FIN DEL JUEGO','FIN DEL JUEGO')
-                
+                        #outro('FIN DEL JUEGO','FIN DEL JUEGO')
+                        return False                                                                                                                            #   AQUI HAY UNA SALIDA 
                 elif event.type == pygame.KEYUP:                                    #Eventos dejar de presionar tecla
                    
                     if event.key==pygame.K_UP and disparo==False:                    #Tecla izquierda rotación en sentido positivo
@@ -499,7 +526,7 @@ class mundo:
                 
             vi=(v0*10)/32
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)              #Rota el cañon
-                                                                                    #poscañon=poscañon[0]-step[0],poscañon[1]-step[1]-((g/2)*(t**2))         #(x,y)=(x0+v_x0,y0+v_y0)
+                
             
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo),(explosion,pos_expl),(bola,pos_bola),(image2_rotated,pos_canon)))        
@@ -516,24 +543,33 @@ class mundo:
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
+                
             if bolarect.colliderect(objetivorect)==True:
                 step=(0,0)
                 t=0
                 colision=True
                 #puntos='2'                          ######corregir esto usar int
                 sonidofondo.stop()
-                self.puntos+=1
-                print(self.puntos)
-                outro('TIRO ACERTADO','Felicitaciones')
+                puntos+=1               
+                print(puntos)
+#                crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro!',letra_letreros,None,green,None)
+                #nivel+=1
+                return True                                                     # se gana                                                                       #   AQUI HAY UNA SALIDA SI COLISIONA
+    #             if pasar ==1: 
+                #######################
+
+#                outro('TIRO ACERTADO','Felicitaciones')
             
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
             if posplano[0]<-3440 or posplano[0]>= 400 :
                 sonidofondo.stop()
-                outro('FIN DEL JUEGO','Por poco amigo')
-            
+                return False                                                    # se pierde                                         #   AQUI HAY UNA SALIDA SI SE IMPACTA CON LAS PAREDES    
+                #outro('FIN DEL JUEGO','Por poco amigo')
+                    
             elif posplano[1]>350:
-                sonidofondo.stop()
-                outro('FIN DEL JUEGO','Por poco amigo')
+                sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
+                return False                                                    # se pierde
+            #    outro('FIN DEL JUEGO','Por poco amigo')
     
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
             horizonte_rect=plano.get_rect(center=(posplano[0]+1900,posplano[1]+2750))       #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
@@ -541,7 +577,9 @@ class mundo:
                 if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
                     step=(0,0)
                     sonidofondo.stop()
-                    outro('FIN DEL JUEGO','Por poco amigo')
+                    return False                                                # se pierde                                                                                                         #   AQUI HAY UNA SALIDA SI REBOTA 
+                    #outro('FIN DEL JUEGO','Por poco amigo')
+                    
                     
                 else:
                     t=0
@@ -553,8 +591,7 @@ class mundo:
             crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,green)
             crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,green)
             crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,700,50,150,50,str(self.puntos),letra_letreros,None,green,green)
-            #print(puntos)      
+            crear_cuadro_de_texto(screen,700,50,150,50,str(self.puntos),letra_letreros,None,green,green)     
             pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
 
      
@@ -572,4 +609,37 @@ p_tierra={'g':3.06,
 space=mundo(list(p_space.values()),0)
 tierra=mundo(list(p_tierra.values()),1)
 
-intro_game()        #Ahora desde la función intro_game se llama la función main y desde main se puede llamar el outro                                                              
+
+
+
+jugar=True        #Ahora desde la función intro_game se llama la función main y desde main se puede llamar el outro                                                              
+jugar_outro=True
+while jugar:
+        jugar=intro_game()
+        while jugar_outro:
+            if nivel==0:
+                next_level=mundo.main(space)
+                print(next_level)
+            elif nivel==1:
+                next_level=mundo.main(tierra)
+                print(next_level)
+            else:
+                print("ese era el ultimo nivel")
+            outro('titulo','estado')
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
