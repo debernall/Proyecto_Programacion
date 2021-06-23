@@ -18,6 +18,7 @@ letra_letreros=pygame.font.SysFont('arial',32)
 letra_instrucciones= pygame.font.SysFont('comicsansms',30)
 lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
 lista_imagenes_inst=("img/cañon5.png",0,'img/teclas_inst.png','img/ecuaciones.png')
+puntos=0
 
 def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_texto,color_borde):                #Función para crear botones como los de la intro
 
@@ -212,8 +213,8 @@ def outro(titulo,estado):
 #################################     CLASE MUNDO     ######################################
 class mundo:
     
-    def __init__(self,parametros):
-        #self.puntos=puntos
+    def __init__(self,parametros,puntos):
+        self.puntos=puntos
         self.g=parametros[0]
         self.mplano=parametros[1]
         self.son_mundo=parametros[2]       
@@ -493,6 +494,9 @@ class mundo:
             
             
             v0=v0 + speedv0
+            if v0<=0:
+                v0=0
+                
             vi=(v0*10)/32
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)              #Rota el cañon
                                                                                     #poscañon=poscañon[0]-step[0],poscañon[1]-step[1]-((g/2)*(t**2))         #(x,y)=(x0+v_x0,y0+v_y0)
@@ -518,6 +522,8 @@ class mundo:
                 colision=True
                 #puntos='2'                          ######corregir esto usar int
                 sonidofondo.stop()
+                self.puntos+=1
+                print(self.puntos)
                 outro('TIRO ACERTADO','Felicitaciones')
             
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
@@ -547,9 +553,10 @@ class mundo:
             crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,green)
             crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,green)
             crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
+            crear_cuadro_de_texto(screen,700,50,150,50,str(self.puntos),letra_letreros,None,green,green)
             #print(puntos)      
             pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
-    
+
      
 p_space={'g':0,
           'im_fondo': "img/fondo0.jpg",
@@ -561,8 +568,8 @@ p_tierra={'g':3.06,
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':1.4}
 
-space=mundo(list(p_space.values()))
-tierra=mundo(list(p_tierra.values()))
 
-#tierra=mundo()           
+space=mundo(list(p_space.values()),0)
+tierra=mundo(list(p_tierra.values()),1)
+
 intro_game()        #Ahora desde la función intro_game se llama la función main y desde main se puede llamar el outro                                                              
