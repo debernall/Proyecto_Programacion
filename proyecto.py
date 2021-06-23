@@ -328,7 +328,7 @@ class mundo:
                             speedv0=0 
                             
                     elif event.key==pygame.K_UP and disparo==False:                                                                 #Tecla izquierda rotación en sentido positivo
-                            speedv0=1
+                        speedv0=1
                    
                     elif event.key==pygame.K_DOWN and disparo==False:                                                               #Tecla derecha rotación en sentido negativo
                         speedv0=-1
