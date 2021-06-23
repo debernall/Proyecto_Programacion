@@ -109,7 +109,7 @@ def intro_game(): #Pantalla de intro
     screen.blit(intro_background,(0,0))
     crear_cuadro_de_texto(screen,screen.get_rect().centerx-300,220-50,600,100,'PARABOLIC',letra_titulos,green,blue,blue) 
     crear_cuadro_de_texto(screen,screen.get_rect().centerx-200,320-50,400,100,'SHOT',letra_titulos,green,blue,blue) 
-    sonidofondo=pygame.mixer.Sound("sonidofondo.mp3")
+    sonidofondo=pygame.mixer.Sound("sonidofondo.wav")
     
     play=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)                #Figuras de los botones jugar y salir
     exit=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
@@ -247,8 +247,8 @@ class mundo:
         cañon=pygame.image.load("cañon5.png")                                       #Imagen de cañon
         explosion=pygame.image.load("explosión.png")                                #imagen de la Explosón al disparar
         objetivo=pygame.image.load("objetivop.png")
-        sonidoexplosión=pygame.mixer.Sound("sonexp.mp3")
-        sonidofondo=pygame.mixer.Sound("sonidofondo0.mp3")
+        sonidoexplosión=pygame.mixer.Sound("sonexp.wav")
+        sonidofondo=pygame.mixer.Sound("sonidofondo0.wav")
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
         posplano=0,-1300
@@ -390,8 +390,8 @@ class mundo:
         cañon=pygame.image.load("cañon5.png")                                       #Imagen de cañon
         explosion=pygame.image.load("explosión.png")                                #imagen de la Explosón al disparar
         objetivo=pygame.image.load("objetivop.png")
-        sonidoexplosión=pygame.mixer.Sound("sonexp.mp3")
-        sonidofondo=pygame.mixer.Sound("sonidofondo1.mp3")
+        sonidoexplosión=pygame.mixer.Sound("sonexp.wav")
+        sonidofondo=pygame.mixer.Sound("sonidofondo1.wav")
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
         posplano=0,-1300
