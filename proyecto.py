@@ -135,7 +135,7 @@ def intro_game(): #Pantalla de intro
                 if play.collidepoint(pygame.mouse.get_pos()):                   #Si el click se hizo sobre el botón jugar, continuar con el juego
                     intro=False
                     sonidofondo.stop()
-                    mundo.main1(tierra)
+                    mundo.main(tierra)
                     
                 elif instructions.collidepoint(pygame.mouse.get_pos()):
                     intro=False
@@ -152,7 +152,7 @@ def intro_game(): #Pantalla de intro
         pygame.display.flip()
 
 
-def outro(titulo,estado,puntos):
+def outro(titulo,estado):
     pygame.init()
     game_over=True
     screen= pygame.display.set_mode((948,720))
@@ -162,7 +162,7 @@ def outro(titulo,estado,puntos):
     screen.blit(intro_background,(0,0))
 
     imagenTexto = letra_titulos.render(estado,True,blue )              #Genera la imagen con el texto                             
-    imagenTexto1 = letra_titulos.render("Acertaste "+puntos+" de  2",True,blue )
+    imagenTexto1 = letra_titulos.render("Acertaste "+"puntos"+" de  2",True,blue )
     
     rectanguloTexto1 = imagenTexto1.get_rect()
     rectanguloTexto1.centerx = screen.get_rect().centerx                         #Ubica el texto
@@ -193,7 +193,7 @@ def outro(titulo,estado,puntos):
 
                 if replay.collidepoint(pygame.mouse.get_pos()):                 #Si el click se hizo sobre el botón volver a  jugar, vuelve a la intro
                     game_over=False
-                    mundo.main1(tierra)
+                    mundo.main(tierra)
                 elif exit1.collidepoint(pygame.mouse.get_pos()):                #Si el click se hiz en salir...
                     pygame.quit()
                     quit()
@@ -234,150 +234,155 @@ class mundo:
         step_nuevo=(step[0]/(r),step[1]/(r))
         return step_nuevo
     
-    def main1(self):
-        #PROPIEDADES INICIALES PYGAME
-        pygame.init()
-        screen= pygame.display.set_mode((800,700))
-        clock=pygame.time.Clock()
-        #pygame.display.set_caption('JUEGO DE LANZAMIENTO')
+    # def main1(self):
+    #     #PROPIEDADES INICIALES PYGAME
+    #     pygame.init()
+    #     screen= pygame.display.set_mode((800,700))
+    #     clock=pygame.time.Clock()
+    #     #pygame.display.set_caption('JUEGO DE LANZAMIENTO')
         
-        #CARGA DE IMAGENES
-        plano = pygame.image.load("img/fondo0.jpg") 
-        bola=pygame.image.load("img/bolacañonpequeña.png")                              #Imagen de bala
-        cañon=pygame.image.load("img/cañon5.png")                                       #Imagen de cañon
-        explosion=pygame.image.load("img/explosión.png")                                #imagen de la Explosón al disparar
-        objetivo=pygame.image.load("img/objetivop.png")
-        sonidoexplosión=pygame.mixer.Sound("sound/sonexp.wav")
-        sonidofondo=pygame.mixer.Sound("sound/sonidofondo0.wav")
-        #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
-        posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
-        posplano=0,-1300
-        pos_canon=(336,286)
-        #pygame.display.flip()                                                       #Superpone las imagenes
-        running=True                                                                #Variable que mantiene activo el juego
-        posimg=400,350
-        distancia=((posobjetivo[0]-posimg[0])/10),-((posobjetivo[1]-posimg[1])/10)
-        pos_bola= -400,-350                                                              #Declaración de posición inicial de la bala
-        pos_expl=-400,-350                                                              #Posición de la explosión antes de disparar
-        step= 0,0 
-        sonidofondo.play()                                                                        #vector velocidad
-        angle=0                                                                     #Declaración de variable ángulo del cañon
-        speedangle=0 
-        n=0                                             #
-        v0=1                                                                       #Velocidad inicial
-        g=0
-        vi=0
-        speedv0=0
-        t=0  
-        t1=0                                                                       #Variable de tiempo
-        colision=False
-        disparo=False
-        pasar=0
-        puntos='0'
-        while(running):
-            ns=clock.tick(30)                                                       #Periodo de recarga de imagen
-            for event in pygame.event.get():            
-                if event.type == pygame.QUIT:                                       #Permite salir del juego
-                    pygame.quit()
-                    quit()
+    #     #CARGA DE IMAGENES
+    #     plano = pygame.image.load("img/fondo0.jpg") 
+    #     bola=pygame.image.load("img/bolacañonpequeña.png")                              #Imagen de bala
+    #     cañon=pygame.image.load("img/cañon5.png")                                       #Imagen de cañon
+    #     explosion=pygame.image.load("img/explosión.png")                                #imagen de la Explosón al disparar
+    #     objetivo=pygame.image.load("img/objetivop.png")
+    #     sonidoexplosión=pygame.mixer.Sound("sound/sonexp.wav")
+    #     sonidofondo=pygame.mixer.Sound("sound/sonidofondo0.wav")
+    #     #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
+    #     posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
+    #     posplano=0,-1300
+    #     pos_canon=(336,286)
+
+    #     running=True                                                                #Variable que mantiene activo el juego
+    #     posimg=400,350
+    #     distancia=((posobjetivo[0]-posimg[0])/10),-((posobjetivo[1]-posimg[1])/10)
+    #     pos_bola= -400,-350                                                              #Declaración de posición inicial de la bala
+    #     pos_expl=-400,-350                                                              #Posición de la explosión antes de disparar
+    #     step= 0,0 
+    #     sonidofondo.play()                                                                        #vector velocidad
+    #     angle=0                                                                     #Declaración de variable ángulo del cañon
+    #     speedangle=0 
+    #     n=0                                             #
+    #     v0=1                                                                       #Velocidad inicial
+    #     g=0
+    #     vi=0
+    #     speedv0=0
+    #     t=0  
+    #     t1=0                                                                       #Variable de tiempo
+    #     colision=False
+    #     disparo=False
+    #     pasar=0
+    #     puntos='0'
+    #     while(running):
+    #         ns=clock.tick(30)                                                       #Periodo de recarga de imagen
+    #         for event in pygame.event.get():            
+    #             if event.type == pygame.QUIT:                                       #Permite salir del juego
+    #                 pygame.quit()
+    #                 quit()
                 
                 
-                #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
-                elif event.type == pygame.KEYDOWN:                                  #Evento presionar tecla
-                    if event.key==pygame.K_SPACE:                                    #Tecla espacio 
-                        if colision==True:
-                            step=(0,0)
-                        elif disparo==False:
-                            v_x0=vi*np.cos(np.radians(angle))                            #Velocidad inicial en x
-                            v_y0=-vi*np.sin(np.radians(angle))                           #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)           
-                            step=v_x0,v_y0                                               #Tras presionar la tecla espacio 
-                            n=0.0303
-                            #n=10/ns
-                            pos_bola=(400,350)  
-                            pos_expl=(450,250)                                       #posición de la explosión al disparar
-                            disparo=True
-                            sonidoexplosión.play()
-                    elif event.key==pygame.K_UP and disparo==False:                  #Tecla izquierda rotación en sentido positivo
-                        speedv0=1
+    #             #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
+    #             elif event.type == pygame.KEYDOWN:                                  #Evento presionar tecla
+    #                 if event.key==pygame.K_SPACE:                                    #Tecla espacio 
+    #                     if colision==True:
+    #                         step=(0,0)
+    #                     elif disparo==False:
+    #                         v_x0=vi*np.cos(np.radians(angle))                            #Velocidad inicial en x
+    #                         v_y0=-vi*np.sin(np.radians(angle))                           #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)           
+    #                         step=v_x0,v_y0                                               #Tras presionar la tecla espacio 
+    #                         n=0.0303
+    #                         #n=10/ns
+    #                         pos_bola=(400,350)  
+    #                         pos_expl=(450,250)                                       #posición de la explosión al disparar
+    #                         disparo=True
+    #                         sonidoexplosión.play()
+    #                 elif event.key==pygame.K_UP and disparo==False:                  #Tecla izquierda rotación en sentido positivo
+    #                     speedv0=1
                    
-                    elif event.key==pygame.K_DOWN and disparo==False:                #Tecla derecha rotación en sentido negativo
-                        speedv0=-1
+    #                 elif event.key==pygame.K_DOWN and disparo==False:                #Tecla derecha rotación en sentido negativo
+    #                     speedv0=-1
                        
-                    elif event.key==pygame.K_LEFT and disparo==False:                #Tecla izquierda rotación en sentido positivo
-                        speedangle=1
-                    elif event.key==pygame.K_RIGHT and disparo==False:               #Tecla derecha rotación en sentido negativo
-                        speedangle=-1
+    #                 elif event.key==pygame.K_LEFT and disparo==False:                #Tecla izquierda rotación en sentido positivo
+    #                     speedangle=1
                     
-                    elif event.key==pygame.K_a and disparo==True:               
-                        pasar=1
+    #                 elif event.key==pygame.K_RIGHT and disparo==False:               #Tecla derecha rotación en sentido negativo
+    #                     speedangle=-1
                     
-                    elif event.key==pygame.K_ESCAPE:                                 #Tecla escape sale del juego
-                        running = False
-                        sonidofondo.stop()
-                        outro('FIN DEL JUEGO','FIN DEL JUEGO','0')        
-                elif event.type == pygame.KEYUP:                                    #Eventos dejar de presionar tecla
+    #                 elif event.key==pygame.K_a and disparo==True:               
+    #                     pasar=1
+                    
+    #                 elif event.key==pygame.K_ESCAPE:                                 #Tecla escape sale del juego
+    #                     running = False
+    #                     sonidofondo.stop()
+    #                     outro('FIN DEL JUEGO','FIN DEL JUEGO','0') 
+                        
+    #             elif event.type == pygame.KEYUP:                                    #Eventos dejar de presionar tecla
                    
-                    if event.key==pygame.K_UP and disparo==False:                    #Tecla izquierda rotación en sentido positivo
-                        speedv0=0
-                    elif event.key==pygame.K_DOWN and disparo==False:                #Tecla derecha rotación en sentido negativo
-                        speedv0=0    
-                    elif event.key==pygame.K_LEFT and disparo==False:                #Dejar de presionar tecla izquierda detiene la rotación
-                        speedangle=0
-                    elif event.key==pygame.K_RIGHT and disparo==False:               #Dejar de presionar tecla derecha detiene la rotación
-                        speedangle=0
-            #ROTACION DEL CAÑON
-            angle=angle+speedangle                                                  #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
-            v0=v0 + speedv0
-            vi=(v0*10)/32
-            image2_rotated , image2_rotated_rect = self.rotate(cañon,angle) 
-            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo),(explosion,pos_expl),(bola,pos_bola),(image2_rotated,pos_canon)))
-            #CALCULA NUEVAS POSICIONES
-            t=t+n
-            t1=t1+n
-            posplano=self.nueva_pos(posplano,step,t,g) 
-            posobjetivo=self.nueva_pos(posobjetivo,step,t,g)       
-            pos_expl=self.nueva_pos(pos_expl,step,t,g)
-            pos_canon=self.nueva_pos(pos_canon,step,t,g)
+    #                 if event.key==pygame.K_UP and disparo==False:                    #Tecla izquierda rotación en sentido positivo
+    #                     speedv0=0
+    #                 elif event.key==pygame.K_DOWN and disparo==False:                #Tecla derecha rotación en sentido negativo
+    #                     speedv0=0    
+    #                 elif event.key==pygame.K_LEFT and disparo==False:                #Dejar de presionar tecla izquierda detiene la rotación
+    #                     speedangle=0
+    #                 elif event.key==pygame.K_RIGHT and disparo==False:               #Dejar de presionar tecla derecha detiene la rotación
+    #                     speedangle=0
+    #         #ROTACION DEL CAÑON
+    #         angle=angle+speedangle                                                  #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
+    #         v0=v0 + speedv0
+    #         vi=(v0*10)/32
+    #         image2_rotated , image2_rotated_rect = self.rotate(cañon,angle) 
             
             
-            #OBTENCION DE COLISION OBJETIVO-BOLA
-            objetivorect=objetivo.get_rect(center=posobjetivo)
-            bolarect=bola.get_rect(center=pos_bola)
-            if bolarect.colliderect(objetivorect)==True:
-                step=(0,0)
-                t=0
-                colision=True
-                puntos='1'
-                crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro!, presiona "A" para continiar',letra_letreros,None,green,None)
-                if pasar ==1: 
+    #         self.dibujar_img(((plano,posplano),(objetivo,posobjetivo),(explosion,pos_expl),(bola,pos_bola),(image2_rotated,pos_canon)))
+            
+    #         #CALCULA NUEVAS POSICIONES
+    #         t=t+n
+    #         t1=t1+n
+    #         posplano=self.nueva_pos(posplano,step,t,g) 
+    #         posobjetivo=self.nueva_pos(posobjetivo,step,t,g)       
+    #         pos_expl=self.nueva_pos(pos_expl,step,t,g)
+    #         pos_canon=self.nueva_pos(pos_canon,step,t,g)
+            
+            
+    #         #OBTENCION DE COLISION OBJETIVO-BOLA
+    #         objetivorect=objetivo.get_rect(center=posobjetivo)
+    #         bolarect=bola.get_rect(center=pos_bola)
+    #         if bolarect.colliderect(objetivorect)==True:
+    #             step=(0,0)
+    #             t=0
+    #             colision=True
+    #             puntos='1'
+    #             crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro!, presiona "A" para continiar',letra_letreros,None,green,None)
+    #             if pasar ==1: 
                     
                     
-                 sonidofondo.stop()
-                 self.main(puntos)
+    #              sonidofondo.stop()
+    #              self.main(puntos)
             
-            #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
-            if posplano[0]<-3440 or posplano[0]>= 400 :
-                crear_cuadro_de_texto(screen,250,350,350,50,'Fallaste, presiona "A" para continiar',letra_letreros,None,green,None)
-                step=(0,0)
-                t=0
-                puntos='0'
-                if pasar ==1: 
-                 sonidofondo.stop()
-                 self.main(puntos)
+    #         #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
+    #         if posplano[0]<-3440 or posplano[0]>= 400 :
+    #             crear_cuadro_de_texto(screen,250,350,350,50,'Fallaste, presiona "A" para continiar',letra_letreros,None,green,None)
+    #             step=(0,0)
+    #             t=0
+    #             puntos='0'
+    #             if pasar ==1: 
+    #              sonidofondo.stop()
+    #              self.main(puntos)
                 
     
             
                     
                
-            #CUADROS DE TEXTO
-            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,green,green)   #Agrega un cuadro de texto con el angulo.
-            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
+    #         #CUADROS DE TEXTO
+    #         crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,green,green)   #Agrega un cuadro de texto con el angulo.
+    #         crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,green)
+    #         crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,green)
+    #         crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
                   
-            pygame.display.flip()
+    #         pygame.display.flip()
             
-    def main(self,puntos):
+    def main(self):                      ################puntos
         #PROPIEDADES INICIALES PYGAME
         pygame.init()
         screen= pygame.display.set_mode((800,700))
@@ -385,8 +390,7 @@ class mundo:
         #pygame.display.set_caption('JUEGO DE LANZAMIENTO')
         
         #CARGA DE IMAGENES
-        plano = pygame.image.load("img/enorme.jpg")                                     #Imagen de fondo
-        #planorect=plano.get_rect()
+        plano = pygame.image.load("img/enorme.jpg")         #####imagen fondo                               #Imagen de fondo
         bola=pygame.image.load("img/bolacañonpequeña.png")                              #Imagen de bala
         cañon=pygame.image.load("img/cañon5.png")                                       #Imagen de cañon
         explosion=pygame.image.load("img/explosión.png")                                #imagen de la Explosón al disparar
@@ -397,8 +401,7 @@ class mundo:
         posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
         posplano=0,-1300
         pos_canon=(336,286)
-        
-        #pygame.display.flip()                                                       #Superpone las imagenes
+
         running=True                                                                #Variable que mantiene activo el juego
         posimg=400,350
         distancia=((posobjetivo[0]-posimg[0])/10),-((posobjetivo[1]-posimg[1])/10)
@@ -407,19 +410,19 @@ class mundo:
         step= 0,0 
         sonidofondo.play()                                                                        #vector velocidad
         angle=0                                                                     #Declaración de variable ángulo del cañon
-        speedangle=0                                                                #Variable que almacena la rotación del cañon
-                                                    
+        speedangle=0                                                                #Variable que almacena la rotación del cañon                                         
         n=0                                             #
         v0=0                                                                        #Velocidad inicial
-        g=3.06
+        g=3.06                                      ############ g
         vi=0
         speedv0=0
         t=0  
         t1=0                                                                       #Variable de tiempo
         colision=False
         disparo=False
-        fact_perdida_choque=1.4
-        
+        fact_perdida_choque=1.4                     ##########   perdida
+        #pasar=0
+        #puntos='0'    
         while(running):
             ns=clock.tick(30)                                                       #Periodo de recarga de imagen
             for event in pygame.event.get():            
@@ -451,8 +454,13 @@ class mundo:
                        
                     elif event.key==pygame.K_LEFT and disparo==False:                #Tecla izquierda rotación en sentido positivo
                         speedangle=1
+                    
                     elif event.key==pygame.K_RIGHT and disparo==False:               #Tecla derecha rotación en sentido negativo
                         speedangle=-1
+                    
+                    # elif event.key==pygame.K_a and disparo==True:               
+                    #     pasar=1
+                        
                     elif event.key==pygame.K_ESCAPE:                                 #Tecla escape sale del juego
                         running = False
                         sonidofondo.stop()
@@ -496,9 +504,9 @@ class mundo:
                 step=(0,0)
                 t=0
                 colision=True
-                puntos='2'
+                #puntos='2'                          ######corregir esto usar int
                 sonidofondo.stop()
-                outro('TIRO ACERTADO','Felicitaciones',puntos)
+                outro('TIRO ACERTADO','Felicitaciones')
             
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
             if posplano[0]<-3440 or posplano[0]>= 400 :
@@ -510,7 +518,7 @@ class mundo:
                 if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
                     step=(0,0)
                     sonidofondo.stop()
-                    outro('FIN DEL JUEGO','Por poco amigo',puntos)
+                    outro('FIN DEL JUEGO','Por poco amigo')
                     
                 else:
                     t=0
@@ -522,7 +530,7 @@ class mundo:
             crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,green)
             crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,green)
             crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
-            print(puntos)      
+            #print(puntos)      
             pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
     
      
