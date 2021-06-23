@@ -173,7 +173,7 @@ def outro(titulo,estado):                                                       
     screen.blit(intro_background,(0,0))
 
     imagenTexto = letra_titulos.render(estado,True,blue )                                                                           #Genera la imagen con el texto                             
-    imagenTexto1 = letra_titulos.render("Acertaste "+str(puntos)+" de  2",True,blue )
+    imagenTexto1 = letra_titulos.render(str(puntos)+" Puntos --> "+"Nivel "+str(nivel),True,blue )
     
     rectanguloTexto1 = imagenTexto1.get_rect()
     rectanguloTexto1.centerx = screen.get_rect().centerx                                                                            #Ubica el texto
@@ -183,10 +183,10 @@ def outro(titulo,estado):                                                       
     rectanguloTexto.centery = 320
     screen.blit(imagenTexto, rectanguloTexto)                                                                                       #Pone la imagen con el texto en el programa
     screen.blit(imagenTexto1, rectanguloTexto1)
-    
-    siguiente=pygame.Rect(screen.get_rect().centerx-350/2,360,350,50.)    
-    re_intro=pygame.Rect(screen.get_rect().centerx-350/2,430,350,50.)
-    replay=pygame.Rect(screen.get_rect().centerx-350/2,500,350,50)                                                                  #Figuras de los botones del outro
+
+    replay=pygame.Rect(screen.get_rect().centerx-350/2,360,350,50)                                                                  #Figuras de los botones del outro    
+    siguiente=pygame.Rect(screen.get_rect().centerx-350/2,430,350,50.)    
+    re_intro=pygame.Rect(screen.get_rect().centerx-350/2,500,350,50.)
     credits=pygame.Rect(screen.get_rect().centerx-350/2,570,350,50)
     exit1=pygame.Rect(screen.get_rect().centerx-350/2,640,350,50)
 
@@ -239,6 +239,7 @@ class mundo:
         self.mplano=parametros[1]
         self.son_mundo=parametros[2]       
         self.perdida=parametros[3]
+        self.planet=parametros[4]
     
     def rotate(self,surface, angle):
         rotated_surface=pygame.transform.rotozoom(surface,angle,1)
@@ -270,6 +271,7 @@ class mundo:
         pygame.init()
         screen= pygame.display.set_mode((800,700))
         clock=pygame.time.Clock()
+        pygame.display.set_caption(self.planet)
         
         #CARGA DE IMAGENES
         plano = pygame.image.load(self.mplano)                                                                                      #Imagen de fondo
@@ -394,7 +396,6 @@ class mundo:
                 colision=True
                 sonidofondo.stop()
                 puntos+=1               
-                print(puntos)
 #                crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro!',letra_letreros,None,green,None)
                 return True                                                                                                         #   AQUI HAY UNA SALIDA SI COLISIONA SE GANA
             
@@ -423,8 +424,9 @@ class mundo:
             crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,green,green)                       #Agrega un cuadro de texto con el angulo.
             crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,green)
             crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,700,0,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,700,50,150,50,str(puntos),letra_letreros,None,green,green)     
+            crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,green,green)  
+            crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,green,green)
+            crear_cuadro_de_texto(screen,700,100,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
 
@@ -432,12 +434,14 @@ class mundo:
 p_space={'g':0,
           'im_fondo': "img/fondo0.jpg",
           'son_mundo':"sound/sonidofondo0.wav",
-          'factor_perdida':0}
+          'factor_perdida':0,
+          'nombre_planeta':'ESPACIO'}
 
 p_tierra={'g':3.06,
           'im_fondo': "img/enorme.jpg",
           'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':1.4}
+          'factor_perdida':1.4,
+          'nombre_planeta':'TIERRA'}
 
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
@@ -451,17 +455,19 @@ while jugar:
         while jugar_outro:
             if nivel==0:
                 next_level=mundo.main(space)
-                print(next_level)
                 
             elif nivel==1:
                 next_level=mundo.main(tierra)
-                print(next_level)
                 
             else:
+                next_level=False
                 print("ese era el ultimo nivel")
                 
-            outro('titulo','estado')
-            
+                
+            if next_level==True:
+                outro('FELICITACIONES','FELICITACIONES')
+            elif next_level==False:
+                outro('FALLASTE','INTENTALO DE NUEVO')
             
             
             
