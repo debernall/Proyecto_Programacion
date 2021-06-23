@@ -211,17 +211,21 @@ def outro(titulo,estado):
 #################################     CLASE MUNDO     ######################################
 class mundo:
     
-    def __init__(self):
-        self.no_hago_nada=0
+    def __init__(self,parametros):
+        #self.puntos=puntos
+        self.g=parametros[0]
+        self.mplano=parametros[1]
+        self.son_mundo=parametros[2]       
+        self.perdida=parametros[3]
     
     def rotate(self,surface, angle):
         rotated_surface=pygame.transform.rotozoom(surface,angle,1)
         rotated_rect = rotated_surface.get_rect(center=(400,350))
         return rotated_surface,rotated_rect
     
-    def nueva_pos(self,pos_inicial,v,t,g):
+    def nueva_pos(self,pos_inicial,v,t):
         pos_final=()
-        pos_final=pos_inicial[0]-v[0],pos_inicial[1]-v[1]-((g/2)*(t**2))
+        pos_final=pos_inicial[0]-v[0],pos_inicial[1]-v[1]-((self.g/2)*(t**2))
         return pos_final
     
     def dibujar_img(self,list_img):
@@ -390,13 +394,13 @@ class mundo:
         #pygame.display.set_caption('JUEGO DE LANZAMIENTO')
         
         #CARGA DE IMAGENES
-        plano = pygame.image.load("img/enorme.jpg")         #####imagen fondo                               #Imagen de fondo
+        plano = pygame.image.load(self.mplano)         #####imagen fondo                               #Imagen de fondo
         bola=pygame.image.load("img/bolacañonpequeña.png")                              #Imagen de bala
         cañon=pygame.image.load("img/cañon5.png")                                       #Imagen de cañon
         explosion=pygame.image.load("img/explosión.png")                                #imagen de la Explosón al disparar
         objetivo=pygame.image.load("img/objetivop.png")
         sonidoexplosión=pygame.mixer.Sound("sound/sonexp.wav")
-        sonidofondo=pygame.mixer.Sound("sound/sonidofondo1.wav")
+        sonidofondo=pygame.mixer.Sound(self.son_mundo)
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         posobjetivo= random.randrange(400,3840), random.randrange(-1300,350)
         posplano=0,-1300
@@ -413,14 +417,14 @@ class mundo:
         speedangle=0                                                                #Variable que almacena la rotación del cañon                                         
         n=0                                             #
         v0=0                                                                        #Velocidad inicial
-        g=3.06                                      ############ g
+        #g=3.06                                      ############ g
         vi=0
         speedv0=0
         t=0  
         t1=0                                                                       #Variable de tiempo
         colision=False
         disparo=False
-        fact_perdida_choque=1.4                     ##########   perdida
+        #fact_perdida_choque=1.4                     ##########   perdida
         #pasar=0
         #puntos='0'    
         while(running):
@@ -491,10 +495,10 @@ class mundo:
             #CALCULA NUEVAS POSICIONES
             t=t+n
             t1=t1+n
-            posplano=self.nueva_pos(posplano,step,t,g) 
-            posobjetivo=self.nueva_pos(posobjetivo,step,t,g)       
-            pos_expl=self.nueva_pos(pos_expl,step,t,g)
-            pos_canon=self.nueva_pos(pos_canon,step,t,g)
+            posplano=self.nueva_pos(posplano,step,t) 
+            posobjetivo=self.nueva_pos(posobjetivo,step,t)       
+            pos_expl=self.nueva_pos(pos_expl,step,t)
+            pos_canon=self.nueva_pos(pos_canon,step,t)
             
             
             #OBTENCION DE COLISION OBJETIVO-BOLA
@@ -522,7 +526,7 @@ class mundo:
                     
                 else:
                     t=0
-                    step=self.f_rebote(step,fact_perdida_choque)
+                    step=self.f_rebote(step,self.perdida)
                     
                
             #CUADROS DE TEXTO
@@ -534,7 +538,18 @@ class mundo:
             pygame.display.flip()                                                   #Hace visibles las imagenes cargadas
     
      
+p_space={'g':0,
+          'im_fondo': "img/fondo0.jpg",
+          'son_mundo':"sound/sonidofondo0.wav",
+          'factor_perdida':0}
 
+p_tierra={'g':3.06,
+          'im_fondo': "img/enorme.jpg",
+          'son_mundo':"sound/sonidofondo1.wav",
+          'factor_perdida':1.4}
 
-tierra=mundo()           
+space=mundo(list(p_space.values()))
+tierra=mundo(list(p_tierra.values()))
+
+#tierra=mundo()           
 intro_game()        #Ahora desde la función intro_game se llama la función main y desde main se puede llamar el outro                                                              
