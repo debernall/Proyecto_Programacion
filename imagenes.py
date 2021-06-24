@@ -23,7 +23,7 @@ def rotarcanon(angle):
     cañon[0:0+filas, 0:0+columnas ] = base
 
     #cv2.imwrite('adsasd',base)
-    cv2.imwrite('Salidasaa.png',base)
+    cv2.imwrite('Salidasa.png',base)
     return
 
-rotarcanon(9)    
+rotarcanon(90)    
