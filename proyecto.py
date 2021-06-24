@@ -18,7 +18,7 @@ letra_outro=pygame.font.Font('Starjedi.ttf', 75)
 letra_letreros=pygame.font.SysFont('arial_narrow_7.ttf',35)    
 letra_instrucciones= pygame.font.Font('arial_narrow_7.ttf',35)
 lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
-lista_imagenes_inst=("img/cañon5.png",0,'img/teclas_inst.png','img/ecuaciones.png')
+lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png')
 puntos=0
 nivel=0
 next_level=False
@@ -277,7 +277,7 @@ class mundo:
         #CARGA DE IMAGENES
         plano = pygame.image.load(self.mplano)                                                                                      #Imagen de fondo
         bola=pygame.image.load("img/bolacañonpequeña.png")                                                                          #Imagen de bala
-        cañon=pygame.image.load("img/cañon5.png")                                                                                   #Imagen de cañon
+        cañon=pygame.image.load("img/cañon7.png")                                                                                   #Imagen de cañon
         explosion=pygame.image.load("img/explosión.png")                                                                            #imagen de la Explosón al disparar
         objetivo=pygame.image.load("img/objetivop.png")
         sonidoexplosión=pygame.mixer.Sound("sound/sonexp.wav")
@@ -375,9 +375,10 @@ class mundo:
                 
             vi=(v0*10)/32
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)                                                         #Rota el cañon
-            
+            cc = (pos_canon[0]+64-int(image2_rotated.get_width()//2),pos_canon[1]+64-int(image2_rotated.get_height()//2))
+
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
-            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo),(explosion,pos_expl),(bola,pos_bola),(image2_rotated,pos_canon)))        
+            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo),(explosion,pos_expl),(bola,pos_bola),(image2_rotated,cc)))        
             
             #CALCULA NUEVAS POSICIONES
             t=t+n
