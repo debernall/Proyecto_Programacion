@@ -8,14 +8,15 @@ import codecs
 ###############################      DECLARACIONES INICIALES        ##################################
 yellow=(245, 245, 66)
 green=(22,234,72)
-blue=(2,12,207)
+blue=(2,50,207)
 black=(0,0,0)
 white=(255,255,255)
 pygame.init()
-letra_botones = pygame.font.SysFont('ravie', 30) 
-letra_titulos=pygame.font.SysFont('ravie', 80)  
-letra_letreros=pygame.font.SysFont('arial',32)    
-letra_instrucciones= pygame.font.SysFont('comicsansms',30)
+letra_botones = pygame.font.Font('Starjedi.ttf', 30) 
+letra_titulos=pygame.font.Font('Starjedi.ttf', 100)  
+letra_outro=pygame.font.Font('Starjedi.ttf', 75)
+letra_letreros=pygame.font.SysFont('arial_narrow_7.ttf',35)    
+letra_instrucciones= pygame.font.Font('arial_narrow_7.ttf',35)
 lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
 lista_imagenes_inst=("img/cañon5.png",0,'img/teclas_inst.png','img/ecuaciones.png')
 puntos=0
@@ -77,7 +78,7 @@ def instrucciones_juego(numero_instruccion):
 
 
     for i in range(len(c_texto)):
-        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-400,100+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones,None,green,None)
+        crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-400,100+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones,black,green,None)
 
     crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-30,50,60,40,str(numero_instruccion+1)+'/4',letra_instrucciones,None,green,green)
                                                                                                                                     #Crea el cuadro que dice el numero de instruccion
@@ -107,7 +108,7 @@ def instrucciones_juego(numero_instruccion):
                         inst=False
                         instrucciones_juego(numero_instruccion+1)
                         
-        crear_boton(screen_instrucciones,boton_volver_intro,'Volver a inicio',letra_botones ,green,yellow,blue,blue)
+        crear_boton(screen_instrucciones,boton_volver_intro,'volver a inicio',letra_botones ,green,yellow,blue,blue)
         crear_boton(screen_instrucciones,boton_anterior,'Anterior',letra_botones ,green,yellow,blue,blue)   
         crear_boton(screen_instrucciones,boton_siguiente,'Siguiente',letra_botones ,green,yellow,blue,blue) 
         pygame.display.flip()
@@ -121,8 +122,8 @@ def intro_game():                                                               
     
     intro_background = pygame.image.load("img/fondo_intro.jpg") 
     screen.blit(intro_background,(0,0))
-    crear_cuadro_de_texto(screen,screen.get_rect().centerx-300,220-50,600,100,'PARABOLIC',letra_titulos,green,blue,blue) 
-    crear_cuadro_de_texto(screen,screen.get_rect().centerx-200,320-50,400,100,'SHOT',letra_titulos,green,blue,blue) 
+    crear_cuadro_de_texto(screen,screen.get_rect().centerx-300,220-50,600,100,'ParaboliC',letra_titulos,None,blue,None) 
+    crear_cuadro_de_texto(screen,screen.get_rect().centerx-200,320-50,400,100,'ShoT',letra_titulos,None,blue,None) 
     sonidofondo=pygame.mixer.Sound("sound/sonidofondo.wav")
     
     play=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)                                                                    #Figuras de los botones jugar y salir
@@ -157,7 +158,7 @@ def intro_game():                                                               
                 
         crear_boton(screen,play,'Jugar',letra_botones ,green,yellow,blue,blue)                                                      #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
         crear_boton(screen,exit,'Salir',letra_botones ,green,yellow,blue,blue)
-        crear_boton(screen,instructions,'Instrucciones',letra_botones ,green,yellow,blue,blue)
+        crear_boton(screen,instructions,'instrucciones',letra_botones ,green,yellow,blue,blue)
         pygame.display.flip()   
     
 def outro(titulo,estado):                                                                                                           # OUTRO MANTIENE AL JUGADOR EN UN NIVEL HASTA QUE PASE
@@ -172,23 +173,23 @@ def outro(titulo,estado):                                                       
     intro_background = pygame.image.load("img/fondo_intro.jpg") 
     screen.blit(intro_background,(0,0))
 
-    imagenTexto = letra_titulos.render(estado,True,blue )                                                                           #Genera la imagen con el texto                             
-    imagenTexto1 = letra_titulos.render(str(puntos)+" Puntos --> "+"Nivel "+str(nivel),True,blue )
+    imagenTexto = letra_outro.render(estado,True,blue )                                                                           #Genera la imagen con el texto                             
+    imagenTexto1 = letra_outro.render(str(puntos)+" puntos: "+"nivel "+str(nivel),True,blue )
     
     rectanguloTexto1 = imagenTexto1.get_rect()
     rectanguloTexto1.centerx = screen.get_rect().centerx                                                                            #Ubica el texto
-    rectanguloTexto1.centery = 200
+    rectanguloTexto1.centery = 150
     rectanguloTexto = imagenTexto.get_rect()                 
     rectanguloTexto.centerx = screen.get_rect().centerx                                                                             #Ubica el texto
-    rectanguloTexto.centery = 320
+    rectanguloTexto.centery = 270
     screen.blit(imagenTexto, rectanguloTexto)                                                                                       #Pone la imagen con el texto en el programa
     screen.blit(imagenTexto1, rectanguloTexto1)
 
-    replay=pygame.Rect(screen.get_rect().centerx-350/2,360,350,50)                                                                  #Figuras de los botones del outro    
-    siguiente=pygame.Rect(screen.get_rect().centerx-350/2,430,350,50.)    
-    re_intro=pygame.Rect(screen.get_rect().centerx-350/2,500,350,50.)
-    credits=pygame.Rect(screen.get_rect().centerx-350/2,570,350,50)
-    exit1=pygame.Rect(screen.get_rect().centerx-350/2,640,350,50)
+    replay=pygame.Rect(screen.get_rect().centerx-350/2,370,350,50)                                                                  #Figuras de los botones del outro    
+    siguiente=pygame.Rect(screen.get_rect().centerx-350/2,440,350,50.)    
+    re_intro=pygame.Rect(screen.get_rect().centerx-350/2,510,350,50.)
+    credits=pygame.Rect(screen.get_rect().centerx-350/2,580,350,50)
+    exit1=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
 
     while(game_over):                           
         for event in pygame.event.get():            
@@ -224,10 +225,10 @@ def outro(titulo,estado):                                                       
                     intro_game()
         
         crear_boton(screen,siguiente,'Siguiente nivel',letra_botones ,green,yellow,blue,blue)
-        crear_boton(screen,replay,'Volver a jugar',letra_botones ,green,yellow,blue,blue)                                           #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+        crear_boton(screen,replay,'volver a jugar',letra_botones ,green,yellow,blue,blue)                                           #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
         crear_boton(screen,exit1,'Salir',letra_botones ,green,yellow,blue,blue)
         crear_boton(screen,credits,'Créditos',letra_botones ,green,yellow,blue,blue)
-        crear_boton(screen,re_intro,"Volver a inicio",letra_botones,green,yellow,blue,blue)
+        crear_boton(screen,re_intro,"volver a inicio",letra_botones,green,yellow,blue,blue)
         pygame.display.flip()
 
 
@@ -421,12 +422,12 @@ class mundo:
                     step=self.f_rebote(step,self.perdida)
                
             #CUADROS DE TEXTO
-            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,green,green)                       #Agrega un cuadro de texto con el angulo.
-            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,green,green)  
-            crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,green,green)
-            crear_cuadro_de_texto(screen,700,100,150,50,str(int(t1))+'s',letra_letreros,None,green,green)
+            crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,green,None)                       #Agrega un cuadro de texto con el angulo.
+            crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,None)
+            crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,None)
+            crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,green,None)  
+            crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,green,None)
+            crear_cuadro_de_texto(screen,700,100,150,50,str(int(t1))+'s',letra_letreros,None,green,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
 
@@ -465,9 +466,9 @@ while jugar:
                 
                 
             if next_level==True:
-                outro('FELICITACIONES','FELICITACIONES')
+                outro('felicitaciones','felicitaciones')
             elif next_level==False:
-                outro('FALLASTE','INTENTALO DE NUEVO')
+                outro('fallaste','intentalo de nuevo')
             
             
             
