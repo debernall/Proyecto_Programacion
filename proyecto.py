@@ -279,7 +279,7 @@ class mundo:
         bola=pygame.image.load("img/bolacañonpequeña.png")                                                                          #Imagen de bala
         cañon=pygame.image.load(lista_imagenes_inst[0])                                                                             #Imagen de cañon
         base=pygame.image.load(lista_imagenes_inst[4])
-        explosion=pygame.image.load("img/explosión.png")                                                                            #imagen de la Explosón al disparar
+        explosion=pygame.image.load("img/explosion1.png")                                                                            #imagen de la Explosón al disparar
         objetivo=pygame.image.load("img/objetivop.png")
         sonidoexplosión=pygame.mixer.Sound("sound/sonexp.wav")
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
@@ -306,7 +306,7 @@ class mundo:
         t1=0                                                                                                                        #Variable de tiempo
         colision=False
         disparo=False
-        
+        image_alpha=254
         while(running):
             ns=clock.tick(30)                                                                                                       #Periodo de recarga de imagen
             for event in pygame.event.get():            
@@ -373,14 +373,25 @@ class mundo:
             v0=v0 + speedv0
             if v0<=0:
                 v0=0
-                
+            
+            
+            
+            
             vi=(v0*10)/32
-            image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)                                                         #Rota el cañon
+            image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)
+            explosion_rotated , explosion_rotated_rect = self.rotate(explosion,angle)                                                         #Rota el cañon
             cc = (pos_canon[0]+71-int(image2_rotated.get_width()//2),pos_canon[1]+71-int(image2_rotated.get_height()//2))
+            cd = (pos_expl[0]-40-int(explosion_rotated.get_width()//2),pos_expl[1]+100-int(explosion_rotated.get_height()//2))
             pos_base=(pos_canon[0]-30,pos_canon[1]-30)
             
+            fade_frame_number=60
+            if image_alpha>0 and disparo==True:
+                image_alpha-=8
+                
+            explosion_rotated.set_alpha(image_alpha)
+            
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
-            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo),(explosion,pos_expl),(bola,pos_bola),(image2_rotated,cc),(base,pos_base)))        
+            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo),(explosion_rotated,cd),(bola,pos_bola),(image2_rotated,cc),(base,pos_base)))        
             
             #CALCULA NUEVAS POSICIONES
             t=t+n
