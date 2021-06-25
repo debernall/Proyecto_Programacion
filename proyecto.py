@@ -287,7 +287,7 @@ class mundo:
         x0,y0=400,350
         xf,yf=3440,1653
         posobjetivo= random.randrange(200,xf-50), random.randrange(200,yf-50)
-        xobj, yobj = 200,200
+        xobj,yobj = posobjetivo[0],posobjetivo[1]
         posobjetivo=(x0+xobj,y0-yobj)
         posplano=0,-1300
         pos_canon=(336,286)
@@ -359,11 +359,11 @@ class mundo:
                         return True
    
                     elif event.key==pygame.K_a and gameover==True:
-                        return False
+                        return True
                         
                     elif event.key==pygame.K_s and colision==True:
                         puntos+=1
-                        return False
+                        return True
                     
                     elif event.key==pygame.K_ESCAPE:                                                                                #Tecla escape sale del juego
                         running = False
@@ -426,7 +426,7 @@ class mundo:
             
             t=t+n
             
-            if r<60:
+            if r<50:
                 step=(0,0)
                 t=0
                 colision=True
