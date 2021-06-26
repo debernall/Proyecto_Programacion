@@ -248,7 +248,8 @@ class mundo:
                 self.lista.append(pos_inicial[1])
                 self.lista1.append(t)
         pos_final=()
-        pos_final=pos_inicial[0]-v[0]*(0.03317*self.escala),pos_inicial[1]-(v[1]*(0.03317*self.escala))-(0.5*((self.g*(0.03317*self.escala))*((t*(0.03317*self.escala)))))
+        pos_final=pos_inicial[0]-v[0]*(0.03317*self.escala),pos_inicial[1]-(v[1]*(0.03317*self.escala))-(0.5*self.g*t*0.022)
+#        print(self.g)
         return pos_final
     
     def dibujar_img(self,list_img):
@@ -306,7 +307,7 @@ class mundo:
         vi=0
         speedv0=0
         t=0  
-       # t1=0                                                                                                                        #Variable de tiempo
+        t1=0                                                                                                                        #Variable de tiempo
        # t2=0
         #r1=60
         colision=False
@@ -337,9 +338,6 @@ class mundo:
                             disparo=True
                             sonidoexplosión.play()
                             speedv0=0 
-                            #t4=(2*vi*np.sin(np.radians(angle)))/9.8
-                            #print(vi,t4)
-                            #t4=np.array()
                             
                     elif event.key==pygame.K_UP and disparo==False:                                                                 #Tecla izquierda rotación en sentido positivo
                         speedv0=1
@@ -425,6 +423,7 @@ class mundo:
             ######################################################################################################################
             
             t=t+n
+            t1+=n
             
             if r<50:
                 step=(0,0)
@@ -485,19 +484,14 @@ class mundo:
                     t=0
                     step=self.f_rebote(step,self.perdida)
             
-            
-
-           
-            
             #CUADROS DE TEXTO
             crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,green,None)                       #Agrega un cuadro de texto con el angulo.
             crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,None)
             crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,None)
             crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,green,None)  
             crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,green,None)
-            crear_cuadro_de_texto(screen,700,100,150,50,str(int(t*0.03317))+'s',letra_letreros,None,green,None)
+            crear_cuadro_de_texto(screen,700,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,green,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
-
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
 p_space={'g':0,
@@ -519,7 +513,7 @@ tierra=mundo(list(p_tierra.values()))
 ###############################         EJECUCION DEL JUEGO         ##################################     
 jugar=True                                                           
 jugar_outro=True
-jugar=intro_game()
+Dojugar=intro_game()
 while jugar:
         
         nivel=0
