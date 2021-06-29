@@ -12,12 +12,12 @@ blue=(2,50,207)
 black=(0,0,0)
 white=(255,255,255)
 pygame.init()
-letra_botones = pygame.font.Font('Starjedi.ttf', 30) 
-letra_titulos=pygame.font.Font('Starjedi.ttf', 100)  
-letra_outro=pygame.font.Font('Starjedi.ttf', 75)
-letra_letreros=pygame.font.SysFont('arial_narrow_7.ttf',35)    
-letra_instrucciones= pygame.font.Font('arial_narrow_7.ttf',35)
-lista_instrucciones=('instruccion1.txt','instruccion2.txt','instruccion3.txt','instruccion4.txt')
+letra_botones = pygame.font.Font('Fonts/Starjedi.ttf', 30) 
+letra_titulos=pygame.font.Font('Fonts/Starjedi.ttf', 100)  
+letra_outro=pygame.font.Font('Fonts/Starjedi.ttf', 75)
+letra_letreros=pygame.font.SysFont('Fonts/arial_narrow_7.ttf',35)    
+letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
+lista_instrucciones=('Inst/instruccion1.txt','Inst/instruccion2.txt','Inst/instruccion3.txt','Inst/instruccion4.txt')
 lista_imagenes_inst=("img/cañon8.png",0,'img/teclas_inst.png','img/ecuaciones.png',"img/cañon9.png")
 puntos=0
 nivel=0
@@ -449,10 +449,10 @@ class mundo:
     #             r1=r
             
             if colision==True:
-                crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro, presione a para avanzar, s para seguir en el nivel!',letra_letreros,None,green,None)
+                crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro, presiona A para avanzar, S para seguir en el nivel!',letra_letreros,None,green,None)
                 
             if gameover==True:
-                crear_cuadro_de_texto(screen,250,350,350,50,'¡Fallaste, presione a para continuar!',letra_letreros,None,green,None)
+                crear_cuadro_de_texto(screen,250,350,350,50,'¡Fallaste, presiona A para continuar!',letra_letreros,None,green,None)
                 t=0
                 
             #REBOTES DE LA BOLA CUANDO IMPACTA CONTRA LOS COSTADOS
@@ -490,7 +490,7 @@ class mundo:
             crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,None)
             crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,green,None)  
             crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,green,None)
-            crear_cuadro_de_texto(screen,700,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,green,None)
+            crear_cuadro_de_texto(screen,650,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,green,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
