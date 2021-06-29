@@ -17,3 +17,20 @@ plt.ylabel('y')
 plt.title('Lab DLS')
 plt.show()
 
+                # import matplotlib.pyplot as plt
+                # import numpy as np
+                
+                # x = np.array(t)
+                
+                # k=np.array(y)
+                # z= np.polyfit(x,y,2)
+                # p=np.poly1d(z)
+                # p30 = np.poly1d(np.polyfit(x, y, 30))
+                # xp=np.linspace(0, 6, 100)
+                # print(p)
+                    
+                # plt.plot(x,k)
+                # plt.xlabel('x')
+                # plt.ylabel('y')
+                # plt.title('Lab DLS')
+                # plt.show()
