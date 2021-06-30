@@ -293,8 +293,8 @@ class mundo:
         angle=0                                                                                                                     #Declaración de variable ángulo del cañon
         speedangle=0                                                                                                                #Variable que almacena la rotación del cañon                                         
         n=0
-        v0=0                                                                                                                        #Velocidad inicial
-        vi=0
+        v0=1                                                                                                                        #Velocidad inicial
+        vi=1
         speedv0=0
         t=0  
         t1=0                                                                                                                        #Variable de tiempo
@@ -348,12 +348,10 @@ class mundo:
                         return True
    
                     elif event.key==pygame.K_a and gameover==True:
+                        nivel+=1
+                        puntos+=0
                         return True
                         
-                    elif event.key==pygame.K_s and colision==True:
-                        puntos+=1
-                        return True
-                    
                     elif event.key==pygame.K_ESCAPE:                                                                                #Tecla escape sale del juego
                         running = False
                         sonidofondo.stop()
@@ -384,8 +382,8 @@ class mundo:
                 
             v0=v0 + speedv0
             vi=vi + speedv0
-            if v0<=0:
-                v0=0                 
+            if v0<=1:
+                v0=1                 
             
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)
             explosion_rotated , explosion_rotated_rect = self.rotate(explosion,angle)                                                         #Rota el cañon
@@ -422,7 +420,7 @@ class mundo:
             
             # ESTADOS DEL JUEGO
             if colision==True:
-                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro, presiona A para avanzar, S para seguir en el nivel!',letra_letreros,None,green,None)
+                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro, presiona A para avanzar!',letra_letreros,None,green,None)
                 
             if gameover==True:
                 menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Fallaste, presiona A para continuar!',letra_letreros,None,green,None)
