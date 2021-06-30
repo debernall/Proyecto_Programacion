@@ -11,6 +11,7 @@ yellow=(245, 245, 66)
 green=(22,234,72)
 blue=(2,50,207)
 black=(0,0,0)
+red=(255,0,0)
 white=(255,255,255)
 
 pygame.init()
@@ -420,10 +421,10 @@ class mundo:
             
             # ESTADOS DEL JUEGO
             if colision==True:
-                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro, presiona A para avanzar!',letra_letreros,None,green,None)
+                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro, presiona A para avanzar!',letra_letreros,None,red,None)
                 
             if gameover==True:
-                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Fallaste, presiona A para continuar!',letra_letreros,None,green,None)
+                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Fallaste, presiona A para continuar!',letra_letreros,None,red,None)
                 t=0
                 
             # REBOTES DE LA BOLA
@@ -459,12 +460,12 @@ class mundo:
             
             
             #CUADROS DE TEXTO
-            menu.crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,green,None)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,green,None)
-            menu.crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,green,None)
-            menu.crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,green,None)  
-            menu.crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,green,None)
-            menu.crear_cuadro_de_texto(screen,650,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,green,None)
+            menu.crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,red,None)                       #Agrega un cuadro de texto con el angulo.
+            menu.crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,red,None)
+            menu.crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,red,None)
+            menu.crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,red,None)  
+            menu.crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,red,None)
+            menu.crear_cuadro_de_texto(screen,650,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,red,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
@@ -475,11 +476,16 @@ p_space={'g':0,
           'nombre_planeta':'ESPACIO'}
 
 p_tierra={'g':9.8,
-          'im_fondo': "img/enorme.jpg",
+          'im_fondo': "img/pradera1.jpg",
+          'son_mundo':"sound/sonidofondo1.wav",
+          'factor_perdida':3,
+          'nombre_planeta':'TIERRA'}
+p_luna={'g':1.6,
+          'im_fondo': "img/luna.jpg",
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':1.4,
-          'nombre_planeta':'TIERRA'}
-
+          'nombre_planeta':'LUNA'}
+luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
 
@@ -498,6 +504,8 @@ while jugar:
                 
             elif nivel==1:
                 jugar_outro=mundo.main(tierra)
+            elif nivel==2:
+                jugar_outro=mundo.main(luna)
 
             else:
                 jugar_outro=False
