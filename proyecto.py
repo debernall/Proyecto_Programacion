@@ -430,6 +430,7 @@ class mundo:
                 
             # REBOTES DE LA BOLA
             if posplano[0]<-xf or posplano[0]>= x0 :
+                step=(0,0)
                 sonidofondo.stop()
                 gameover=True                                                                                                      #   AQUI HAY UNA SALIDA SI SE IMPACTA CON LAS PAREDES    
             
@@ -454,6 +455,7 @@ class mundo:
 
             # LIMITE SUPERIOR
             elif posplano[1]>y0:
+                step=(0,0)
                 sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
                 gameover=True
             
