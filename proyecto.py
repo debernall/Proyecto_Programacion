@@ -226,6 +226,7 @@ class mundo:
         self.son_mundo=parametros[2]       
         self.perdida=parametros[3]
         self.planet=parametros[4]
+        self.vlimt=parametros[5]
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
         self.lista1=[]
@@ -257,8 +258,8 @@ class mundo:
     def main(self):                      ################puntos
         global puntos
         global nivel
-        global next_level
         
+        global next_level
         #PROPIEDADES INICIALES PYGAME
         pygame.init()
         screen= pygame.display.set_mode((800,700))
@@ -277,12 +278,12 @@ class mundo:
         
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
-        xf,yf=3440,1653                                                                                                             #Limites de la imagen de fondo    
+        xf,yf=3600,3350                                                                                                           #Limites de la imagen de fondo    
         
         posobjetivo= random.randrange(200,xf-50), random.randrange(200,yf-50)
         xobj,yobj = posobjetivo[0],posobjetivo[1]
         posobjetivo=(x0+xobj,y0-yobj)
-        posplano=x0-400,y0-1650
+        posplano=x0-400,y0-3350
         pos_canon=(x0-64,y0-64)
 
         running=True                                                                                                                #Variable que mantiene activo el juego
@@ -352,7 +353,10 @@ class mundo:
                         nivel+=1
                         puntos+=0
                         return True
-                        
+                    elif event.key==pygame.K_s and gameover==True:
+                        nivel+=0
+                        puntos+=0
+                        return True    
                     elif event.key==pygame.K_ESCAPE:                                                                                #Tecla escape sale del juego
                         running = False
                         sonidofondo.stop()
@@ -383,6 +387,10 @@ class mundo:
                 
             v0=v0 + speedv0
             vi=vi + speedv0
+            if v0>=self.vlimt:
+                v0=self.vlimt
+            if vi>=self.vlimt:
+                vi=self.vlimt
             if v0<=1:
                 v0=1                 
             
@@ -440,7 +448,7 @@ class mundo:
             pos_canon=self.nueva_pos(pos_canon,step,t)  
             
             # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
-            horizonte_rect=plano.get_rect(center=(posplano[0]+1900,posplano[1]+2750))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
+            horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
             
             if bolarect.colliderect(horizonte_rect) and t>0.3:                                                                      #t>0.3 evita rebotes debidos a una lectura anomala 
                 if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
@@ -453,11 +461,11 @@ class mundo:
                     step=self.f_rebote(step,self.perdida)
 
             # LIMITE SUPERIOR
-            elif posplano[1]>y0:
+            if posplano[1]>y0:
                 step=(0,0)
                 sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
                 gameover=True
-            
+            print(horizonte_rect,posplano)
             
             #CUADROS DE TEXTO
             menu.crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,red,None)                       #Agrega un cuadro de texto con el angulo.
@@ -470,21 +478,27 @@ class mundo:
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
 p_space={'g':0,
-          'im_fondo': "img/fondo0.jpg",
+          
+          'im_fondo': "img/Galaxia.jpg",
           'son_mundo':"sound/sonidofondo0.wav",
           'factor_perdida':0,
-          'nombre_planeta':'ESPACIO'}
+          'nombre_planeta':'ESPACIO',
+          'vlimt':100}
 
 p_tierra={'g':9.8,
-          'im_fondo': "img/pradera1.jpg",
+          
+          'im_fondo': "img/pradera (2).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':3,
-          'nombre_planeta':'TIERRA'}
+          'nombre_planeta':'TIERRA',
+          'vlimt':81}
 p_luna={'g':1.6,
-          'im_fondo': "img/luna.jpg",
+          
+          'im_fondo': "img/luna (1).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':1.4,
-          'nombre_planeta':'LUNA'}
+          'nombre_planeta':'LUNA',
+          'vlimt':32}
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
