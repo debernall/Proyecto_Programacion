@@ -282,7 +282,10 @@ class mundo:
         
         posobjetivo= random.randrange(200,xf-50), random.randrange(200,yf-50)
         xobj,yobj = posobjetivo[0],posobjetivo[1]
-        posobjetivo=(x0+xobj,y0-yobj)
+        xo=x0+xobj
+        yo=y0-yobj
+        yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))
+        posobjetivo=(xo,yo)
         posplano=x0-400,y0-3350
         pos_canon=(x0-64,y0-64)
 
@@ -477,7 +480,7 @@ class mundo:
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
-p_space={'g':0,
+p_space={'g':0.000001,
           
           'im_fondo': "img/Galaxia.jpg",
           'son_mundo':"sound/sonidofondo0.wav",
@@ -493,7 +496,6 @@ p_tierra={'g':9.8,
           'nombre_planeta':'TIERRA',
           'vlimt':81}
 p_luna={'g':1.6,
-          
           'im_fondo': "img/luna (1).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':1.4,
