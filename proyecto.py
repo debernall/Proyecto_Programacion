@@ -482,7 +482,7 @@ class mundo:
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
 p_space={'g':0.000001,
           
-          'im_fondo': "img/Gax.jpg",
+          'im_fondo': "img/nebula.png",
           'son_mundo':"sound/sonidofondo0.wav",
           'factor_perdida':0,
           'nombre_planeta':'ESPACIO',
@@ -496,14 +496,21 @@ p_tierra={'g':9.8,
           'nombre_planeta':'TIERRA',
           'vlimt':81}
 p_luna={'g':1.6,
-          'im_fondo': "img/luna (1).jpg",
-          'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':1.4,
+          'im_fondo': "img/luna1.jpg",
+          'son_mundo':"sound/sonidofondo2.mp3",
+          'factor_perdida':1,
           'nombre_planeta':'LUNA',
           'vlimt':32}
+p_marte={'g':3.721,
+          'im_fondo': "img/marte.jpg",
+          'son_mundo':"sound/sonidofondo3.mp3",
+          'factor_perdida':1,
+          'nombre_planeta':'MARTE',
+          'vlimt':42}
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
+marte=mundo(list(p_marte.values()))
 
 
 ###############################         EJECUCION DEL JUEGO         ##################################     
@@ -518,11 +525,13 @@ while jugar:
             if nivel==0:
                 jugar_outro=mundo.main(space)
                 
+            
             elif nivel==1:
-                jugar_outro=mundo.main(tierra)
-            elif nivel==2:
                 jugar_outro=mundo.main(luna)
-
+            elif nivel==2:
+                jugar_outro=mundo.main(marte)   
+            elif nivel==3:
+                jugar_outro=mundo.main(tierra)
             else:
                 jugar_outro=False
                 
