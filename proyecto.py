@@ -439,7 +439,7 @@ class mundo:
                 t=0
                 
             # REBOTES DE LA BOLA
-            if posplano[0]<-xf or posplano[0]>= x0 :
+            if posplano[0]<-(xf-20) or posplano[0]>= x0 :
                 step=(0,0)
                 sonidofondo.stop()
                 gameover=True                                                                                                      #   AQUI HAY UNA SALIDA SI SE IMPACTA CON LAS PAREDES    
@@ -464,7 +464,7 @@ class mundo:
                     step=self.f_rebote(step,self.perdida)
 
             # LIMITE SUPERIOR
-            if posplano[1]>y0:
+            if posplano[1]>(y0-50):
                 step=(0,0)
                 sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
                 gameover=True
@@ -482,7 +482,7 @@ class mundo:
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
 p_space={'g':0.000001,
           
-          'im_fondo': "img/Galaxia.jpg",
+          'im_fondo': "img/Gax.jpg",
           'son_mundo':"sound/sonidofondo0.wav",
           'factor_perdida':0,
           'nombre_planeta':'ESPACIO',
