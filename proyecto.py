@@ -471,12 +471,12 @@ class mundo:
             print(horizonte_rect,posplano)
             
             #CUADROS DE TEXTO
-            menu.crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,red,None)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,red,None)
-            menu.crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,red,None)
-            menu.crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,red,None)  
-            menu.crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,red,None)
-            menu.crear_cuadro_de_texto(screen,650,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,red,None)
+            menu.crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,blue,None)                       #Agrega un cuadro de texto con el angulo.
+            menu.crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,blue,None)  
+            menu.crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,650,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,blue,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
