@@ -65,17 +65,17 @@ def instrucciones_juego(numero_instruccion):
             ancho=200
         
         imagen_inst=pygame.transform.scale(pygame.image.load(lista_imagenes_inst[numero_instruccion]),[ancho,200])
-        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-ancho/2,350,ancho,200,' ',letra_botones,white,black,None)
+        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,450,ancho,200,' ',letra_botones,white,black,None)
         screen_instrucciones.blit(imagen_inst,[screen_instrucciones.get_rect().centerx-ancho/2,350])
         
     else:
-        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-350/2,450,350,50,'Ángulo:25°',letra_letreros,None,green,green)
+        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,450,350,50,'Ángulo:25°',letra_letreros,None,green,green)
 
 
     for i in range(len(c_texto)):
-        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-400,100+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones,black,green,None)
+        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,120+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones,black,green,None)
 
-    menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx-30,50,60,40,str(numero_instruccion+1)+'/4',letra_instrucciones,None,green,green)
+    menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,70,60,40,str(numero_instruccion+1)+'/4',letra_instrucciones,None,green,green)
                                                                                                                                     #Crea el cuadro que dice el numero de instruccion
 
     while (inst):
@@ -117,8 +117,8 @@ def intro_game():                                                               
     
     intro_background = pygame.image.load(imagenes['intro']) 
     screen.blit(intro_background,(0,0))
-    menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx-300,220-50,600,100,'ParaboliC',letra_titulos,None,blue,None) 
-    menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx-200,320-50,400,100,'ShoT',letra_titulos,None,blue,None) 
+    menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx,220,600,100,'ParaboliC',letra_titulos,None,blue,None) 
+    menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx,320,400,100,'ShoT',letra_titulos,None,blue,None) 
     sonidofondo=pygame.mixer.Sound(sonidos['fondo'])
     
     play=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)                                                                    #Figuras de los botones jugar y salir
@@ -167,18 +167,9 @@ def outro(titulo,estado):                                                       
     
     intro_background = pygame.image.load(imagenes['intro']) 
     screen.blit(intro_background,(0,0))
-
-    imagenTexto = letra_outro.render(estado,True,blue )                                                                           #Genera la imagen con el texto                             
-    imagenTexto1 = letra_outro.render(str(puntos)+" puntos: "+"nivel "+str(nivel),True,blue )
+    menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,270,700,200,estado,letra_outro,None,blue,None)                                                                           #Genera la imagen con el texto                             
+    menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,150,700,200,str(puntos)+" puntos: "+"nivel "+str(nivel),letra_outro,None,blue,None)
     
-    rectanguloTexto1 = imagenTexto1.get_rect()
-    rectanguloTexto1.centerx = screen.get_rect().centerx                                                                            #Ubica el texto
-    rectanguloTexto1.centery = 150
-    rectanguloTexto = imagenTexto.get_rect()                 
-    rectanguloTexto.centerx = screen.get_rect().centerx                                                                             #Ubica el texto
-    rectanguloTexto.centery = 270
-    screen.blit(imagenTexto, rectanguloTexto)                                                                                       #Pone la imagen con el texto en el programa
-    screen.blit(imagenTexto1, rectanguloTexto1)
 
     replay=pygame.Rect(screen.get_rect().centerx-350/2,440,350,50.)    
     re_intro=pygame.Rect(screen.get_rect().centerx-350/2,510,350,50.)
@@ -432,10 +423,10 @@ class mundo:
             
             # ESTADOS DEL JUEGO
             if colision==True:
-                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Buen tiro, presiona A para avanzar!',letra_letreros,None,red,None)
+                menu.crear_cuadro_de_texto(screen,425,375,350,50,'¡Buen tiro, presiona A para avanzar!',letra_letreros,None,blue,None)
                 
             if gameover==True:
-                menu.crear_cuadro_de_texto(screen,250,350,350,50,'¡Fallaste, presiona A para continuar!',letra_letreros,None,red,None)
+                menu.crear_cuadro_de_texto(screen,425,375,350,50,'¡Fallaste, presiona A para continuar!',letra_letreros,None,blue,None)
                 t=0
                 
             # REBOTES DE LA BOLA
@@ -471,12 +462,15 @@ class mundo:
             print(horizonte_rect,posplano)
             
             #CUADROS DE TEXTO
-            menu.crear_cuadro_de_texto(screen,0,0,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,blue,None)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,0,50,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,0,100,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,650,0,150,50,str(puntos)+' puntos',letra_letreros,None,blue,None)  
-            menu.crear_cuadro_de_texto(screen,650,50,150,50,'Nivel '+str(nivel),letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,650,100,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,175,25,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,blue,None)                       #Agrega un cuadro de texto con el angulo.
+            menu.crear_cuadro_de_texto(screen,175,75,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,175,125,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,175,175,350,50,'Gravedad: '+str(self.g)+' m/s^2',letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,725,25,150,50,str(puntos)+' puntos',letra_letreros,None,blue,None)  
+            menu.crear_cuadro_de_texto(screen,725,75,150,50,'Nivel '+str(nivel),letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,725,125,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,blue,None)
+
+            menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,yellow,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
