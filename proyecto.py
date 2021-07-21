@@ -29,10 +29,14 @@ lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.p
 lista_integrantes=('Brian Santiago Vasquez Marin','Jeisson Andrés Abril Masmelas','Daniel Eduardo Bernal Lozano','Nelson Andres Rodriguez Mora','Sebastian Augusto Ojeda Franco')
 imagenes={'intro':"img/fondo_intro.jpg",
           'bola':"img/bolacañonpequeña.png",
+          'bolita':"img/redsita1.png", 
           'explosion':"img/explosion1.png",
+          'explosionsita':"img/explosion1sita.png",
           'objetivo':"img/objetivo1.png",
           'cañon':"img/cañon8.png",
-          'base':"img/cañon9.png"}
+          'base':"img/cañon9.png",
+          'cañonsito':"img/cañon8sito.png",
+          'basesita':"img/cañon9sito.png"}
 
 sonidos={'fondo':"sound/sonidofondo.wav",
          'explosion':"sound/sonexp.wav"}
@@ -257,21 +261,23 @@ class mundo:
         self.perdida=parametros[3]
         self.planet=parametros[4]
         self.vlimt=parametros[5]
+        self.mmini=parametros[6]
+        
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
         self.lista1=[]
     
-    def rotate(self,surface, angle):
+    def rotate(self,surface, angle,g):
         rotated_surface=pygame.transform.rotozoom(surface,angle,1)
-        rotated_rect = rotated_surface.get_rect(center=(400,350))
+        rotated_rect = rotated_surface.get_rect(center=g)
         return rotated_surface,rotated_rect
     
-    def nueva_pos(self,pos_inicial,v,t):
+    def nueva_pos(self,pos_inicial,v,t,escala,sentido,correccion):
         if pos_inicial[0]==600.0:
             if v[1]!=0:
                 self.lista.append(pos_inicial[1])
                 self.lista1.append(t)
-        pos_final=pos_inicial[0]-v[0]*(0.03317*self.escala),pos_inicial[1]-(v[1]*(0.03317*self.escala))-(0.5*self.g*t*0.022)
+        pos_final=pos_inicial[0]-v[0]*(0.03317*escala),pos_inicial[1]-(v[1]*(0.03317*escala))-((sentido)*(0.5*self.g*t*correccion))
         return pos_final
     
     def dibujar_img(self,list_img):
@@ -298,10 +304,15 @@ class mundo:
         
         #CARGA DE IMAGENES
         plano = pygame.image.load(self.mplano)                                                                                      #Imagen de fondo
-        bola=pygame.image.load(imagenes['bola'])                                                                                    #Imagen de bala
+        mini = pygame.image.load(self.mmini)
+        bola=pygame.image.load(imagenes['bola']) 
+        bolita=pygame.image.load(imagenes['bolita'])
+        cañonsito=pygame.image.load(imagenes['cañonsito'])                                                                        #Imagen de bala
+        basesita=pygame.image.load(imagenes['basesita'])
         cañon=pygame.image.load(imagenes['cañon'])                                                                                  #Imagen de cañon
         base=pygame.image.load(imagenes['base'])
         explosion=pygame.image.load(imagenes['explosion'])                                                                          #Imagen de la Explosón al disparar
+        explosionsita=pygame.image.load(imagenes['explosionsita'])
         objetivo=pygame.image.load(imagenes['objetivo'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
@@ -317,13 +328,17 @@ class mundo:
         yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))
         posobjetivo=(xo,yo)
         posplano=x0-400,y0-3350
+        pos_canona=(x0,y0)
         pos_canon=(x0-64,y0-64)
-
+        pos_canonsito=(20,566)
+        pos_bolita=(20,566)
         running=True                                                                                                                #Variable que mantiene activo el juego
         posimg=x0,y0
         distancia=((posobjetivo[0]-posimg[0])/self.escala),-((posobjetivo[1]-posimg[1])/self.escala)
-        pos_bola= -x0,-y0                                                                                                           #Declaración de posición inicial de la bala
+        pos_bola= -x0,-y0  
+        pos_bolita=-x0,-y0                                                                                                 #Declaración de posición inicial de la bala
         pos_expl= -x0,-y0                                                                                                           #Posición de la explosión antes de disparar
+        pos_expli= -x0,-y0
         step= 0,0                                                                                                                   #vector velocidad
         angle=0                                                                                                                     #Declaración de variable ángulo del cañon
         speedangle=0                                                                                                                #Variable que almacena la rotación del cañon                                         
@@ -359,8 +374,10 @@ class mundo:
                             v_y0=-vi*np.sin(np.radians(angle))                                                                      #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)           
                             step=v_x0,v_y0                                                                                          #Tras presionar la tecla espacio 
                             n=1
-                            pos_bola=(x0,y0)  
+                            pos_bola=(x0,y0) 
+                            pos_bolita=(20,566)
                             pos_expl=(x0+50,y0-100)                                                                                      #posición de la explosión al disparar
+                            pos_expli=(20,566)
                             disparo=True
                             sonidoexplosión.play()
                             speedv0=0 
@@ -427,22 +444,29 @@ class mundo:
             if v0<=1:
                 v0=1                 
             
-            image2_rotated , image2_rotated_rect = self.rotate(cañon,angle)
-            explosion_rotated , explosion_rotated_rect = self.rotate(explosion,angle)                                                         #Rota el cañon
+            
+            image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
+            image3_rotated , image3_rotated_rect = self.rotate(cañonsito,angle,pos_canonsito)
+            explosion_rotated , explosion_rotated_rect = self.rotate(explosion,angle,pos_canona)                                                         #Rota el cañon
+            explosionsita_rotated , explosionsita_rotated_rect = self.rotate(explosionsita,angle,pos_canonsito)
             cc = (pos_canon[0]+63-int(image2_rotated.get_width()//2),pos_canon[1]+63-int(image2_rotated.get_height()//2))
+            cc1 = (pos_canonsito[0]-int(image3_rotated.get_width()//2),pos_canonsito[1]-int(image3_rotated.get_height()//2))
             cd = (pos_expl[0]-50-int(explosion_rotated.get_width()//2),pos_expl[1]+100-int(explosion_rotated.get_height()//2))
+            cd1 = (pos_expli[0]-int(explosionsita_rotated.get_width()//2),pos_expli[1]-int(explosionsita_rotated.get_height()//2))
             pos_base=(pos_canon[0]-35,pos_canon[1]-35)
+            pos_basesita=(pos_canonsito[0]-15,pos_canonsito[1]-15)
             
             if image_alpha>0 and disparo==True:
                 image_alpha-=5
                 
             explosion_rotated.set_alpha(image_alpha)
+            explosionsita_rotated.set_alpha(image_alpha)
             pos_bola1=(pos_bola[0]-8,pos_bola[1]-8)
             posobjetivo1=(posobjetivo[0]-50,posobjetivo[1]-50)
             
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
-            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base)))        
-            
+            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1)))        
+             
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
@@ -475,10 +499,11 @@ class mundo:
                 gameover=True                                                                                                      #   AQUI HAY UNA SALIDA SI SE IMPACTA CON LAS PAREDES    
             
             # CALCULO DE NUEVAS POSICIONES
-            posplano=self.nueva_pos(posplano,step,t) 
-            posobjetivo=self.nueva_pos(posobjetivo,step,t)       
-            pos_expl=self.nueva_pos(pos_expl,step,t)
-            pos_canon=self.nueva_pos(pos_canon,step,t)  
+            posplano=self.nueva_pos(posplano,step,t,10,1,0.022) 
+            posobjetivo=self.nueva_pos(posobjetivo,step,t,10,1,0.022)       
+            pos_expl=self.nueva_pos(pos_expl,step,t,10,1,0.022)
+            pos_canon=self.nueva_pos(pos_canon,step,t,10,1,0.022) 
+            pos_bolita=self.nueva_pos(pos_bolita,(-step[0],-step[1]),t,0.5,-1,0.0011)
             
             # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
             horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
@@ -498,7 +523,7 @@ class mundo:
                 step=(0,0)
                 sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
                 gameover=True
-            print(horizonte_rect,posplano)
+            print(cc, cc1)
             
             #CUADROS DE TEXTO
             menu.crear_cuadro_de_texto(screen,175,25,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,blue,None)                       #Agrega un cuadro de texto con el angulo.
@@ -519,7 +544,8 @@ p_space={'g':0.000001,
           'son_mundo':"sound/sonidofondo0.wav",
           'factor_perdida':0,
           'nombre_planeta':'ESPACIO',
-          'vlimt':100}
+          'vlimt':100,
+          'im_min':"img/mmnebula.png"}
 
 p_tierra={'g':9.8,
           
@@ -527,19 +553,22 @@ p_tierra={'g':9.8,
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':3,
           'nombre_planeta':'TIERRA',
-          'vlimt':81}
+          'vlimt':81,
+          'im_min':"img/mpradera.jpg"}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.mp3",
           'factor_perdida':1,
           'nombre_planeta':'LUNA',
-          'vlimt':32}
+          'vlimt':32,
+          'im_min':"img/mluna.jpg"}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.mp3",
           'factor_perdida':1,
           'nombre_planeta':'MARTE',
-          'vlimt':42}
+          'vlimt':51,
+          'im_min':"img/mmarte.jpg"}
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
