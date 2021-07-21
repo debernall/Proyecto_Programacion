@@ -20,13 +20,13 @@ pygame.init()
 letra_botones = pygame.font.Font('Fonts/Starjedi.ttf', 30) 
 letra_titulos=pygame.font.Font('Fonts/Starjedi.ttf', 100)  
 letra_outro=pygame.font.Font('Fonts/Starjedi.ttf', 75)
-letra_letreros=pygame.font.SysFont('Fonts/arial_narrow_7.ttf',35)    
+letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',35)    
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
-
+letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
 # UBICACIONES DE ARCHIVOS
 lista_instrucciones=('Inst/instruccion1.txt','Inst/instruccion2.txt','Inst/instruccion3.txt','Inst/instruccion4.txt')
 lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png')
-
+lista_integrantes=('Brian Santiago Vasquez Marin','Jeisson Andrés Abril Masmelas','Daniel Eduardo Bernal Lozano','Nelson Andres Rodriguez Mora','Sebastian Augusto Ojeda Franco')
 imagenes={'intro':"img/fondo_intro.jpg",
           'bola':"img/bolacañonpequeña.png",
           'explosion':"img/explosion1.png",
@@ -155,7 +155,42 @@ def intro_game():                                                               
         menu.crear_boton(screen,exit,'Salir',letra_botones ,green,yellow,blue,blue)
         menu.crear_boton(screen,instructions,'instrucciones',letra_botones ,green,yellow,blue,blue)
         pygame.display.flip()   
+
+def creditos():                                                                                                                   #Pantalla de intro
+    credits=True
+    pygame.init()
+    screen_creditos= pygame.display.set_mode((948,720))
+    pygame.display.set_caption('Créditos')
     
+    intro_background = pygame.image.load(imagenes['intro']) 
+    screen_creditos.blit(intro_background,(0,0))
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,80,600,100,'Créditos',letra_titulos,None,blue,None) 
+    sonidofondo=pygame.mixer.Sound(sonidos['fondo'])
+
+    for i in range(len(lista_integrantes)):
+        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,250+80*i,600,100,lista_integrantes[i],letra_creditos,None,green,None)                                                                   
+    exit_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,630,350,50)
+    sonidofondo.play()
+    while(credits):                           
+        for event in pygame.event.get():            
+            if event.type == pygame.QUIT :                                                                                          #Permite salir del juego desde la intro
+                pygame.quit()
+                quit()
+                
+            elif event.type == pygame.KEYDOWN:
+                if event.key==pygame.K_ESCAPE:
+                    pygame.quit()
+                    quit()
+
+            elif event.type==MOUSEBUTTONDOWN and event.button==1:                                                                   #Si se hace click izquierdo:
+                if exit_creditos.collidepoint(pygame.mouse.get_pos()):                                                                       #Si el click se hizo sobre el botón jugar, continuar con el juego
+                    pygame.quit()
+                    quit()
+                    
+
+        menu.crear_boton(screen_creditos,exit_creditos,'salir',letra_botones ,green,yellow,blue,blue)                                         #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+        
+        pygame.display.flip()      
 def outro(titulo,estado):                                                                                                           # OUTRO MANTIENE AL JUGADOR EN UN NIVEL HASTA QUE PASE
     global nivel    
     global next_level
@@ -173,7 +208,7 @@ def outro(titulo,estado):                                                       
 
     replay=pygame.Rect(screen.get_rect().centerx-350/2,440,350,50.)    
     re_intro=pygame.Rect(screen.get_rect().centerx-350/2,510,350,50.)
-    credits=pygame.Rect(screen.get_rect().centerx-350/2,580,350,50)
+    credits1=pygame.Rect(screen.get_rect().centerx-350/2,580,350,50)
     exit1=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
 
     while(game_over):                           
@@ -199,11 +234,15 @@ def outro(titulo,estado):                                                       
                 elif re_intro.collidepoint(pygame.mouse.get_pos()):
                     game_over=False
                     intro_game()
+
+                elif credits1.collidepoint(pygame.mouse.get_pos()):
+                    game_over=False
+                    creditos()
         
         
         menu.crear_boton(screen,replay,'volver a jugar',letra_botones ,green,yellow,blue,blue)                                           #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
         menu.crear_boton(screen,exit1,'Salir',letra_botones ,green,yellow,blue,blue)
-        menu.crear_boton(screen,credits,'Créditos',letra_botones ,green,yellow,blue,blue)
+        menu.crear_boton(screen,credits1,'Créditos',letra_botones ,green,yellow,blue,blue)
         menu.crear_boton(screen,re_intro,"volver a inicio",letra_botones,green,yellow,blue,blue)
         pygame.display.flip()
 
