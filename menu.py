@@ -7,7 +7,6 @@ Created on Mon Jun 28 22:28:45 2021
 """
 import pygame
 
-
 def crear_boton(pantalla,boton,palabra,fuente,color_fondo1,color_fondo2,color_texto,color_borde):                                   #Función para crear botones como los de la intro
     if boton.collidepoint(pygame.mouse.get_pos()):                                                                                  #Cambia el color del boton si el cursor está sobre él  
         pygame.draw.rect(pantalla,color_fondo2,boton,0)
