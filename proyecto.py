@@ -60,7 +60,10 @@ def instrucciones_juego(numero_instruccion):
     boton_volver_intro=pygame.Rect(screen_instrucciones.get_rect().centerx-150,610,300,100)
     boton_siguiente=pygame.Rect(948-260,610,250,100)
     boton_anterior=pygame.Rect(10,610,250,100)
-    
+    sonidofondo=pygame.mixer.Sound(sonidos['fondo'])
+    sonidofondo.set_volume(0.2)
+    sonidofondo.play(-1)
+
     c_texto=codecs.open(instruccion,'r','utf-8').readlines()
     if numero_instruccion!=1:
         if numero_instruccion== 3:
@@ -129,7 +132,8 @@ def intro_game():                                                               
     play=pygame.Rect(screen.get_rect().centerx-350/2,450,350,50)                                                                    #Figuras de los botones jugar y salir
     exit=pygame.Rect(screen.get_rect().centerx-350/2,650,350,50)
     instructions=pygame.Rect(screen.get_rect().centerx-350/2,550,350,50)
-    sonidofondo.play()
+    sonidofondo.set_volume(0.2)
+    sonidofondo.play(-1)
     while(intro):                           
         for event in pygame.event.get():            
             if event.type == pygame.QUIT :                                                                                          #Permite salir del juego desde la intro
@@ -175,7 +179,8 @@ def creditos():                                                                 
     for i in range(len(lista_integrantes)):
         menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,250+80*i,600,100,lista_integrantes[i],letra_creditos,None,green,None)                                                                   
     exit_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,630,350,50)
-    sonidofondo.play()
+    sonidofondo.set_volume(0.2)
+    sonidofondo.play(-1)
     while(credits):                           
         for event in pygame.event.get():            
             if event.type == pygame.QUIT :                                                                                          #Permite salir del juego desde la intro
@@ -358,7 +363,8 @@ class mundo:
         gameover=False
         image_alpha=254
         
-        sonidofondo.play() 
+        sonidofondo.set_volume(0.5)
+        sonidofondo.play(-1)
         while(running):
             ns=clock.tick(30)
                                                                                                                                     #Periodo de recarga de imagen
