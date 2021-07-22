@@ -20,7 +20,7 @@ pygame.init()
 letra_botones = pygame.font.Font('Fonts/Starjedi.ttf', 30) 
 letra_titulos=pygame.font.Font('Fonts/Starjedi.ttf', 100)  
 letra_outro=pygame.font.Font('Fonts/Starjedi.ttf', 75)
-letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',35)    
+letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',28)    
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
 letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
 # UBICACIONES DE ARCHIVOS
