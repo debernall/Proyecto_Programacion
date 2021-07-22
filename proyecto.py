@@ -33,6 +33,7 @@ imagenes={'intro':"img/fondo_intro.jpg",
           'explosion':"img/explosion1.png",
           'explosionsita':"img/explosion1sita.png",
           'objetivo':"img/objetivo1.png",
+          'objetivito':"img/objetivito.png",
           'cañon':"img/cañon8.png",
           'base':"img/cañon9.png",
           'cañonsito':"img/cañon8sito.png",
@@ -314,6 +315,7 @@ class mundo:
         explosion=pygame.image.load(imagenes['explosion'])                                                                          #Imagen de la Explosón al disparar
         explosionsita=pygame.image.load(imagenes['explosionsita'])
         objetivo=pygame.image.load(imagenes['objetivo'])
+        objetivito=pygame.image.load(imagenes['objetivito'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
         
@@ -327,6 +329,7 @@ class mundo:
         yo=y0-yobj
         yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))
         posobjetivo=(xo,yo)
+        
         posplano=x0-400,y0-3350
         pos_canona=(x0,y0)
         pos_canon=(x0-64,y0-64)
@@ -335,6 +338,7 @@ class mundo:
         running=True                                                                                                                #Variable que mantiene activo el juego
         posimg=x0,y0
         distancia=((posobjetivo[0]-posimg[0])/self.escala),-((posobjetivo[1]-posimg[1])/self.escala)
+        posobjetivito=(20+(distancia[0]*0.5),566-(distancia[1]*0.5))
         pos_bola= -x0,-y0  
         pos_bolita=-x0,-y0                                                                                                 #Declaración de posición inicial de la bala
         pos_expl= -x0,-y0                                                                                                           #Posición de la explosión antes de disparar
@@ -465,7 +469,7 @@ class mundo:
             posobjetivo1=(posobjetivo[0]-50,posobjetivo[1]-50)
             
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
-            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1)))        
+            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))        
              
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
@@ -523,7 +527,7 @@ class mundo:
                 step=(0,0)
                 sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
                 gameover=True
-            print(cc, cc1)
+            print(posobjetivito,(xo,yo))
             
             #CUADROS DE TEXTO
             menu.crear_cuadro_de_texto(screen,175,25,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,blue,None)                       #Agrega un cuadro de texto con el angulo.
@@ -569,10 +573,19 @@ p_marte={'g':3.721,
           'nombre_planeta':'MARTE',
           'vlimt':51,
           'im_min':"img/mmarte.jpg"}
+p_triton={'g':0.78,
+          'im_fondo': "img/triton.jpg",
+          'son_mundo':"sound/sonidofondo4.mp3",
+          'factor_perdida':1,
+          'nombre_planeta':'TRITON',
+          'vlimt':22,
+          'im_min':"img/tritonsito.jpg"}
+
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
 marte=mundo(list(p_marte.values()))
+triton=mundo(list(p_triton.values()))
 
 
 ###############################         EJECUCION DEL JUEGO         ##################################     
@@ -593,6 +606,8 @@ while jugar:
             elif nivel==2:
                 jugar_outro=mundo.main(marte)   
             elif nivel==3:
+                jugar_outro=mundo.main(triton)
+            elif nivel==4:
                 jugar_outro=mundo.main(tierra)
             else:
                 jugar_outro=False
