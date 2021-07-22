@@ -363,7 +363,7 @@ class mundo:
         gameover=False
         image_alpha=254
         
-        sonidofondo.set_volume(0.5)
+        sonidofondo.set_volume(0.8)
         sonidofondo.play(-1)
         while(running):
             ns=clock.tick(30)
@@ -389,6 +389,7 @@ class mundo:
                             pos_expl=(x0+50,y0-100)                                                                                      #posición de la explosión al disparar
                             pos_expli=(20,566)
                             disparo=True
+                            sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
                             speedv0=0 
                             
@@ -543,6 +544,7 @@ class mundo:
             menu.crear_cuadro_de_texto(screen,725,25,150,50,str(puntos)+' puntos',letra_letreros,None,blue,None)  
             menu.crear_cuadro_de_texto(screen,725,75,150,50,'Nivel '+str(nivel),letra_letreros,None,blue,None)
             menu.crear_cuadro_de_texto(screen,725,125,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,90,370,150,50,'mapa',letra_botones,None,blue,blue)
 
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,yellow,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
