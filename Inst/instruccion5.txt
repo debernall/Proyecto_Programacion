@@ -1,0 +1,5 @@
+En la parte inferior izquierda de
+tu pantalla podrás ver un mapa a 
+escala del nivel en el que te encuentras
+que puedes utilizar como referencia para 
+realizar tu disparo.

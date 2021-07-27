@@ -1,0 +1,5 @@
+En algunos niveles habrá obstaculos como el
+de la imagen, estos apareceran en el mapa del 
+nivel en el que estés y en algunos casos tu 
+disparo deberá esquivar estos obstaculos para  
+poder acertar el tiro. 

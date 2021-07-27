@@ -24,9 +24,9 @@ letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',28)
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
 letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
 # UBICACIONES DE ARCHIVOS
-lista_instrucciones=('Inst/instruccion1.txt','Inst/instruccion2.txt','Inst/instruccion3.txt','Inst/instruccion4.txt')
-lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png')
-lista_integrantes=('Brian Santiago Vasquez Marin','Jeisson Andrés Abril Masmelas','Daniel Eduardo Bernal Lozano','Nelson Andres Rodriguez Mora','Sebastian Augusto Ojeda Franco')
+lista_instrucciones=('Inst/instruccion1.txt','Inst/instruccion2.txt','Inst/instruccion3.txt','Inst/instruccion4.txt','Inst/instruccion5.txt')
+lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png')
+lista_integrantes=('brian santiago sasquez sarin','jeisson andres abril masmelas','daniel eduardo bernal lozano','nelson andres rodriguez mora','sebastian augusto ojeda franco')
 imagenes={'intro':"img/fondo_intro.jpg",
           'bola':"img/bolacañonpequeña.png",
           'bolita':"img/redsita1.png", 
@@ -60,19 +60,20 @@ def instrucciones_juego(numero_instruccion):
     boton_volver_intro=pygame.Rect(screen_instrucciones.get_rect().centerx-150,610,300,100)
     boton_siguiente=pygame.Rect(948-260,610,250,100)
     boton_anterior=pygame.Rect(10,610,250,100)
-    sonidofondo=pygame.mixer.Sound(sonidos['fondo'])
-    sonidofondo.set_volume(0.2)
-    sonidofondo.play(-1)
+    alto=200
 
     c_texto=codecs.open(instruccion,'r','utf-8').readlines()
     if numero_instruccion!=1:
-        if numero_instruccion== 3:
+        if numero_instruccion== 3 :
             ancho=400
+        elif numero_instruccion==4:
+            ancho=300
+            alto=250
             
         else:
             ancho=200
         
-        imagen_inst=pygame.transform.scale(pygame.image.load(lista_imagenes_inst[numero_instruccion]),[ancho,200])
+        imagen_inst=pygame.transform.scale(pygame.image.load(lista_imagenes_inst[numero_instruccion]),[ancho,alto])
         menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,450,ancho,200,' ',letra_botones,white,black,None)
         screen_instrucciones.blit(imagen_inst,[screen_instrucciones.get_rect().centerx-ancho/2,350])
         
@@ -83,7 +84,7 @@ def instrucciones_juego(numero_instruccion):
     for i in range(len(c_texto)):
         menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,120+40*i,800,40,str(c_texto[i].rstrip()),letra_instrucciones,black,green,None)
 
-    menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,70,60,40,str(numero_instruccion+1)+'/4',letra_instrucciones,None,green,green)
+    menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,70,60,40,str(numero_instruccion+1)+'/'+str(len(lista_instrucciones)),letra_instrucciones,None,green,green)
                                                                                                                                     #Crea el cuadro que dice el numero de instruccion
 
     while (inst):
@@ -544,8 +545,8 @@ class mundo:
             menu.crear_cuadro_de_texto(screen,725,25,150,50,str(puntos)+' puntos',letra_letreros,None,blue,None)  
             menu.crear_cuadro_de_texto(screen,725,75,150,50,'Nivel '+str(nivel),letra_letreros,None,blue,None)
             menu.crear_cuadro_de_texto(screen,725,125,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,90,370,150,50,'mapa',letra_botones,None,blue,blue)
-
+            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_botones,None,blue,blue)
+            menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,blue,blue)
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,yellow,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             
