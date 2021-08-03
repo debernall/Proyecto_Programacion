@@ -26,7 +26,7 @@ letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
 # UBICACIONES DE ARCHIVOS
 lista_instrucciones=('Inst/instruccion1.txt','Inst/instruccion2.txt','Inst/instruccion3.txt','Inst/instruccion4.txt','Inst/instruccion5.txt')
 lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png')
-lista_integrantes=('brian santiago sasquez sarin','jeisson andres abril masmelas','daniel eduardo bernal lozano','nelson andres rodriguez mora','sebastian augusto ojeda franco')
+lista_integrantes=('brian santiago vasquez sarin','jeisson andres abril masmelas','daniel eduardo bernal lozano','nelson andres rodriguez mora','sebastian augusto ojeda franco')
 imagenes={'intro':"img/fondo_intro.jpg",
           'bola':"img/bolacañonpequeña.png",
           'bolita':"img/redsita1.png", 
@@ -178,8 +178,9 @@ def creditos():                                                                 
     sonidofondo=pygame.mixer.Sound(sonidos['fondo'])
 
     for i in range(len(lista_integrantes)):
-        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,250+80*i,600,100,lista_integrantes[i],letra_creditos,None,green,None)                                                                   
-    exit_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,630,350,50)
+        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,200+80*i,600,100,lista_integrantes[i],letra_creditos,None,green,None)                                                                   
+    exit_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,650,350,50)
+    return_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,580,350,50)
     sonidofondo.set_volume(0.2)
     sonidofondo.play(-1)
     while(credits):                           
@@ -197,9 +198,15 @@ def creditos():                                                                 
                 if exit_creditos.collidepoint(pygame.mouse.get_pos()):                                                                       #Si el click se hizo sobre el botón jugar, continuar con el juego
                     pygame.quit()
                     quit()
+                
+                elif return_creditos.collidepoint(pygame.mouse.get_pos()):
+                    sonidofondo.stop()
+                    credits=False
+                    intro_game()
                     
 
-        menu.crear_boton(screen_creditos,exit_creditos,'salir',letra_botones ,green,yellow,blue,blue)                                         #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
+        menu.crear_boton(screen_creditos,exit_creditos,'salir',letra_botones ,green,yellow,blue,blue)
+        menu.crear_boton(screen_creditos,return_creditos,'volver a inicio',letra_botones ,green,yellow,blue,blue)                                         #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
         
         pygame.display.flip()      
 def outro(titulo,estado):                                                                                                           # OUTRO MANTIENE AL JUGADOR EN UN NIVEL HASTA QUE PASE
@@ -498,10 +505,10 @@ class mundo:
             
             # ESTADOS DEL JUEGO
             if colision==True:
-                menu.crear_cuadro_de_texto(screen,425,375,350,50,'¡Buen tiro, presiona A para avanzar!',letra_letreros,None,blue,None)
+                menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
                 
             if gameover==True:
-                menu.crear_cuadro_de_texto(screen,425,375,350,50,'¡Fallaste, presiona A para continuar!',letra_letreros,None,blue,None)
+                menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
                 t=0
                 
             # REBOTES DE LA BOLA
@@ -538,14 +545,14 @@ class mundo:
             print(posobjetivito,(xo,yo))
             
             #CUADROS DE TEXTO
-            menu.crear_cuadro_de_texto(screen,175,25,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,None,blue,None)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,175,75,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,175,125,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,175,175,350,50,'Gravedad: '+str(self.g)+' m/s^2',letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,725,25,150,50,str(puntos)+' puntos',letra_letreros,None,blue,None)  
-            menu.crear_cuadro_de_texto(screen,725,75,150,50,'Nivel '+str(nivel),letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,725,125,150,50,str(int(t1*0.03317))+'s',letra_letreros,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_botones,None,blue,blue)
+            menu.crear_cuadro_de_texto(screen,175,25,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,black,blue,blue)                       #Agrega un cuadro de texto con el angulo.
+            menu.crear_cuadro_de_texto(screen,175,75,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,black,blue,blue)
+            menu.crear_cuadro_de_texto(screen,175,125,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,blue,blue)
+            menu.crear_cuadro_de_texto(screen,175,175,350,50,'Gravedad: '+str(self.g)+' m/s^2',letra_letreros,black,blue,blue)
+            menu.crear_cuadro_de_texto(screen,725,25,150,50,str(puntos)+' puntos',letra_letreros,black,blue,blue)  
+            menu.crear_cuadro_de_texto(screen,725,75,150,50,'Nivel '+str(nivel),letra_letreros,black,blue,blue)
+            menu.crear_cuadro_de_texto(screen,725,125,150,50,str(int(t1*0.03317))+'s',letra_letreros,black,blue,blue)
+            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_botones,black,blue,blue)
             menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,blue,blue)
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,yellow,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
