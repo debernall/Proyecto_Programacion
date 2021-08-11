@@ -276,6 +276,10 @@ class mundo:
         self.planet=parametros[4]
         self.vlimt=parametros[5]
         self.mmini=parametros[6]
+        self.xp=parametros[7]
+        self.yp=parametros[8]
+        self.yi=parametros[9]
+        self.yf=parametros[10]
         
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
@@ -334,24 +338,24 @@ class mundo:
         
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
-        xf,yf=3600,3350                                                                                                           #Limites de la imagen de fondo    
+        xf=3600                                                                                                           #Limites de la imagen de fondo    
         
-        posobjetivo= random.randrange(200,xf-50), random.randrange(200,yf-50)
-        xobj,yobj = posobjetivo[0],posobjetivo[1]
-        xo=x0+xobj
-        yo=y0-yobj
+        posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
+        
+        xo=x0+posobjetivo[0]
+        yo=y0-posobjetivo[1]
         yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))
         posobjetivo=(xo,yo)
         
-        posplano=x0-400,y0-3350
+        posplano=self.xp,self.yp
         pos_canona=(x0,y0)
         pos_canon=(x0-64,y0-64)
-        pos_canonsito=(20,566)
-        pos_bolita=(20,566)
+        pos_canonsito=(20,400+(self.yf*0.05))
+        pos_bolita=(20,400+(self.yf*0.05))
         running=True                                                                                                                #Variable que mantiene activo el juego
         posimg=x0,y0
         distancia=((posobjetivo[0]-posimg[0])/self.escala),-((posobjetivo[1]-posimg[1])/self.escala)
-        posobjetivito=(20+(distancia[0]*0.5),566-(distancia[1]*0.5))
+        posobjetivito=(20+(distancia[0]*0.5),400+(self.yf*0.05)-(distancia[1]*0.5))
         pos_bola= -x0,-y0  
         pos_bolita=-x0,-y0                                                                                                 #Declaración de posición inicial de la bala
         pos_expl= -x0,-y0                                                                                                           #Posición de la explosión antes de disparar
@@ -393,9 +397,9 @@ class mundo:
                             step=v_x0,v_y0                                                                                          #Tras presionar la tecla espacio 
                             n=1
                             pos_bola=(x0,y0) 
-                            pos_bolita=(20,566)
+                            pos_bolita=(20,400+(self.yf*0.05))
                             pos_expl=(x0+50,y0-100)                                                                                      #posición de la explosión al disparar
-                            pos_expli=(20,566)
+                            pos_expli=(20,400+(self.yf*0.05))
                             disparo=True
                             sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
@@ -565,38 +569,56 @@ p_space={'g':0.000001,
           'factor_perdida':0,
           'nombre_planeta':'ESPACIO',
           'vlimt':100,
-          'im_min':"img/mmnebula.png"}
+          'im_min':"img/mmnebula.png",
+          'px':0,
+          'py':-2000,
+          'yi':200,
+          'yf':2350}
 
 p_tierra={'g':9.8,
           
           'im_fondo': "img/pradera (2).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':3,
+          'factor_perdida':4,
           'nombre_planeta':'TIERRA',
           'vlimt':81,
-          'im_min':"img/mpradera.jpg"}
+          'im_min':"img/mpradera.jpg",
+          'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
-          'son_mundo':"sound/sonidofondo2.wav",
-          'factor_perdida':1,
+          'son_mundo':"sound/sonidofondo2.mp3",
+          'factor_perdida':2,
           'nombre_planeta':'LUNA',
           'vlimt':32,
-          'im_min':"img/mluna.jpg"}
+          'im_min':"img/mluna.jpg",'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
-          'son_mundo':"sound/sonidofondo3.wav",
-          'factor_perdida':1,
+          'son_mundo':"sound/sonidofondo3.mp3",
+          'factor_perdida':2,
           'nombre_planeta':'MARTE',
           'vlimt':51,
-          'im_min':"img/mmarte.jpg"}
+          'im_min':"img/mmarte.jpg",
+          'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
-          'son_mundo':"sound/sonidofondo4.wav",
-          'factor_perdida':1,
+          'son_mundo':"sound/sonidofondo4.mp3",
+          'factor_perdida':2,
           'nombre_planeta':'TRITON',
           'vlimt':22,
-          'im_min':"img/tritonsito.jpg"}
-
+          'im_min':"img/tritonsito.jpg",
+          'px':0,
+          'py':-1000,
+          'yi':-3300,
+          'yf':1350}
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
