@@ -280,6 +280,8 @@ class mundo:
         self.yp=parametros[8]
         self.yi=parametros[9]
         self.yf=parametros[10]
+        self.mountain=parametros[11]
+        self.little_mountain=parametros[12]
         
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
@@ -335,7 +337,12 @@ class mundo:
         objetivito=pygame.image.load(imagenes['objetivito'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
-        
+        if self.mountain!=1:
+            mountain=pygame.image.load(self.mountain)
+            little_mountain=pygame.image.load(self.little_mountain)
+        elif self.mountain==1:
+              mountain=1
+              little_mountain==1
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                                           #Limites de la imagen de fondo    
@@ -488,8 +495,10 @@ class mundo:
             posobjetivo1=(posobjetivo[0]-50,posobjetivo[1]-50)
             
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
-            self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))        
-             
+            if mountain==1:
+             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))        
+            elif mountain!=1:
+             self.dibujar_img(((plano,posplano),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3)))) 
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
@@ -573,7 +582,8 @@ p_space={'g':0.000001,
           'px':0,
           'py':-2000,
           'yi':200,
-          'yf':2350}
+          'yf':2350,
+          'mountain':1,'little_mountain':1}
 
 p_tierra={'g':9.8,
           
@@ -586,7 +596,8 @@ p_tierra={'g':9.8,
           'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350}
+          'yf':3350,
+          'mountain':1,'little_mountain':1}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.mp3",
@@ -596,7 +607,7 @@ p_luna={'g':1.6,
           'im_min':"img/mluna.jpg",'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350}
+          'yf':3350,'mountain':1,'little_mountain':1}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.mp3",
@@ -607,7 +618,8 @@ p_marte={'g':3.721,
           'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350}
+          'yf':3350,'mountain':1,
+          'little_mountain':1}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.mp3",
@@ -618,7 +630,8 @@ p_triton={'g':0.78,
           'px':0,
           'py':-1000,
           'yi':-1850,
-          'yf':1350}
+          'yf':1350,'mountain':"img/montaña.png",
+          'little_mountain':"img/montañita.png"}
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
@@ -635,7 +648,7 @@ while jugar:
         nivel=0
         puntos=0
         while jugar_outro:
-            if nivel==0:
+            if nivel==3:
                 jugar_outro=mundo.main(space)
                 
             
@@ -643,7 +656,7 @@ while jugar:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
                 jugar_outro=mundo.main(marte)   
-            elif nivel==3:
+            elif nivel==0:
                 jugar_outro=mundo.main(triton)
             elif nivel==4:
                 jugar_outro=mundo.main(tierra)
