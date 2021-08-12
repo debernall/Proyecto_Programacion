@@ -617,7 +617,7 @@ p_triton={'g':0.78,
           'im_min':"img/tritonsito.jpg",
           'px':0,
           'py':-1000,
-          'yi':-3300,
+          'yi':-1850,
           'yf':1350}
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
