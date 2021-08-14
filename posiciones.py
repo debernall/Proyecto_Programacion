@@ -11,8 +11,12 @@ import math
 import matplotlib.pyplot as plt
 
 
-def Tiempo(v0,g,theta0,y0):                                                     #Calcula el tiempo final dadas unas condiciones iniciales
-    tf=(v0/g)*(np.sin(theta0)+np.sqrt(((np.sin(theta0))**2)+((2*g*y0)/(v0**2))))
+def Tiempo(v0,g,theta0,y0,xlim,x0):                                                     #Calcula el tiempo final dadas unas condiciones iniciales
+    if g!=0:
+        tf=(v0/g)*(np.sin(theta0)+np.sqrt(((np.sin(theta0))**2)+((2*g*y0)/(v0**2))))
+    else:
+        tf=(xlim-x0)/(v0*np.cos(theta0))
+        print(tf)
     return tf
 
 def Distancia(x,x0,y,y0):                                                       #Calcula un vector con distancias a un punto
@@ -44,7 +48,7 @@ def graficar(impactos,x,y):
         plt.plot(x,y)
     return
 
-def posiciones(x0,y0,theta0,v0,g,e,xlim,epsilon,impactos,max_rebotes):
+def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,epsilon,impactos,max_rebotes):
     x_f=[]
     y_f=[]
     t_f=[]
@@ -68,7 +72,7 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,epsilon,impactos,max_rebotes):
     tt=0
     while (x0<xlim and not(objetivo)) or (not(x0<xlim) and objetivo):                                                                  #MIENTRAS LA POSICION NUEVA A CALCULAR SEA MENOR A LA MAXIMA PERMITIDA
         
-        tf=Tiempo(v0,g,theta0,y0)                                                   #CALCULA LOS VECTORES, t,x,y
+        tf=Tiempo(v0,g,theta0,y0,xlim,x0)                                                   #CALCULA LOS VECTORES, t,x,y
         t=np.arange(t0,tf,epsilon)
         x=Vectorx(x0,v0,theta0,t)
         y=Vectory(y0,v0,theta0,g,t)
@@ -181,30 +185,56 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,epsilon,impactos,max_rebotes):
             x0=xlim+1
         elif x0<0:
             x0=xlim+1
+        elif g==0:
+            x0=xlim+1
         tt+=1                                                                       #CONTADOR DE MAXIMOS MOVIMIENTOS
-           
+        sxliminf=np.where(xc<0)[0]
+        sxlimsup=np.where(xc>xlim)[0]
+        sylimsup=np.where(yc>ylim)[0]
+        if len(sxliminf)!=0:
+            kc=sxliminf[0]
+            xc=np.copy(xc[:kc])
+            yc=np.copy(yc[:kc])
+            tc=np.copy(tc[:kc])
+            x0=xlim+1
+        elif len(sxlimsup)!=0:
+            kc=sxlimsup[0]
+            xc=np.copy(xc[:kc])
+            yc=np.copy(yc[:kc])
+            tc=np.copy(tc[:kc])
+            x0=xlim+1
+        elif len(sylimsup)!=0:
+            kc=sylimsup[0]
+            xc=np.copy(xc[:kc])
+            yc=np.copy(yc[:kc])
+            tc=np.copy(tc[:kc])
+            x0=xlim+1
+            
         x_f=np.concatenate((x_f,xc))
         y_f=np.concatenate((y_f,yc))
         t_f=np.concatenate((t_f,tc))
         #graficar(impactos,xc,yc)
         #plt.plot(yc)
+        #LIMITES
+
         
     return (x_f,y_f,t_f,impactos)
 
 
 #VARIABLES NECESARIAS PARA OBTENER LOS VECTORES POSICION
 x0=0                            #POSICION INICIAL
-y0=6
+y0=0
 theta0=1.6*math.pi/4            #ANGULO DE LANZAMIENTO
-v0=14                           #MAGNITUD DE VELOCIDAD INICIAL
-g=10                            
+v0=16                           #MAGNITUD DE VELOCIDAD INICIAL
+g=9.8                            
 e=0.8                           #FACTOR DE PERDIDA DE VELOCIDAD
 xlim=100                        #LONGITUD MAXIMA DEL TABLERO EN X
+ylim=10000
 epsilon=0.0001                  #ESPACIAMIENTO DEL VECTOR TIEMPO
 impactos=((20,3,1.1,False),(35,8,2,True),(10,8,2,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
 max_rebotes=10
 
 
-a=posiciones(x0,y0,theta0,v0,g,e,xlim,epsilon,impactos,max_rebotes)
+a=posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,epsilon,impactos,max_rebotes)
 graficar(a[3],a[0],a[1])
 
