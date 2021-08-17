@@ -816,7 +816,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(marte)
+                jugar_outro=mundo.main(space)
                 
             
             elif nivel==1:
