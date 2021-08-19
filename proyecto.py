@@ -414,13 +414,14 @@ class mundo:
         gameover=False
         image_alpha=254
         #
-       # choque=False
-        #
+       #choque=False
+        nss=20 
+       #
+        
         sonidofondo.set_volume(0.8)
         sonidofondo.play(-1)
         while(running):
-            ns=clock.tick(30)
-                                                                                                                                    #Periodo de recarga de imagen
+            ns=clock.tick(30)                                                                                                                      #Periodo de recarga de imagen
             for event in pygame.event.get():            
                 if event.type == pygame.QUIT:                                                                                       #Permite salir del juego
                     pygame.quit()
@@ -458,7 +459,6 @@ class mundo:
                     
                     elif event.key==pygame.K_RIGHT and disparo==False:                                                              #Tecla derecha rotación en sentido negativo
                         speedangle=-1
-                        
                     elif event.key==pygame.K_a and colision==True:
                         puntos+=1
                         nivel+=1
@@ -489,6 +489,8 @@ class mundo:
                         
                     elif event.key==pygame.K_RIGHT and disparo==False:                                                              #Dejar de presionar tecla derecha detiene la rotación
                         speedangle=0
+                    elif event.key==pygame.K_UP and disparo==True:                                                              #Tecla derecha rotación en sentido negativo
+                        ns=clock.tick(60)
             
             
             #ROTACION DEL CAÑON
@@ -534,8 +536,6 @@ class mundo:
              self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))        
             elif mountain!=1:
              self.dibujar_img(((plano,posplano),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3)))) 
-            #if rover==1:
-             #self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))        
             elif rover!=1:
              self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550)))) 
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
@@ -550,53 +550,33 @@ class mundo:
             c=pos_rover
             d=pos_rovertierra
             e=pos_phoenix
-            #if self.rover!=1:
             if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<250:
-            #roverrect=rover.get_rect(center=pos_rover)
-            #c=roverrect.center
-            #rrover=((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))
-            
-           # if self.rover!=1 and rrover<150:
-                    #step=(0,0)
-                    #t=0
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 #self.dibujar_img(explosion,pos_rover)
-                gameover==True
-                #step=(0,0)
-                #t=0
-                #choque=True
-                #menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
+                gameover=True
                 t=0
-                #sonidofondo.stop()
                 #CHOQUE CON ROVERTIERRA
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<200:   
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rovertierra),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
-                gameover==True
-               # step=(1,1)
-                #menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
+                gameover=True
                 t=0
                 #sonidofondo.stop()
             if self.rover!=1 and ((((e[0]-b[0])**2)+((e[1]-b[1])**2))**(0.5))<200:   
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_phoenix),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
-                gameover==True
+                gameover=True
                 #step=(0,0)
                 #menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
                 t=0  
-                    #
             t=t+n
             t1+=n
-            
+            if t1>9:
+                ns=clock.tick(60)
             # CONDICION DE IMPACTO
             if r<50:
                 step=(0,0)
                 t=0
                 colision=True
                 sonidofondo.stop()
-            #if rrover<50:
-             #   step=(0,0)
-              #  t=0
-               ##choque=True
-                #sonidofondo.stop()
             # ESTADOS DEL JUEGO
             if colision==True:
                 menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
@@ -816,7 +796,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(marte)
+                jugar_outro=mundo.main(space)
                 
             
             elif nivel==1:
