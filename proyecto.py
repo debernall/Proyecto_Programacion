@@ -345,9 +345,7 @@ class mundo:
         objetivito=pygame.image.load(imagenes['objetivito'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
-        #
         
-        #
         if self.mountain!=1:
             mountain=pygame.image.load(self.mountain)
             little_mountain=pygame.image.load(self.little_mountain)
@@ -365,6 +363,15 @@ class mundo:
               rover=1   
               rovertierra=1 
               phoenix=1 
+           
+  #      if self.rover!=1:
+   #        rover=pygame.image.load(self.rover)
+    #       roversito=pygame.image.load(self.roversito)
+     #   if self.rovertierra!=1:
+      ##    rovertierrita=pygame.image.load(self.rovertierrita)
+      #  if self.phoenix!=1:
+       #     phoenix=pygame.image.load(self.phoenix)
+        #    fenixito=pygame.image.load(self.fenixito)
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                                           #Limites de la imagen de fondo    
@@ -413,8 +420,6 @@ class mundo:
         disparo=False
         gameover=False
         image_alpha=254
-        #
-       #choque=False
         nss=20 
        #
         
@@ -778,11 +783,82 @@ p_triton={'g':0.78,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1}
+
+p_luna2={'g':1.6,
+          'im_fondo': "img/luna1.jpg",
+          'son_mundo':"sound/sonidofondo2.mp3",
+          'factor_perdida':2,
+          'nombre_planeta':'LUNA',
+          'vlimt':32,
+          'im_min':"img/mluna.jpg",'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
+          'im_objetivo2':"img/phoenix.png",
+          'im_roversito':"img/roversito.png",
+          'im_rovertierrita':"img/rovertierrita.png",
+          'im_fenixito':"img/fenixito.png"}
+p_triton2={'g':0.78,
+          'im_fondo': "img/triton.jpg",
+          'son_mundo':"sound/sonidofondo4.mp3",
+          'factor_perdida':2,
+          'nombre_planeta':'TRITON',
+          'vlimt':22,
+          'im_min':"img/tritonsito.jpg",
+          'px':0,
+          'py':-1000,
+          'yi':-1850,
+          'yf':1350,'mountain':"img/montaña.png",
+          'little_mountain':"img/montañita.png",'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
+          'im_objetivo2':"img/phoenix.png",
+          'im_roversito':"img/roversito.png",
+          'im_rovertierrita':"img/rovertierrita.png",
+          'im_fenixito':"img/fenixito.png"}
+p_marte2={'g':3.721,
+          'im_fondo': "img/marte.jpg",
+          'son_mundo':"sound/sonidofondo3.mp3",
+          'factor_perdida':2,
+          'nombre_planeta':'MARTE',
+          'vlimt':51,
+          'im_min':"img/mmarte.jpg",
+          'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
+          'im_objetivo2':"img/phoenix.png",
+          'im_roversito':"img/roversito.png",
+          'im_rovertierrita':"img/rovertierrita.png",
+          'im_fenixito':"img/fenixito.png"}
+p_tierra2={'g':9.8,
+          
+          'im_fondo': "img/pradera (2).jpg",
+          'son_mundo':"sound/sonidofondo1.wav",
+          'factor_perdida':4,
+          'nombre_planeta':'TIERRA',
+          'vlimt':81,
+          'im_min':"img/mpradera.jpg",
+          'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,
+          'mountain':1,'little_mountain':1,'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
+          'im_objetivo2':"img/phoenix.png",
+          'im_roversito':"img/roversito.png",
+          'im_rovertierrita':"img/rovertierrita.png",
+          'im_fenixito':"img/fenixito.png"}
+
+
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
 marte=mundo(list(p_marte.values()))
 triton=mundo(list(p_triton.values()))
+luna2=mundo(list(p_luna2.values()))
+tierra2=mundo(list(p_tierra2.values()))
+marte2=mundo(list(p_marte2.values()))
+triton2=mundo(list(p_triton2.values()))
 
 
 ###############################         EJECUCION DEL JUEGO         ##################################     
@@ -796,9 +872,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(space)
-                
-            
+                jugar_outro=mundo.main(space)  
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
@@ -807,6 +881,14 @@ while jugar:
                 jugar_outro=mundo.main(triton)
             elif nivel==4:
                 jugar_outro=mundo.main(tierra)
+            elif nivel==5:
+                jugar_outro=mundo.main(luna2) 
+            elif nivel==6:
+                jugar_outro=mundo.main(marte2)   
+            elif nivel==7:
+                jugar_outro=mundo.main(triton2)
+            elif nivel==8:
+                jugar_outro=mundo.main(tierra2)
             else:
                 jugar_outro=False
                 
