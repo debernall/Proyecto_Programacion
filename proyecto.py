@@ -26,9 +26,17 @@ letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',28)
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
 letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
 # UBICACIONES DE ARCHIVOS
-lista_instrucciones=('Inst/instruccion1.txt','Inst/instruccion2.txt','Inst/instruccion3.txt','Inst/instruccion4.txt','Inst/instruccion5.txt')
+lista_instrucciones=('Inst/instruccion1.txt',
+                     'Inst/instruccion2.txt',
+                     'Inst/instruccion3.txt',
+                     'Inst/instruccion4.txt',
+                     'Inst/instruccion5.txt')
 lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png')
-lista_integrantes=('brian santiago vasquez sarin','jeisson andres abril masmelas','daniel eduardo bernal lozano','nelson andres rodriguez mora','sebastian augusto ojeda franco')
+lista_integrantes=('brian santiago vasquez sarin',
+                   'jeisson andres abril masmelas',
+                   'daniel eduardo bernal lozano',
+                   'nelson andres rodriguez mora',
+                   'sebastian augusto ojeda franco')
 imagenes={'intro':"img/fondo_intro.jpg",
           'bola':"img/bolacañonpequeña.png",
           'bolita':"img/redsita1.png", 
@@ -322,8 +330,8 @@ class mundo:
     def main(self):                      ################puntos
         global puntos
         global nivel
-        
         global next_level
+        
         #PROPIEDADES INICIALES PYGAME
         pygame.init()
         screen= pygame.display.set_mode((800,700))
@@ -344,14 +352,18 @@ class mundo:
         objetivo=pygame.image.load(imagenes['objetivo'])
         objetivito=pygame.image.load(imagenes['objetivito'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
+        
+        #CARGA DE SONIDO DE FONDO
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
         
+        #DIBUJAR MONTAÑA
         if self.mountain!=1:
             mountain=pygame.image.load(self.mountain)
             little_mountain=pygame.image.load(self.little_mountain)
         elif self.mountain==1:
               mountain=1
-              
+
+        #DIBUJAR OBSTACULOS
         if self.rover!=1:
             rover=pygame.image.load(self.rover)
             rovertierra=pygame.image.load(self.rovertierra)
@@ -372,15 +384,15 @@ class mundo:
       #  if self.phoenix!=1:
        #     phoenix=pygame.image.load(self.phoenix)
         #    fenixito=pygame.image.load(self.fenixito)
+        
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
-        xf=3600                                                                                                           #Limites de la imagen de fondo    
+        xf=3600                                                                                     #Limites de la imagen de fondo    
         
-        posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
-        
+        posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
-        yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))
+        yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))          #Parece ser un ajuste a la parabola de seguridad
         posobjetivo=(xo,yo)
         
         posplano=self.xp,self.yp
@@ -388,19 +400,21 @@ class mundo:
         pos_canon=(x0-64,y0-64)
         pos_canonsito=(20,400+(self.yf*0.05))
         pos_bolita=(20,400+(self.yf*0.05))
-        running=True                                                                                                                #Variable que mantiene activo el juego
+        
+        
+        running=True                                                                                    #Variable que mantiene activo el juego
         posimg=x0,y0
         distancia=((posobjetivo[0]-posimg[0])/self.escala),-((posobjetivo[1]-posimg[1])/self.escala)
         posobjetivito=(20+(distancia[0]*0.5),400+(self.yf*0.05)-(distancia[1]*0.5))
         pos_bola= -x0,-y0  
-        pos_bolita=-x0,-y0                                                                                                 #Declaración de posición inicial de la bala
-        pos_expl= -x0,-y0                                                                                                           #Posición de la explosión antes de disparar
+        pos_bolita=-x0,-y0                                                                              #Declaración de posición inicial de la bala
+        pos_expl= -x0,-y0                                                                               #Posición de la explosión antes de disparar
         pos_expli= -x0,-y0
-        step= 0,0                                                                                                                   #vector velocidad
-        angle=0                                                                                                                     #Declaración de variable ángulo del cañon
-        speedangle=0                                                                                                                #Variable que almacena la rotación del cañon                                         
+        step= 0,0                                                                                       #vector velocidad
+        angle=0                                                                                         #Declaración de variable ángulo del cañon
+        speedangle=0                                                                                    #Variable que almacena la rotación del cañon                                         
         n=0
-        v0=1                                                                                                                        #Velocidad inicial
+        v0=1                                                                                            #Velocidad inicial
         vi=1
         vr=10
         vrt=10
@@ -408,7 +422,7 @@ class mundo:
         vrpx=10
         speedv0=0
         t=0  
-        t1=0                                                                                                                        #Variable de tiempo
+        t1=0                                                                                           #Variable de tiempo
         pos_rover=1500,-2000
         pos_rovertierra=400,250
         pos_phoenix=1000,-1000
@@ -420,8 +434,6 @@ class mundo:
         disparo=False
         gameover=False
         image_alpha=254
-        nss=20 
-       #
         
         sonidofondo.set_volume(0.8)
         sonidofondo.play(-1)
@@ -434,8 +446,7 @@ class mundo:
                 
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                                                  #Evento presionar tecla
-                    if event.key==pygame.K_SPACE: 
-#####                                                                                  #Tecla espacio 
+                    if event.key==pygame.K_SPACE:                                                                                   #Tecla espacio 
                         if colision==True:# and choque==False:
                             step=(0,0)
                             
@@ -737,7 +748,7 @@ p_tierra={'g':9.8,
           'im_fenixito':1}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
-          'son_mundo':"sound/sonidofondo2.mp3",
+          'son_mundo':"sound/sonidofondo2.wav",
           'factor_perdida':2,
           'nombre_planeta':'LUNA',
           'vlimt':32,
@@ -751,7 +762,7 @@ p_luna={'g':1.6,
           'im_fenixito':1}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
-          'son_mundo':"sound/sonidofondo3.mp3",
+          'son_mundo':"sound/sonidofondo3.wav",
           'factor_perdida':2,
           'nombre_planeta':'MARTE',
           'vlimt':51,
@@ -768,7 +779,7 @@ p_marte={'g':3.721,
           'im_fenixito':"img/fenixito.png"}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
-          'son_mundo':"sound/sonidofondo4.mp3",
+          'son_mundo':"sound/sonidofondo4.wav",
           'factor_perdida':2,
           'nombre_planeta':'TRITON',
           'vlimt':22,
@@ -786,7 +797,7 @@ p_triton={'g':0.78,
 
 p_luna2={'g':1.6,
           'im_fondo': "img/luna1.jpg",
-          'son_mundo':"sound/sonidofondo2.mp3",
+          'son_mundo':"sound/sonidofondo2.wav",
           'factor_perdida':2,
           'nombre_planeta':'LUNA',
           'vlimt':32,
@@ -800,7 +811,7 @@ p_luna2={'g':1.6,
           'im_fenixito':"img/fenixito.png"}
 p_triton2={'g':0.78,
           'im_fondo': "img/triton.jpg",
-          'son_mundo':"sound/sonidofondo4.mp3",
+          'son_mundo':"sound/sonidofondo4.wav",
           'factor_perdida':2,
           'nombre_planeta':'TRITON',
           'vlimt':22,
@@ -816,7 +827,7 @@ p_triton2={'g':0.78,
           'im_fenixito':"img/fenixito.png"}
 p_marte2={'g':3.721,
           'im_fondo': "img/marte.jpg",
-          'son_mundo':"sound/sonidofondo3.mp3",
+          'son_mundo':"sound/sonidofondo3.wav",
           'factor_perdida':2,
           'nombre_planeta':'MARTE',
           'vlimt':51,
