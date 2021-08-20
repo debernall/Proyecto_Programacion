@@ -30,8 +30,8 @@ lista_instrucciones=('Inst/instruccion1.txt',
                      'Inst/instruccion2.txt',
                      'Inst/instruccion3.txt',
                      'Inst/instruccion4.txt',
-                     'Inst/instruccion5.txt')
-lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png')
+                     'Inst/instruccion5.txt','Inst/instruccion7.txt')
+lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png','img/rover.png')
 lista_integrantes=('brian santiago vasquez sarin',
                    'jeisson andres abril masmelas',
                    'daniel eduardo bernal lozano',
@@ -425,6 +425,10 @@ class mundo:
         t=0  
         t1=0                                                                                           #Variable de tiempo
         pos_rover=1500,-2000
+        #
+        #pos_rover=[]
+        #pos_rover=[1500,-2000]
+        #
         pos_rovertierra=400,250
         pos_phoenix=1000,-1000
         distanciarover=pos_rover[0]-x0
@@ -668,6 +672,17 @@ class mundo:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
              pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(vrpx,vrpy))
+            
+            if rover!=1 and nivel==2:
+             pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
+             pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
+             pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
+             
+            if rover!=1 and nivel>4:
+             pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(2*vr,0))
+             pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(2*vrt,0))
+             pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
+             
             # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
             horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
             distanciarover=(pos_rover[0]-pos_base[0])*0.05
@@ -692,8 +707,14 @@ class mundo:
             
             if pos_rover[0]>=posplano[0]+4000:
                 vr=-vr
+                #list(pos_rover)
+                #pos_rover[1]=-2500
+                #tuple(pos_rover)
             if pos_rover[0]<=posplano[0]:
                 vr=-vr
+                #list(pos_rover)
+                #pos_rover[1]=-2000
+                #tuple(pos_rover)
             if pos_rovertierra[0]>=posplano[0]+4000:
                 vrt=-vrt
             if pos_rovertierra[0]<=posplano[0]:
@@ -893,7 +914,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(space)  
+                jugar_outro=mundo.main(marte)  
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
