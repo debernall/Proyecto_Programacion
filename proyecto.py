@@ -393,8 +393,10 @@ class mundo:
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
         yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))          #Parece ser un ajuste a la parabola de seguridad
+        #xo=x0+200
+        #yo=y0-200
         posobjetivo=(xo,yo)
-        
+
         posplano=self.xp,self.yp
         pos_canona=(x0,y0)
         pos_canon=(x0-64,y0-64)
@@ -440,19 +442,21 @@ class mundo:
         sonidofondo.play(-1)
         
         while(running):
+
+                
             ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
             for event in pygame.event.get():            
                 if event.type == pygame.QUIT:                                                          #Permite salir del juego
                     pygame.quit()
-                    #quit()
+                    quit()
                 
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
                     if event.key==pygame.K_SPACE:                                                      #Tecla espacio 
-                        #if colision==True:# and choque==False:                                        #NO TIENE EFECTO 
-                        #    step=(0,0)
+                        if colision==True:# and choque==False:                                        #NO TIENE EFECTO 
+                            step=(0,0)
                             
-                        if disparo==False:
+                        elif disparo==False:
                             v_x0=vi*np.cos(np.radians(angle))                                         #Velocidad inicial en x
                             v_y0=-vi*np.sin(np.radians(angle))                                                                      #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)           
                             step=v_x0,v_y0                                                                                          #Tras presionar la tecla espacio 
@@ -464,7 +468,36 @@ class mundo:
                             disparo=True
                             sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
-                            speedv0=0 
+                            speedv0=0
+                            speedangle=0
+                            ESCALA=self.escala
+                            
+                            X0=int(x0/ESCALA)
+                            Y0=4000+self.yp-y0
+                            Y0=int(Y0/ESCALA)
+                            #print(Y0)
+                            YOBJ=4000+self.yp-yo
+                            YOBJ=int(YOBJ/ESCALA)
+                            THETA0=np.radians(angle)
+                            V0=v0
+                            G=self.g
+                            E=self.perdida                                                              #Debe ser un numero entre 0 y 1
+                            XLIM=4000-X0-350
+                            XLIM=int(XLIM/ESCALA)
+                            YLIM=int(8000/ESCALA)
+                            YLIMINF=Y0-1
+                            EPSILON=0.01                                                              #ESPACIAMIENTO DEL VECTOR TIEMPO
+                            IMPACTOS=[]
+                            IMPACTOS.append((X0+(xo-x0)/10,YOBJ,5,True))
+                            MAX_REBOTES=10
+                            #print(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
+                            aa=posiciones.posiciones(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
+                            #posiciones.graficar(aa[3],aa[0],aa[1])
+                            #print(aa[2])
+                            #for u in aa[2]:
+                                #print(u)
+                            #print('adsdasd',aa[2])
+                            #AQUÍ SE EJECUTA LA FUNCION CALCULAR VECTORES X,Y
                             
                     elif event.key==pygame.K_UP and disparo==False:                                     #Tecla izquierda rotación en sentido positivo
                         speedv0=1
@@ -514,6 +547,12 @@ class mundo:
                     elif event.key==pygame.K_UP and disparo==True:                                      #Tecla derecha rotación en sentido negativo
                         ns=clock.tick(60)
             
+            if disparo==True:
+                k2=t1*0.03317
+                k1=aa[2].flat[np.abs(aa[2]-k2).argmin()]
+                k=np.where(aa[2]==k1)[0][0]
+                #print(k2,k1,k)    
+            
             
             #ROTACION DEL CAÑON
             angle=angle+speedangle                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
@@ -556,6 +595,7 @@ class mundo:
             explosionsita_rotated.set_alpha(image_alpha)
             pos_bola1=(pos_bola[0]-8,pos_bola[1]-8)
             posobjetivo1=(posobjetivo[0]-50,posobjetivo[1]-50)
+
             
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1:
@@ -565,6 +605,7 @@ class mundo:
             elif rover!=1:
              self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550)))) 
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
+            
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
@@ -612,10 +653,10 @@ class mundo:
                 t=0
                 
             # REBOTES DE LA BOLA
-            if posplano[0]<-(xf-20) or posplano[0]>= x0 :
-                step=(0,0)
-                sonidofondo.stop()
-                gameover=True                                                                                                      #   AQUI HAY UNA SALIDA SI SE IMPACTA CON LAS PAREDES    
+            # if posplano[0]<-(xf-20) or posplano[0]>= x0 :
+            #     step=(0,0)
+            #     sonidofondo.stop()
+            #     gameover=True                                                                                                      #   AQUI HAY UNA SALIDA SI SE IMPACTA CON LAS PAREDES    
             
             #********************************** USO DE LA FUNCION POSICIONES *******************************
             
@@ -659,35 +700,61 @@ class mundo:
             
             
             # CALCULO DE NUEVAS POSICIONES
-            posplano=self.nueva_pos(posplano,step,t,10,1,0.022,(0,0)) 
-            posobjetivo=self.nueva_pos(posobjetivo,step,t,10,1,0.022,(0,0))       
-            pos_expl=self.nueva_pos(pos_expl,step,t,10,1,0.022,(0,0))
-            pos_canon=self.nueva_pos(pos_canon,step,t,10,1,0.022,(0,0)) 
-            pos_bolita=self.nueva_pos(pos_bolita,(-step[0],-step[1]),t,0.5,-1,0.0011,(0,0))
+            if disparo==True:
+                #print(posplano,-10*(aa[0][k]-40),self.yp+10*(aa[1][k]-65))
+                #print(posobjetivo,self.yp+10*(aa[1][k]+35)+yo,k)
+                
+                posplano=-10*(aa[0][k]),self.yp+10*(aa[1][k]-65)
+                posobjetivo=(-10*(aa[0][k]-40)+xo,10*(aa[1][k]+35)+yo-4000-self.yp)
+                #print(posobjetivo,10*(aa[1][k]+35)+yo-4000-self.yp,YOBJ,yo-4000-self.yp)
+                pos_expl=850-10*(aa[0][k]),10*(aa[1][k]-65)+y0-100-(3000+self.yp)
+                #print(pos_expl[1],10*(aa[1][k]-65)+y0-100-(3000+self.yp),3000+self.yp,y0-100)
+                pos_canon=336-10*(aa[0][k]-40),250+10*(aa[1][k]-65+3.6)-3000-self.yp
+                #print(pos_canon,336-10*(aa[0][k]-40),250+10*(aa[1][k]-65+3.6)-3000-self.yp)
+                #print(len(aa[0]),k)
+                #print(pos_bolita,(0.5*(aa[0][k])),-self.yp-0.5*(aa[1][k])-1400)
+                pos_bolita=0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp
+                #print(pos_bolita,0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp,2000+self.yp)
+                
+             #   print(pos_canon,10*(aa[1][k]+35+13.6)+yo-4000-self.yp)
+            
+                
+                if (k+4)>len(aa[0]):
+                    sonidofondo.stop()
+                    gameover=True 
+            
+            
+            #posplano=self.nueva_pos(posplano,step,t,10,1,0.022,(0,0)) 
+            #posobjetivo=self.nueva_pos(posobjetivo,step,t,10,1,0.022,(0,0))       
+            #pos_expl=self.nueva_pos(pos_expl,step,t,10,1,0.022,(0,0))
+            #pos_canon=self.nueva_pos(pos_canon,step,t,10,1,0.022,(0,0)) 
+            
+            #pos_bolita=self.nueva_pos(pos_bolita,(-step[0],-step[1]),t,0.5,-1,0.0011,(0,0))
             if rover!=1:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
              pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(vrpx,vrpy))
+             
             # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
-            horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
-            distanciarover=(pos_rover[0]-pos_base[0])*0.05
-            distanciarovertierra=(pos_rovertierra[0]-pos_base[0])*0.05
-            distanciaphoenix=(pos_phoenix[0]-pos_base[0])*0.05,560+(pos_phoenix[1]-pos_base[1])*0.05
-            if bolarect.colliderect(horizonte_rect) and t>0.3:                                                                      #t>0.3 evita rebotes debidos a una lectura anomala 
-                if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
-                    step=(0,0)
-                    sonidofondo.stop()
-                    gameover = True                                                                                                #   AQUI HAY UNA SALIDA SI REBOTA 
+            # horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
+            # distanciarover=(pos_rover[0]-pos_base[0])*0.05
+            # distanciarovertierra=(pos_rovertierra[0]-pos_base[0])*0.05
+            # distanciaphoenix=(pos_phoenix[0]-pos_base[0])*0.05,560+(pos_phoenix[1]-pos_base[1])*0.05
+            # if bolarect.colliderect(horizonte_rect) and t>0.3:                                                                      #t>0.3 evita rebotes debidos a una lectura anomala 
+            #     if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
+            #         step=(0,0)
+            #         sonidofondo.stop()
+            #         gameover = True                                                                                                #   AQUI HAY UNA SALIDA SI REBOTA 
                     
-                else:
-                    t=0
-                    step=self.f_rebote(step,self.perdida)
+            #     else:
+            #         t=0
+            #         step=self.f_rebote(step,self.perdida)
 
             # LIMITE SUPERIOR
-            if posplano[1]>(y0-50):
-                step=(0,0)
-                sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
-                gameover=True
+            # if posplano[1]>(y0-50):
+            #     step=(0,0)
+            #     sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
+            #     gameover=True
             #print(distanciaphoenix)
             
             if pos_rover[0]>=posplano[0]+4000:
@@ -720,11 +787,11 @@ class mundo:
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################     
-p_space={'g':0.000001,
+p_space={'g':0.0001,
           
           'im_fondo': "img/nebula.png",
           'son_mundo':"sound/sonidofondo0.wav",
-          'factor_perdida':0,
+          'factor_perdida':1,
           'nombre_planeta':'ESPACIO',
           'vlimt':100,
           'im_min':"img/mmnebula.png",
@@ -743,7 +810,7 @@ p_tierra={'g':9.8,
           
           'im_fondo': "img/pradera (2).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':4,
+          'factor_perdida':0.9,
           'nombre_planeta':'TIERRA',
           'vlimt':81,
           'im_min':"img/mpradera.jpg",
@@ -759,7 +826,7 @@ p_tierra={'g':9.8,
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
-          'factor_perdida':2,
+          'factor_perdida':0.9,
           'nombre_planeta':'LUNA',
           'vlimt':32,
           'im_min':"img/mluna.jpg",'px':0,
@@ -773,7 +840,7 @@ p_luna={'g':1.6,
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
-          'factor_perdida':2,
+          'factor_perdida':0.9,
           'nombre_planeta':'MARTE',
           'vlimt':51,
           'im_min':"img/mmarte.jpg",
@@ -790,7 +857,7 @@ p_marte={'g':3.721,
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
-          'factor_perdida':2,
+          'factor_perdida':0.9,
           'nombre_planeta':'TRITON',
           'vlimt':22,
           'im_min':"img/tritonsito.jpg",
@@ -808,7 +875,7 @@ p_triton={'g':0.78,
 p_luna2={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
-          'factor_perdida':2,
+          'factor_perdida':0.9,
           'nombre_planeta':'LUNA',
           'vlimt':32,
           'im_min':"img/mluna.jpg",'px':0,
@@ -822,7 +889,7 @@ p_luna2={'g':1.6,
 p_triton2={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
-          'factor_perdida':2,
+          'factor_perdida':0.9,
           'nombre_planeta':'TRITON',
           'vlimt':22,
           'im_min':"img/tritonsito.jpg",
@@ -838,7 +905,7 @@ p_triton2={'g':0.78,
 p_marte2={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
-          'factor_perdida':2,
+          'factor_perdida':0.9,
           'nombre_planeta':'MARTE',
           'vlimt':51,
           'im_min':"img/mmarte.jpg",
@@ -856,7 +923,7 @@ p_tierra2={'g':9.8,
           
           'im_fondo': "img/pradera (2).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':4,
+          'factor_perdida':0.9,
           'nombre_planeta':'TIERRA',
           'vlimt':81,
           'im_min':"img/mpradera.jpg",
