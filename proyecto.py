@@ -5,7 +5,6 @@ from pygame.constants import MOUSEBUTTONDOWN
 import codecs
 import menu
 import posiciones
-import math
 
 ###############################      DECLARACIONES INICIALES        ##################################
 # COLORES
@@ -129,7 +128,7 @@ def instrucciones_juego(numero_instruccion):
 
 
 def intro_game():
-    print("asdasd!")                                                                                                                   #Pantalla de intro
+                                                                                                              #Pantalla de intro
     intro=True
     pygame.init()
     screen= pygame.display.set_mode((948,720))
@@ -725,7 +724,7 @@ class mundo:
                     sonidofondo.stop()
                     gameover=True 
             
-            print(posplano)
+            #print(posplano)
             #posplano=self.nueva_pos(posplano,step,t,10,1,0.022,(0,0)) 
             #posobjetivo=self.nueva_pos(posobjetivo,step,t,10,1,0.022,(0,0))       
             #pos_expl=self.nueva_pos(pos_expl,step,t,10,1,0.022,(0,0))
