@@ -398,6 +398,7 @@ class mundo:
         posplano=self.xp,self.yp
         pos_canona=(x0,y0)
         pos_canon=(x0-64,y0-64)
+        
         pos_canonsito=(20,400+(self.yf*0.05))
         pos_bolita=(20,400+(self.yf*0.05))
         
@@ -405,7 +406,7 @@ class mundo:
         running=True                                                                                    #Variable que mantiene activo el juego
         posimg=x0,y0
         distancia=((posobjetivo[0]-posimg[0])/self.escala),-((posobjetivo[1]-posimg[1])/self.escala)
-        posobjetivito=(20+(distancia[0]*0.5),400+(self.yf*0.05)-(distancia[1]*0.5))
+        posobjetivito=(20+(distancia[0]*0.5),400+(self.yf*0.05)-(distancia[1]*0.5))                     #Distancia al objetivo
         pos_bola= -x0,-y0  
         pos_bolita=-x0,-y0                                                                              #Declaración de posición inicial de la bala
         pos_expl= -x0,-y0                                                                               #Posición de la explosión antes de disparar
@@ -437,21 +438,22 @@ class mundo:
         
         sonidofondo.set_volume(0.8)
         sonidofondo.play(-1)
+        
         while(running):
-            ns=clock.tick(30)                                                                                                                      #Periodo de recarga de imagen
+            ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
             for event in pygame.event.get():            
-                if event.type == pygame.QUIT:                                                                                       #Permite salir del juego
+                if event.type == pygame.QUIT:                                                          #Permite salir del juego
                     pygame.quit()
-                    quit()
+                    #quit()
                 
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
-                elif event.type == pygame.KEYDOWN:                                                                                  #Evento presionar tecla
-                    if event.key==pygame.K_SPACE:                                                                                   #Tecla espacio 
-                        if colision==True:# and choque==False:
-                            step=(0,0)
+                elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
+                    if event.key==pygame.K_SPACE:                                                      #Tecla espacio 
+                        #if colision==True:# and choque==False:                                        #NO TIENE EFECTO 
+                        #    step=(0,0)
                             
-                        elif disparo==False:
-                            v_x0=vi*np.cos(np.radians(angle))                                                                       #Velocidad inicial en x
+                        if disparo==False:
+                            v_x0=vi*np.cos(np.radians(angle))                                         #Velocidad inicial en x
                             v_y0=-vi*np.sin(np.radians(angle))                                                                      #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)           
                             step=v_x0,v_y0                                                                                          #Tras presionar la tecla espacio 
                             n=1
@@ -464,53 +466,57 @@ class mundo:
                             sonidoexplosión.play()
                             speedv0=0 
                             
-                    elif event.key==pygame.K_UP and disparo==False:                                                                 #Tecla izquierda rotación en sentido positivo
+                    elif event.key==pygame.K_UP and disparo==False:                                     #Tecla izquierda rotación en sentido positivo
                         speedv0=1
                    
-                    elif event.key==pygame.K_DOWN and disparo==False:                                                               #Tecla derecha rotación en sentido negativo
+                    elif event.key==pygame.K_DOWN and disparo==False:                                   #Tecla derecha rotación en sentido negativo
                         speedv0=-1
                        
-                    elif (event.key==pygame.K_LEFT and disparo==False):                                                               #Tecla izquierda rotación en sentido positivo
+                    elif (event.key==pygame.K_LEFT and disparo==False):                                 #Tecla izquierda rotación en sentido positivo
                         speedangle=1
                     
-                    elif event.key==pygame.K_RIGHT and disparo==False:                                                              #Tecla derecha rotación en sentido negativo
+                    elif event.key==pygame.K_RIGHT and disparo==False:                                  #Tecla derecha rotación en sentido negativo
                         speedangle=-1
-                    elif event.key==pygame.K_a and colision==True:
+                        
+                    elif event.key==pygame.K_a and colision==True:                                      #Tecla a permite avanzar de nivel y sumar puntos tras choque
                         puntos+=1
                         nivel+=1
                         return True
    
-                    elif event.key==pygame.K_a and gameover==True:
+                    elif event.key==pygame.K_a and gameover==True:                                      #Tecla a permite avanzar de nivel y no sumar puntos sin choque
                         nivel+=1
                         puntos+=0
                         return True
-                    elif event.key==pygame.K_s and gameover==True:
+                    
+                    elif event.key==pygame.K_s and gameover==True:                                      #Tecla s permite avanzar de nivel y no sumar puntos
                         nivel+=0
                         puntos+=0
                         return True    
-                    elif event.key==pygame.K_ESCAPE:                                                                                #Tecla escape sale del juego
+                    
+                    elif event.key==pygame.K_ESCAPE:                                                    #Tecla escape sale del juego
                         running = False
                         sonidofondo.stop()
                         return False      
-                                                                                                                                    #   AQUI HAY UNA SALIDA 
-                elif event.type == pygame.KEYUP:                                                                                    #Eventos dejar de presionar tecla
-                    if event.key==pygame.K_UP and disparo==False:                                                                   #Tecla izquierda rotación en sentido positivo
+
+                elif event.type == pygame.KEYUP:                                                        #Eventos dejar de presionar tecla
+                    if event.key==pygame.K_UP and disparo==False:                                       #Tecla izquierda rotación en sentido positivo
                         speedv0=0
                         
-                    elif event.key==pygame.K_DOWN and disparo==False:                                                               #Tecla derecha rotación en sentido negativo
+                    elif event.key==pygame.K_DOWN and disparo==False:                                   #Tecla derecha rotación en sentido negativo
                         speedv0=0   
                         
-                    elif event.key==pygame.K_LEFT and disparo==False:                                                               #Dejar de presionar tecla izquierda detiene la rotación
+                    elif event.key==pygame.K_LEFT and disparo==False:                                   #Dejar de presionar tecla izquierda detiene la rotación
                         speedangle=0
                         
-                    elif event.key==pygame.K_RIGHT and disparo==False:                                                              #Dejar de presionar tecla derecha detiene la rotación
+                    elif event.key==pygame.K_RIGHT and disparo==False:                                  #Dejar de presionar tecla derecha detiene la rotación
                         speedangle=0
-                    elif event.key==pygame.K_UP and disparo==True:                                                              #Tecla derecha rotación en sentido negativo
+                        
+                    elif event.key==pygame.K_UP and disparo==True:                                      #Tecla derecha rotación en sentido negativo
                         ns=clock.tick(60)
             
             
             #ROTACION DEL CAÑON
-            angle=angle+speedangle                                                                                                  #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
+            angle=angle+speedangle                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
             #LIMITES DE ROTACION DEL CAÑON
             if angle>=90:
                 angle=90
@@ -530,12 +536,16 @@ class mundo:
             
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
             image3_rotated , image3_rotated_rect = self.rotate(cañonsito,angle,pos_canonsito)
+            
             explosion_rotated , explosion_rotated_rect = self.rotate(explosion,angle,pos_canona)                                                         #Rota el cañon
             explosionsita_rotated , explosionsita_rotated_rect = self.rotate(explosionsita,angle,pos_canonsito)
+            
             cc = (pos_canon[0]+63-int(image2_rotated.get_width()//2),pos_canon[1]+63-int(image2_rotated.get_height()//2))
             cc1 = (pos_canonsito[0]-int(image3_rotated.get_width()//2),pos_canonsito[1]-int(image3_rotated.get_height()//2))
+            
             cd = (pos_expl[0]-50-int(explosion_rotated.get_width()//2),pos_expl[1]+100-int(explosion_rotated.get_height()//2))
             cd1 = (pos_expli[0]-int(explosionsita_rotated.get_width()//2),pos_expli[1]-int(explosionsita_rotated.get_height()//2))
+            
             pos_base=(pos_canon[0]-35,pos_canon[1]-35)
             pos_basesita=(pos_canonsito[0]-15,pos_canonsito[1]-15)
             
