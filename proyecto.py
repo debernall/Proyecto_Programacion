@@ -128,7 +128,8 @@ def instrucciones_juego(numero_instruccion):
         menu.pygame.display.flip()
 
 
-def intro_game():                                                                                                                   #Pantalla de intro
+def intro_game():
+    print("asdasd!")                                                                                                                   #Pantalla de intro
     intro=True
     pygame.init()
     screen= pygame.display.set_mode((948,720))
@@ -482,9 +483,9 @@ class mundo:
                             V0=v0
                             G=self.g
                             E=self.perdida                                                              #Debe ser un numero entre 0 y 1
-                            XLIM=4000-X0-350
+                            XLIM=4000
                             XLIM=int(XLIM/ESCALA)
-                            YLIM=int(8000/ESCALA)
+                            YLIM=int(4000/ESCALA)
                             YLIMINF=Y0-1
                             EPSILON=0.01                                                              #ESPACIAMIENTO DEL VECTOR TIEMPO
                             IMPACTOS=[]
@@ -704,7 +705,8 @@ class mundo:
                 #print(posplano,-10*(aa[0][k]-40),self.yp+10*(aa[1][k]-65))
                 #print(posobjetivo,self.yp+10*(aa[1][k]+35)+yo,k)
                 
-                posplano=-10*(aa[0][k]),self.yp+10*(aa[1][k]-65)
+                posplano=x0-10*(aa[0][k]),self.yp+10*(aa[1][k]-65)-3000-self.yp
+                #print(posplano,x0-10*(aa[0][k]),self.yp+10*(aa[1][k]-65)-3000-self.yp,-3000-self.yp)
                 posobjetivo=(-10*(aa[0][k]-40)+xo,10*(aa[1][k]+35)+yo-4000-self.yp)
                 #print(posobjetivo,10*(aa[1][k]+35)+yo-4000-self.yp,YOBJ,yo-4000-self.yp)
                 pos_expl=850-10*(aa[0][k]),10*(aa[1][k]-65)+y0-100-(3000+self.yp)
@@ -723,7 +725,7 @@ class mundo:
                     sonidofondo.stop()
                     gameover=True 
             
-            
+            print(posplano)
             #posplano=self.nueva_pos(posplano,step,t,10,1,0.022,(0,0)) 
             #posobjetivo=self.nueva_pos(posobjetivo,step,t,10,1,0.022,(0,0))       
             #pos_expl=self.nueva_pos(pos_expl,step,t,10,1,0.022,(0,0))
