@@ -116,11 +116,17 @@ def instrucciones_juego(numero_instruccion):
                     if numero_instruccion-1 in range(len(lista_instrucciones)):
                         inst=False
                         instrucciones_juego(numero_instruccion-1)
+                    elif numero_instruccion-1 not in range(len(lista_instrucciones)):
+                        inst=False
+                        instrucciones_juego(numero_instruccion=5)
                         
                 elif boton_siguiente.collidepoint(pygame.mouse.get_pos()): 
                     if numero_instruccion+1 in range(len(lista_instrucciones)):
                         inst=False
                         instrucciones_juego(numero_instruccion+1)
+                    elif numero_instruccion+1 not in range(len(lista_instrucciones)):
+                        inst=False
+                        instrucciones_juego(numero_instruccion=0)
                         
         menu.crear_boton(screen_instrucciones,boton_volver_intro,'volver a inicio',letra_botones ,green,yellow,blue,blue)
         menu.crear_boton(screen_instrucciones,boton_anterior,'Anterior',letra_botones ,green,yellow,blue,blue)   
