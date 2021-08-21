@@ -923,13 +923,13 @@ p_luna2={'g':1.6,
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
           'lim_angle':0}
-p_triton2={'g':0.78,
-          'im_fondo': "img/triton.jpg",
+p_ganimedes={'g':0.146,
+          'im_fondo': "img/superluna.png",
           'son_mundo':"sound/sonidofondo4.wav",
           'factor_perdida':0.9,
-          'nombre_planeta':'TRITON',
+          'nombre_planeta':'Ganimedes',
           'vlimt':22,
-          'im_min':"img/tritonsito.jpg",
+          'im_min':"img/superlunamini.png",
           'px':0,
           'py':-1000,
           'yi':-1850,
@@ -988,7 +988,7 @@ triton=mundo(list(p_triton.values()))
 luna2=mundo(list(p_luna2.values()))
 tierra2=mundo(list(p_tierra2.values()))
 marte2=mundo(list(p_marte2.values()))
-triton2=mundo(list(p_triton2.values()))
+ganimedes=mundo(list(p_ganimedes.values()))
 
 
 ###############################         EJECUCION DEL JUEGO         ##################################
@@ -1001,8 +1001,8 @@ while jugar:
         nivel=0
         puntos=0
         while jugar_outro:
-            if nivel==8:
-                jugar_outro=mundo.main(space)
+            if nivel==0:
+                jugar_outro=mundo.main(ganimedes)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
@@ -1017,7 +1017,7 @@ while jugar:
                 jugar_outro=mundo.main(marte2)
             elif nivel==7:
                 jugar_outro=mundo.main(triton2)
-            elif nivel==0:
+            elif nivel==8:
                 jugar_outro=mundo.main(tierra2)
             else:
                 jugar_outro=False
