@@ -40,7 +40,7 @@ lista_integrantes=('brian santiago vasquez sarin',
 imagenes={'intro':"img/fondo_intro.jpg",
           'bola':"img/bolacañonpequeña.png",
           'bolita':"img/redsita1.png",
-          'explosion':"img/explosion1.png",
+          'explosion':"img/explosión.png",
           'explosionsita':"img/explosion1sita.png",
           'objetivo':"img/objetivo1.png",
           'objetivito':"img/objetivito.png",
@@ -557,7 +557,7 @@ class mundo:
                     elif event.key==pygame.K_UP and disparo==True:                                      #Tecla derecha rotación en sentido negativo
                         ns=clock.tick(60)
 
-            if disparo==True:
+            if disparo==True and gameover==False:
                 k2=t1*0.03317
                 k1=aa[2].flat[np.abs(aa[2]-k2).argmin()]
                 k=np.where(aa[2]==k1)[0][0]
@@ -617,26 +617,27 @@ class mundo:
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
 
             #OBTENCION DE COLISION OBJETIVO-BOLA
-            objetivorect=objetivo.get_rect(center=posobjetivo)
+            #objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
-            a=objetivorect.center
+            #a=objetivorect.center
             b=bolarect.center
-            r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
+            #r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
 
            # COLISION CON ROVER, PHOENIX Y ROVERTIERRA
-            c=pos_rover
-            d=pos_rovertierra
+            c=pos_rover[0]-500,pos_rover[1]+88
+            d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix
-            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<250:
+            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<1:
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 #self.dibujar_img(explosion,pos_rover)
                 gameover=True
                 t=0
                 #CHOQUE CON ROVERTIERRA
-            if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<200:
-                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rovertierra),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+            if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<60:
+                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_bola1),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+                step=(0,0)
                 gameover=True
-                t=0
+                #t=0
                 #sonidofondo.stop()
             if self.rover!=1 and ((((e[0]-b[0])**2)+((e[1]-b[1])**2))**(0.5))<200:
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_phoenix),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
@@ -646,14 +647,14 @@ class mundo:
                 t=0
             t=t+n
             t1+=n
-            if t1>9:
-                ns=clock.tick(60)
+            #if t1>9:
+            #    ns=clock.tick(60)
             # CONDICION DE IMPACTO
-            if r<50:
-                step=(0,0)
-                t=0
-                colision=True
-                sonidofondo.stop()
+            #if r<50:
+            #    step=(0,0)
+            #    t=0
+            #    colision=True
+            #    sonidofondo.stop()
             # ESTADOS DEL JUEGO
             if colision==True:
                 menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
@@ -661,6 +662,7 @@ class mundo:
             if gameover==True:
                 menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
                 t=0
+                #step=(0,0)
 
             # REBOTES DE LA BOLA
             # if posplano[0]<-(xf-20) or posplano[0]>= x0 :
@@ -745,6 +747,7 @@ class mundo:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
              pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(vrpx,vrpy))
+             
 
 
             if rover!=1 and nivel==2:
@@ -998,7 +1001,7 @@ while jugar:
         nivel=0
         puntos=0
         while jugar_outro:
-            if nivel==0:
+            if nivel==8:
                 jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
@@ -1014,7 +1017,7 @@ while jugar:
                 jugar_outro=mundo.main(marte2)
             elif nivel==7:
                 jugar_outro=mundo.main(triton2)
-            elif nivel==8:
+            elif nivel==0:
                 jugar_outro=mundo.main(tierra2)
             else:
                 jugar_outro=False
