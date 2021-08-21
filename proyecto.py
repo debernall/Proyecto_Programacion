@@ -631,7 +631,7 @@ class mundo:
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 #self.dibujar_img(explosion,pos_rover)
                 gameover=True
-                t=0
+                #t=0
                 #CHOQUE CON ROVERTIERRA
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<60:
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_bola1),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
@@ -644,7 +644,7 @@ class mundo:
                 gameover=True
                 #step=(0,0)
                 #menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
-                t=0
+                #t=0
             t=t+n
             t1+=n
             #if t1>9:
@@ -923,23 +923,27 @@ p_luna2={'g':1.6,
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
           'lim_angle':0}
-p_ganimedes={'g':0.146,
-          'im_fondo': "img/superluna.png",
+p_ganimedes={'g':1.46,
+          'im_fondo': "img/ganim.png",
           'son_mundo':"sound/sonidofondo4.wav",
-          'factor_perdida':0.9,
+          'factor_perdida':0.6,
           'nombre_planeta':'Ganimedes',
-          'vlimt':22,
-          'im_min':"img/superlunamini.png",
-          'px':0,
-          'py':-1000,
-          'yi':-1850,
-          'yf':1350,'mountain':"img/montaña.png",
-          'little_mountain':"img/montañita.png",'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
+          'vlimt':35,
+          'im_min':"img/ganimini.png",'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,'mountain':1,'little_mountain':1,
+#          'px':0,
+ #         'py':-2000,
+  #        'yi':200,
+   #       'yf':2350,'mountain':1,
+    #      'little_mountain':1,
+          'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
-          'py2':-1000,
+          'py2':-3000,
           'lim_angle':0}
 p_marte2={'g':3.721,
           'im_fondo': "img/marte.jpg",
@@ -1002,7 +1006,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(ganimedes)
+                jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
@@ -1012,11 +1016,11 @@ while jugar:
             elif nivel==4:
                 jugar_outro=mundo.main(tierra)
             elif nivel==5:
-                jugar_outro=mundo.main(luna2)
+                jugar_outro=mundo.main(ganimedes)
             elif nivel==6:
                 jugar_outro=mundo.main(marte2)
             elif nivel==7:
-                jugar_outro=mundo.main(triton2)
+                jugar_outro=mundo.main(luna2)
             elif nivel==8:
                 jugar_outro=mundo.main(tierra2)
             else:
