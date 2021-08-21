@@ -6,49 +6,49 @@ Created on Fri Aug 13 17:31:55 2021
 @author: debernal
 """
 
-from numpy import sin,cos,tan,arctan,arctan2,sqrt,arange,where,copy,concatenate
+import numpy as np
 from math import pi
-from matplotlib.pyplot import plot,show
+import matplotlib.pyplot as plt
 
 
 def Tiempo(v0,g,theta0,y0,xlim,x0,yliminf,ylim):                                                     #Calcula el tiempo final dadas unas condiciones iniciales
     if g>0.1:
-        tf=(v0/g)*(sin(theta0)+sqrt(((sin(theta0))**2)+((2*g*(y0-yliminf))/(v0**2))))
+        tf=(v0/g)*(np.sin(theta0)+np.sqrt(((np.sin(theta0))**2)+((2*g*(y0-yliminf))/(v0**2))))
     elif theta0==pi/2:
-        tf=(ylim-y0)/(v0*sin(theta0))
+        tf=(ylim-y0)/(v0*np.sin(theta0))
     else:
-        tf=(xlim-x0)/(v0*cos(theta0))
+        tf=(xlim-x0)/(v0*np.cos(theta0))
         #print(tf)
     return tf
 
 def Distancia(x,x0,y,y0):                                                       #Calcula un vector con distancias a un punto
-    d=sqrt(((x-x0)**2)+((y-y0)**2))
+    d=np.sqrt(((x-x0)**2)+((y-y0)**2))
     return d
 
 def Vectorx(x0,v0,theta0,t):                                                    #Calcula el vector x
-    x=x0+(v0*t*cos(theta0))
+    x=x0+(v0*t*np.cos(theta0))
     return x
 
 def Vectory(y0,v0,theta0,g,t):                                                  #Calcula el vector y
-    y=y0+(v0*t*sin(theta0))-((g*(t**2))/2)
+    y=y0+(v0*t*np.sin(theta0))-((g*(t**2))/2)
     return y
 
 def Thetaf(theta,g,t,v0):                                                       #Calcula el angulo de impacto
-    thetaf = arctan((tan(theta))-((g*t)/(v0*cos(theta))))
+    thetaf = np.arctan((np.tan(theta))-((g*t)/(v0*np.cos(theta))))
     return thetaf
 
 def Velocidadf(v0,g,t,theta):                                                   #Calcula la velocidad de impacto
-    v = sqrt((v0**2)+((g**2)*(t**2))-(2*g*t*v0*sin(theta)))
+    v = np.sqrt((v0**2)+((g**2)*(t**2))-(2*g*t*v0*np.sin(theta)))
     return v
 
 def graficar(impactos,x,y):
     for i in range(len(impactos)):
-        gamma=arange(0,pi*2,0.0001)
-        x1=(impactos[i][2]*cos(gamma))
-        y1=(impactos[i][2]*sin(gamma))
-        plot(-x1+impactos[i][0],-y1+impactos[i][1])
-        plot(x,y)
-    show()
+        gamma=np.arange(0,pi*2,0.0001)
+        x1=(impactos[i][2]*np.cos(gamma))
+        y1=(impactos[i][2]*np.sin(gamma))
+        plt.plot(-x1+impactos[i][0],-y1+impactos[i][1])
+        plt.plot(x,y)
+    plt.show()
     return
 
 def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes):
@@ -79,7 +79,7 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
     while (x0<xlim and not(objetivo)) or (not(x0<xlim) and objetivo):                                                                  #MIENTRAS LA POSICION NUEVA A CALCULAR SEA MENOR A LA MAXIMA PERMITIDA
         
         tf=Tiempo(v0,g,theta0,y0,xlim,x0,yliminf,ylim)                                                   #CALCULA LOS VECTORES, t,x,y
-        t=arange(t0,tf,epsilon)
+        t=np.arange(t0,tf,epsilon)
         x=Vectorx(x0,v0,theta0,t)
         y=Vectory(y0,v0,theta0,g,t)
         
@@ -98,11 +98,11 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
             mdis = min(vdistancia[i])                                               #CALCULA EL MINIMO DE CADA VECTOR DISTANCIA AL BORDE
             if mdis<0:                                                              #SI DISTANCIA ES MENOR A CERO YA HA IMPACTADO
                 impacto=True
-                k=where(vdistancia[i]<=0)[0][0]                                  #ENCUENTRA EL PRIMER MINIMO LOCAL DE DISTANCIA
+                k=np.where(vdistancia[i]<=0)[0][0]                                  #ENCUENTRA EL PRIMER MINIMO LOCAL DE DISTANCIA
                 objetivo=False
                 if impactos[i][-1]==True:                                           #SI EL OBSTACULO ES EL OBJETIVO
                     objetivo=True
-                    kaux=where(vdistancia[i]<=0)[0]
+                    kaux=np.where(vdistancia[i]<=0)[0]
                     k=int(kaux[0]+((kaux[-1]-kaux[0])/2))                           #ENCUENTRA LA POSICION MEDIA DE ACIERTA EN EL OBJETIVO
                 xk=x[k]
                 aux.append((xk,i,impacto))                                          #ADICIONA A UN VECTOR LAS POSICIONES DE IMPACTO A CADA OBSTACULO
@@ -122,32 +122,32 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
         if len(aux2)!=0:                                                            #SI EL VECTOR DE POSICIONES X DE IMPACTO ES VACIO
             if f == True:                                                           #SI LA DIRECCIÓN ES ADELANTE SE ELIGE LA DE MENOR X
                 xc=min(aux2)                                                        
-                kc=where(x==xc)[0][0]
-                a=where(aux2==xc)[0][0]       
+                kc=np.where(x==xc)[0][0]
+                a=np.where(aux2==xc)[0][0]       
                 vdis_i=aux3[a]
             else:
                 xc=max(aux2)                                                        #SI LA DIRECCION ES HACIA ATRAS, ELIGE LA DE MAYOR DISTANCIA EN X
-                kc=where(x==xc)[0][0]
-                a=where(aux2==xc)[0][0]       
+                kc=np.where(x==xc)[0][0]
+                a=np.where(aux2==xc)[0][0]       
                 vdis_i=aux3[a]
         else:                                                                       #SI NO SE ENCUENTRA CON NINGUN OBSTACULO:
             if objetivo==False:
                 kc=len(t)                    
                 vdis_i=-1
     
-        xc=copy(x[:kc])
-        yc=copy(y[:kc])
-        tc=copy(t[:kc])
+        xc=np.copy(x[:kc])
+        yc=np.copy(y[:kc])
+        tc=np.copy(t[:kc])
         vc=Velocidadf(v0,g,tc[-1],theta0)
         if theta0>0 and theta0<(pi/2):
-            thetac=arctan(tan(theta0)-((g*tc[-1])/(v0*cos(theta0))))
+            thetac=np.arctan(np.tan(theta0)-((g*tc[-1])/(v0*np.cos(theta0))))
             if thetac<0:
                 thetac=2*pi+thetac
     
         else:
-            thetac=pi+arctan(tan(theta0)-((g*tc[-1])/(v0*cos(theta0))))
+            thetac=pi+np.arctan(np.tan(theta0)-((g*tc[-1])/(v0*np.cos(theta0))))
             
-        alpha=arctan2((yc[-1]-impactos[vdis_i][1]),(xc[-1]-impactos[vdis_i][0]))
+        alpha=np.arctan2((yc[-1]-impactos[vdis_i][1]),(xc[-1]-impactos[vdis_i][0]))
         if alpha<0:
             alpha=2*pi+alpha
         
@@ -157,34 +157,34 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
             beta=thetac+pi
             
     
-        xaux1=cos(beta)
-        yaux1=sin(beta)
-        xaux2=(xaux1*cos(alpha))+(yaux1*sin(alpha))
-        yaux2=(-xaux1*sin(alpha))+(yaux1*cos(alpha))
-        beta=arctan2(yaux2,xaux2)
+        xaux1=np.cos(beta)
+        yaux1=np.sin(beta)
+        xaux2=(xaux1*np.cos(alpha))+(yaux1*np.sin(alpha))
+        yaux2=(-xaux1*np.sin(alpha))+(yaux1*np.cos(alpha))
+        beta=np.arctan2(yaux2,xaux2)
         if beta<0:
-            phi=-arctan2(5*yaux2,7*e*xaux2)
+            phi=-np.arctan2(5*yaux2,7*e*xaux2)
         elif beta>=0:
-            phi=-arctan2(5*yaux2,7*e*xaux2)
+            phi=-np.arctan2(5*yaux2,7*e*xaux2)
             
-        xaux3=cos(phi)
-        yaux3=sin(phi)
-        xaux4=(xaux3*cos(alpha))+(-yaux3*sin(alpha))
-        yaux4=(xaux3*sin(alpha))+(yaux3*cos(alpha))
+        xaux3=np.cos(phi)
+        yaux3=np.sin(phi)
+        xaux4=(xaux3*np.cos(alpha))+(-yaux3*np.sin(alpha))
+        yaux4=(xaux3*np.sin(alpha))+(yaux3*np.cos(alpha))
         
         if vdis_i!=-1:
-            theta0=arctan2(yaux4,xaux4)
+            theta0=np.arctan2(yaux4,xaux4)
             v0=vc
             if theta0<0:
                 theta0=pi*2+theta0
         else:
             if objetivo==False:
                 if theta0<0:
-                    theta0=pi+arctan((5/(7*e))*(tan(theta0)-((g*tf)/(v0*cos(theta0)))))
+                    theta0=pi+np.arctan((5/(7*e))*(np.tan(theta0)-((g*tf)/(v0*np.cos(theta0)))))
                     f=False
                 else:
                    # print("asdas!",g,theta0,tf,e,(v0*np.cos(theta0)),"adsdasad")
-                    theta0=-arctan((5/(7*e))*(tan(theta0)-((g*tf)/(v0*cos(theta0)))))
+                    theta0=-np.arctan((5/(7*e))*(np.tan(theta0)-((g*tf)/(v0*np.cos(theta0)))))
                     v0=e*vc
     
     
@@ -199,33 +199,33 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
         elif g==0:
             x0=xlim+1
         tt+=1                                                                       #CONTADOR DE MAXIMOS MOVIMIENTOS
-        sxliminf=where(xc<0)[0]
-        sxlimsup=where(xc>xlim)[0]
-        sylimsup=where(yc>ylim)[0]
+        sxliminf=np.where(xc<0)[0]
+        sxlimsup=np.where(xc>xlim)[0]
+        sylimsup=np.where(yc>ylim)[0]
         if len(sxliminf)!=0:
             kc=sxliminf[0]
-            xc=copy(xc[:kc])
-            yc=copy(yc[:kc])
-            tc=copy(tc[:kc])
+            xc=np.copy(xc[:kc])
+            yc=np.copy(yc[:kc])
+            tc=np.copy(tc[:kc])
             x0=xlim+1
         elif len(sxlimsup)!=0:
             kc=sxlimsup[0]
-            xc=copy(xc[:kc])
-            yc=copy(yc[:kc])
-            tc=copy(tc[:kc])
+            xc=np.copy(xc[:kc])
+            yc=np.copy(yc[:kc])
+            tc=np.copy(tc[:kc])
             x0=xlim+1
         elif len(sylimsup)!=0:
             kc=sylimsup[0]
-            xc=copy(xc[:kc])
-            yc=copy(yc[:kc])
-            tc=copy(tc[:kc])
+            xc=np.copy(xc[:kc])
+            yc=np.copy(yc[:kc])
+            tc=np.copy(tc[:kc])
             x0=xlim+1
         if t_f!=[]:
             tff=t_f[-1]    
         tcc=tff+tc    
-        x_f=concatenate((x_f,xc))
-        y_f=concatenate((y_f,yc))
-        t_f=concatenate((t_f,tcc))
+        x_f=np.concatenate((x_f,xc))
+        y_f=np.concatenate((y_f,yc))
+        t_f=np.concatenate((t_f,tcc))
         #graficar(impactos,xc,yc)
         #plt.plot(yc)
         #LIMITES
