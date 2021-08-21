@@ -7,14 +7,14 @@ Created on Fri Aug 13 17:31:55 2021
 """
 
 import numpy as np
-import math
+from math import pi
 import matplotlib.pyplot as plt
 
 
 def Tiempo(v0,g,theta0,y0,xlim,x0,yliminf,ylim):                                                     #Calcula el tiempo final dadas unas condiciones iniciales
     if g>0.1:
         tf=(v0/g)*(np.sin(theta0)+np.sqrt(((np.sin(theta0))**2)+((2*g*(y0-yliminf))/(v0**2))))
-    elif theta0==math.pi/2:
+    elif theta0==pi/2:
         tf=(ylim-y0)/(v0*np.sin(theta0))
     else:
         tf=(xlim-x0)/(v0*np.cos(theta0))
@@ -43,7 +43,7 @@ def Velocidadf(v0,g,t,theta):                                                   
 
 def graficar(impactos,x,y):
     for i in range(len(impactos)):
-        gamma=np.arange(0,math.pi*2,0.0001)
+        gamma=np.arange(0,pi*2,0.0001)
         x1=(impactos[i][2]*np.cos(gamma))
         y1=(impactos[i][2]*np.sin(gamma))
         plt.plot(-x1+impactos[i][0],-y1+impactos[i][1])
@@ -139,22 +139,22 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
         yc=np.copy(y[:kc])
         tc=np.copy(t[:kc])
         vc=Velocidadf(v0,g,tc[-1],theta0)
-        if theta0>0 and theta0<(math.pi/2):
+        if theta0>0 and theta0<(pi/2):
             thetac=np.arctan(np.tan(theta0)-((g*tc[-1])/(v0*np.cos(theta0))))
             if thetac<0:
-                thetac=2*math.pi+thetac
+                thetac=2*pi+thetac
     
         else:
-            thetac=math.pi+np.arctan(np.tan(theta0)-((g*tc[-1])/(v0*np.cos(theta0))))
+            thetac=pi+np.arctan(np.tan(theta0)-((g*tc[-1])/(v0*np.cos(theta0))))
             
         alpha=np.arctan2((yc[-1]-impactos[vdis_i][1]),(xc[-1]-impactos[vdis_i][0]))
         if alpha<0:
-            alpha=2*math.pi+alpha
+            alpha=2*pi+alpha
         
-        if thetac>math.pi:
-            beta=thetac-math.pi
+        if thetac>pi:
+            beta=thetac-pi
         else:
-            beta=thetac+math.pi
+            beta=thetac+pi
             
     
         xaux1=np.cos(beta)
@@ -176,11 +176,11 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
             theta0=np.arctan2(yaux4,xaux4)
             v0=vc
             if theta0<0:
-                theta0=math.pi*2+theta0
+                theta0=pi*2+theta0
         else:
             if objetivo==False:
                 if theta0<0:
-                    theta0=math.pi+np.arctan((5/(7*e))*(np.tan(theta0)-((g*tf)/(v0*np.cos(theta0)))))
+                    theta0=pi+np.arctan((5/(7*e))*(np.tan(theta0)-((g*tf)/(v0*np.cos(theta0)))))
                     f=False
                 else:
                    # print("asdas!",g,theta0,tf,e,(v0*np.cos(theta0)),"adsdasad")
