@@ -236,8 +236,8 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
 
 #VARIABLES NECESARIAS PARA OBTENER LOS VECTORES POSICION
 # x0=0                            #POSICION INICIAL
-# y0=0
-# theta0=0.9            #ANGULO DE LANZAMIENTO
+# y0=10
+# theta0=1.2            #ANGULO DE LANZAMIENTO
 # v0=13                           #MAGNITUD DE VELOCIDAD INICIAL
 # g=10                            
 # e=0.8                           #FACTOR DE PERDIDA DE VELOCIDAD
@@ -246,7 +246,7 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
 # epsilon=0.01                  #ESPACIAMIENTO DEL VECTOR TIEMPO
 # impactos=((20,3,1.1,False),(20,5,1,True),(10,8,2,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
 # max_rebotes=10
-# yliminf=0
+# yliminf=6
 
 
 # a=posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes)

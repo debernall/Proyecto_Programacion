@@ -304,6 +304,8 @@ class mundo:
         self.roversito=parametros[16]
         self.rovertierrita=parametros[17]
         self.fenixito=parametros[18]
+        self.yp2=parametros[19]
+        self.lim_angle=parametros[20]
         
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
@@ -491,12 +493,14 @@ class mundo:
                             XLIM=4000
                             XLIM=int(XLIM/ESCALA)
                             YLIM=int(4000/ESCALA)
-                            YLIMINF=Y0-1
+                            YLIMINF=4000+self.yp2-y0-20
+                            YLIMINF=int(YLIMINF/ESCALA)
                             EPSILON=0.01                                                              #ESPACIAMIENTO DEL VECTOR TIEMPO
                             IMPACTOS=[]
                             IMPACTOS.append((X0+(xo-x0)/10,YOBJ,5,True))
                             MAX_REBOTES=10
                             #print(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
+                            
                             aa=posiciones.posiciones(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
                             #posiciones.graficar(aa[3],aa[0],aa[1])
                             #print(aa[2])
@@ -566,8 +570,8 @@ class mundo:
             if angle>=90:
                 angle=90
                 
-            elif angle<=0:
-                angle=0
+            elif angle<=self.lim_angle:
+                angle=self.lim_angle
                 
             v0=v0 + speedv0
             vi=vi + speedv0
@@ -822,7 +826,9 @@ p_space={'g':0.0001,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
-          'im_fenixito':1}
+          'im_fenixito':1,
+          'py2':-2000,
+          'lim_angle':0}                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
           
@@ -840,7 +846,9 @@ p_tierra={'g':9.8,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
-          'im_fenixito':1}
+          'im_fenixito':1,
+          'py2':-3000,
+          'lim_angle':0}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -854,7 +862,9 @@ p_luna={'g':1.6,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
-          'im_fenixito':1}
+          'im_fenixito':1,
+          'py2':-3000,
+          'lim_angle':0}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -871,7 +881,9 @@ p_marte={'g':3.721,
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png"}
+          'im_fenixito':"img/fenixito.png",
+          'py2':-3000,
+          'lim_angle':0}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -888,7 +900,9 @@ p_triton={'g':0.78,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
-          'im_fenixito':1}
+          'im_fenixito':1,
+          'py2':-3000,
+          'lim_angle':-89}
 
 p_luna2={'g':1.6,
           'im_fondo': "img/luna1.jpg",
@@ -903,7 +917,9 @@ p_luna2={'g':1.6,
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png"}
+          'im_fenixito':"img/fenixito.png",
+          'py2':-3000,
+          'lim_angle':0}
 p_triton2={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -919,7 +935,9 @@ p_triton2={'g':0.78,
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png"}
+          'im_fenixito':"img/fenixito.png",
+          'py2':-1000,
+          'lim_angle':0}
 p_marte2={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -936,9 +954,10 @@ p_marte2={'g':3.721,
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png"}
-p_tierra2={'g':9.8,
-          
+          'im_fenixito':"img/fenixito.png",
+          'py2':-3000,
+          'lim_angle':0}
+p_tierra2={'g':9.8,     
           'im_fondo': "img/pradera (2).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':0.9,
@@ -953,7 +972,9 @@ p_tierra2={'g':9.8,
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png"}
+          'im_fenixito':"img/fenixito.png",
+          'py2':-3000,
+          'lim_angle':0}
 
 
 luna=mundo(list(p_luna.values()))
