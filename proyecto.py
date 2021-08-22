@@ -866,7 +866,7 @@ class mundo:
             menu.crear_cuadro_de_texto(screen,700,130,175,50,'Puntos',letra_creditos,None,blue,None)      
             menu.crear_cuadro_de_texto(screen,700,180,175,50,str(puntos),letra_creditos,None,blue,None)      
             menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,green)
+            menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,blue)
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,blue,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
