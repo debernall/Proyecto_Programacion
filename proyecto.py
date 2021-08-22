@@ -336,7 +336,7 @@ class mundo:
             
         return pos_final
 
-    def pos_obstaculo(self,pos_inicial,radio,cx,cy):#,escala,correccion):
+    def pos_obstaculo(self,pos_inicial,radio,cx,cy,anguloo):#,escala,correccion):
         #if nivel==5:
         #num_segmentos = 20
         #rad = 300
@@ -347,12 +347,31 @@ class mundo:
         #posobjetivoo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
         #cx = posobjetivo[0]
         #cy = posobjetivo[1]
-        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
-        xx = radio * np.cos(angulo+0.1) + cx
-        yy = radio * np.sin(angulo+0.1) + cy      
-        pos_final=xx,yy 
-       # if k==0:
+        #if angulo=math.pi-0.2
+            
+        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))#math.asin((pos_inicial[1]-cy)/radio)#math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
+#        if angulo==math.pi-0.3+0.15:
+ #           angulo=math.pi
+  #          xx = -radio * np.cos(angulo+0.15) + cx
+   #         yy = -radio * np.sin(angulo+0.15) + cy
+    #        return pos_final
+     #   if angulo==math.pi+0.15:
+      #      angulo=math.pi+0.3
+       #     xx = -radio * np.cos(angulo+0.15) + cx
+        #    yy = -radio * np.sin(angulo+0.15) + cy
+         #   return pos_final
+        xx = -radio * np.cos(angulo+0.08) + cx
+        yy = -radio * np.sin(angulo+0.08) + cy  
+        #if xx==math.abs(cx-radio):
+        #    xx=-xx
+        pos_final=[xx,yy] 
+   #     if 0.1>=abs(anguloo-angulo-0.08):
+        #if pos_final[0]==[cx] and pos_final[1]==[cy-radio]:
+    #        angulo=math.pi#-yy
+     #       xx = radio * np.cos(angulo) + cx
+      #      yy = radio * np.sin(angulo) + cy  
         #    pos_final=pos_inicial
+        pos_final=[xx,yy] 
         return pos_final
 
     def dibujar_img(self,list_img):
@@ -671,10 +690,11 @@ class mundo:
             #r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
 
            # COLISION CON ROVER, PHOENIX Y ROVERTIERRA
-            c=pos_rover[0]-500,pos_rover[1]+88
+            #c=pos_rover[0]-500,pos_rover[1]+88
+            c=pos_rover
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix
-            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<50:
+            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<100:
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 #self.dibujar_img(explosion,pos_rover)
                 
@@ -800,7 +820,7 @@ class mundo:
 
 
             if rover!=1 and nivel==0:
-                pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1])
+                pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1],math.pi/2)
                 #pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
                 pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
@@ -985,7 +1005,7 @@ p_ganimedes={'g':1.46,
           'son_mundo':"sound/sonidofondo4.wav",
           'factor_perdida':0.6,
           'nombre_planeta':'Ganimedes',
-          'vlimt':35,
+          'vlimt':30,
           'im_min':"img/ganimini.png",'px':0,
           'py':-3000,
           'yi':200,
