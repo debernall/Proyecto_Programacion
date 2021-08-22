@@ -29,7 +29,7 @@ pygame.init()
 letra_botones = pygame.font.Font('Fonts/Starjedi.ttf', 30)
 letra_titulos=pygame.font.Font('Fonts/Starjedi.ttf', 100)
 letra_outro=pygame.font.Font('Fonts/Starjedi.ttf', 75)
-letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',28)
+letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',18)
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
 letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
 # UBICACIONES DE ARCHIVOS
@@ -55,7 +55,8 @@ imagenes={'intro':"img/fondo_intro.jpg",
           'cañon':"img/cañon8.png",
           'base':"img/cañon9.png",
           'cañonsito':"img/cañon8sito.png",
-          'basesita':"img/cañon9sito.png"}
+          'basesita':"img/cañon9sito.png",
+          'cuadros':"img/cuadros.jpg"}
 
 sonidos={'fondo':"sound/sonidofondo.wav",
          'explosion':"sound/sonexp.wav"}
@@ -336,7 +337,7 @@ class mundo:
             
         return pos_final
 
-    def pos_obstaculo(self,pos_inicial,radio,cx,cy,anguloo):#,escala,correccion):
+    def pos_obstaculo(self,pos_inicial,radio,cx,cy):#,escala,correccion):
         #if nivel==5:
         #num_segmentos = 20
         #rad = 300
@@ -347,31 +348,12 @@ class mundo:
         #posobjetivoo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
         #cx = posobjetivo[0]
         #cy = posobjetivo[1]
-        #if angulo=math.pi-0.2
-            
-        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))#math.asin((pos_inicial[1]-cy)/radio)#math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
-#        if angulo==math.pi-0.3+0.15:
- #           angulo=math.pi
-  #          xx = -radio * np.cos(angulo+0.15) + cx
-   #         yy = -radio * np.sin(angulo+0.15) + cy
-    #        return pos_final
-     #   if angulo==math.pi+0.15:
-      #      angulo=math.pi+0.3
-       #     xx = -radio * np.cos(angulo+0.15) + cx
-        #    yy = -radio * np.sin(angulo+0.15) + cy
-         #   return pos_final
-        xx = -radio * np.cos(angulo+0.08) + cx
-        yy = -radio * np.sin(angulo+0.08) + cy  
-        #if xx==math.abs(cx-radio):
-        #    xx=-xx
-        pos_final=[xx,yy] 
-   #     if 0.1>=abs(anguloo-angulo-0.08):
-        #if pos_final[0]==[cx] and pos_final[1]==[cy-radio]:
-    #        angulo=math.pi#-yy
-     #       xx = radio * np.cos(angulo) + cx
-      #      yy = radio * np.sin(angulo) + cy  
+        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
+        xx = radio * np.cos(angulo+0.1) + cx
+        yy = radio * np.sin(angulo+0.1) + cy      
+        pos_final=xx,yy 
+       # if k==0:
         #    pos_final=pos_inicial
-        pos_final=[xx,yy] 
         return pos_final
 
     def dibujar_img(self,list_img):
@@ -409,6 +391,7 @@ class mundo:
         explosionsita=pygame.image.load(imagenes['explosionsita'])
         objetivo=pygame.image.load(imagenes['objetivo'])
         objetivito=pygame.image.load(imagenes['objetivito'])
+        cuadros=pygame.image.load(imagenes['cuadros'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
 
         #CARGA DE SONIDO DE FONDO
@@ -446,8 +429,10 @@ class mundo:
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                     #Limites de la imagen de fondo
-
-        posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
+        if nivel==1:
+            posobjetivo= random.randrange(200,xf-100), 0
+        elif nivel!=1:
+              posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
         yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))          #Parece ser un ajuste a la parabola de seguridad
@@ -527,8 +512,8 @@ class mundo:
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
                     if event.key==pygame.K_SPACE:                                                      #Tecla espacio
-                        #if colision==True:# and choque==False:                                        #NO TIENE EFECTO
-                        #    step=(0,0)
+                        if colision==True: #and choque==False:                                        #NO TIENE EFECTO
+                            step=(0,0)
 
                         if disparo==False:
                             v_x0=vi*np.cos(np.radians(angle))                                         #Velocidad inicial en x
@@ -675,40 +660,39 @@ class mundo:
 
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1:
-             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
+             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
             elif mountain!=1:
-             self.dibujar_img(((plano,posplano),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
+             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
             elif rover!=1:
-             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
 
             #OBTENCION DE COLISION OBJETIVO-BOLA
-            #objetivorect=objetivo.get_rect(center=posobjetivo)
+            objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
-            #a=objetivorect.center
+            a=objetivorect.center
             b=bolarect.center
-            #r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
+            r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
 
            # COLISION CON ROVER, PHOENIX Y ROVERTIERRA
-            #c=pos_rover[0]-500,pos_rover[1]+88
-            c=pos_rover
+            c=pos_rover[0]-500,pos_rover[1]+88
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix
-            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<100:
-                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
+            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<50:
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 #self.dibujar_img(explosion,pos_rover)
                 
                 gameover=True
                 #t=0
                 #CHOQUE CON ROVERTIERRA
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<100:
-                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_bola1),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,pos_bola1),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
                 step=(0,0)
                 gameover=True
                 #t=0
                 sonidofondo.stop()
             if self.rover!=1 and ((((e[0]-b[0])**2)+((e[1]-b[1])**2))**(0.5))<200:
-                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_phoenix),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,pos_phoenix),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
                 sonidofondo.stop()
                 gameover=True
                 #step=(0,0)
@@ -719,16 +703,16 @@ class mundo:
             #if t1>9:
             #    ns=clock.tick(60)
             # CONDICION DE IMPACTO
-            #if r<50:
-            #    step=(0,0)
-            #    t=0
-            #    colision=True
-            #    sonidofondo.stop()
+            if r<50:
+                step=(0,0)
+                t=0
+                colision=True
+                sonidofondo.stop()
             # ESTADOS DEL JUEGO
             if colision==True:
                 menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
 
-            if gameover==True:
+            if gameover==True and colision==False:
                 menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
                 t=0
                 #step=(0,0)
@@ -779,7 +763,7 @@ class mundo:
             ################    Aplicar el escalado de los puntos
             ################    El minimapa puede ser obtenido de manera similar pero con un segundo escalado
 
-
+            
             # CALCULO DE NUEVAS POSICIONES
             if disparo==True:
                 #print(posplano,-10*(aa[0][k]-40),self.yp+10*(aa[1][k]-65))
@@ -820,7 +804,7 @@ class mundo:
 
 
             if rover!=1 and nivel==0:
-                pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1],math.pi/2)
+                pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1])
                 #pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
                 pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
@@ -871,21 +855,21 @@ class mundo:
             #CUADROS DE TEXTO
             print(explosion,angle,pos_canon)
             #print(cd,pos_expl,(int(explosion_rotated.get_width()//2),int(explosion_rotated.get_height()//2)))
-            menu.crear_cuadro_de_texto(screen,87,25,175,50,'Ángulo',letra_letreros,black,green,green)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,87,75,175,50,str(angle)+'º',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,300,25,250,50,'Velocidad inicial',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,300,75,250,50,str(v0)+"m/s",letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,550,25,250,50,'Objetivo(x,y)',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,550,75,250,50,'('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,725,25,150,50,'Gravedad',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,725,75,150,50,str(self.g)+'m/s^2',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,87,125,175,50,'Nivel',letra_creditos,None,yellow,None)
-            menu.crear_cuadro_de_texto(screen,87,175,175,50,str(nivel),letra_creditos,None,yellow,None)     
-            menu.crear_cuadro_de_texto(screen,700,125,175,50,'Puntos',letra_creditos,None,yellow,None)      
-            menu.crear_cuadro_de_texto(screen,700,175,175,50,str(puntos),letra_creditos,None,yellow,None)      
-            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,black,green,green)
-            menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,green)
-            menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,yellow,None)
+            menu.crear_cuadro_de_texto(screen,87,45,175,50,'Ángulo',letra_letreros,None,white,None)                       #Agrega un cuadro de texto con el angulo.
+            menu.crear_cuadro_de_texto(screen,87,70,175,50,str(angle)+'º',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,270,45,250,50,'Velocidad inicial',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,270,70,250,50,str(v0)+"m/s",letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,470,45,250,50,'Objetivo(x,y)',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,470,70,250,50,'('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,680,45,150,50,'Gravedad',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,680,70,150,50,str(self.g)+'m/s^2',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,87,130,175,50,'Nivel',letra_creditos,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,87,180,175,50,str(nivel),letra_creditos,None,blue,None)     
+            menu.crear_cuadro_de_texto(screen,700,130,175,50,'Puntos',letra_creditos,None,blue,None)      
+            menu.crear_cuadro_de_texto(screen,700,180,175,50,str(puntos),letra_creditos,None,blue,None)      
+            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,blue)
+            menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,blue,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################
@@ -899,7 +883,7 @@ p_space={'g':0.0001,
           'im_min':"img/mmnebula.png",
           'px':0,
           'py':-2000,
-          'yi':200,
+          'yi':500,
           'yf':2350,
           'mountain':1,'little_mountain':1,'im_objetivo':1,
           'im_objetivo':1,'im_objetivo1':1,
@@ -907,8 +891,8 @@ p_space={'g':0.0001,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
-          'py2':-2000,
-          'lim_angle':0}                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
+          'py2':-3000,
+          'lim_angle':-23}                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
 
@@ -981,31 +965,16 @@ p_triton={'g':0.78,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
-          'py2':-3000,
+          'py2':-2000,
           'lim_angle':-89}
 
-p_luna2={'g':1.6,
-          'im_fondo': "img/luna1.jpg",
-          'son_mundo':"sound/sonidofondo2.wav",
-          'factor_perdida':0.9,
-          'nombre_planeta':'LUNA',
-          'vlimt':32,
-          'im_min':"img/mluna.jpg",'px':0,
-          'py':-3000,
-          'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
-          'im_objetivo2':"img/phoenix.png",
-          'im_roversito':"img/roversito.png",
-          'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png",
-          'py2':-3000,
-          'lim_angle':0}
+
 p_ganimedes={'g':1.46,
           'im_fondo': "img/ganim.png",
           'son_mundo':"sound/sonidofondo4.wav",
           'factor_perdida':0.6,
           'nombre_planeta':'Ganimedes',
-          'vlimt':30,
+          'vlimt':35,
           'im_min':"img/ganimini.png",'px':0,
           'py':-3000,
           'yi':200,
@@ -1022,43 +991,7 @@ p_ganimedes={'g':1.46,
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
           'lim_angle':0}
-p_marte2={'g':3.721,
-          'im_fondo': "img/marte.jpg",
-          'son_mundo':"sound/sonidofondo3.wav",
-          'factor_perdida':0.9,
-          'nombre_planeta':'MARTE',
-          'vlimt':51,
-          'im_min':"img/mmarte.jpg",
-          'px':0,
-          'py':-3000,
-          'yi':200,
-          'yf':3350,'mountain':1,
-          'little_mountain':1,
-          'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
-          'im_objetivo2':"img/phoenix.png",
-          'im_roversito':"img/roversito.png",
-          'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png",
-          'py2':-3000,
-          'lim_angle':0}
-p_tierra2={'g':9.8,
-          'im_fondo': "img/pradera (2).jpg",
-          'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':0.9,
-          'nombre_planeta':'TIERRA',
-          'vlimt':81,
-          'im_min':"img/mpradera.jpg",
-          'px':0,
-          'py':-3000,
-          'yi':200,
-          'yf':3350,
-          'mountain':1,'little_mountain':1,'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
-          'im_objetivo2':"img/phoenix.png",
-          'im_roversito':"img/roversito.png",
-          'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png",
-          'py2':-3000,
-          'lim_angle':0}
+
 
 
 luna=mundo(list(p_luna.values()))
@@ -1066,9 +999,7 @@ space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
 marte=mundo(list(p_marte.values()))
 triton=mundo(list(p_triton.values()))
-luna2=mundo(list(p_luna2.values()))
-tierra2=mundo(list(p_tierra2.values()))
-marte2=mundo(list(p_marte2.values()))
+
 ganimedes=mundo(list(p_ganimedes.values()))
 
 
@@ -1083,7 +1014,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(ganimedes)
+                jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
@@ -1094,12 +1025,7 @@ while jugar:
                 jugar_outro=mundo.main(tierra)
             elif nivel==5:
                 jugar_outro=mundo.main(ganimedes)
-            elif nivel==6:
-                jugar_outro=mundo.main(marte2)
-            elif nivel==7:
-                jugar_outro=mundo.main(luna2)
-            elif nivel==8:
-                jugar_outro=mundo.main(tierra2)
+         
             else:
                 jugar_outro=False
 
