@@ -5,6 +5,7 @@ from pygame.constants import MOUSEBUTTONDOWN
 import codecs
 import menu
 import posiciones
+import math
 
 ###############################      DECLARACIONES INICIALES        ##################################
 # COLORES
@@ -317,11 +318,33 @@ class mundo:
         return rotated_surface,rotated_rect
 
     def nueva_pos(self,pos_inicial,v,t,escala,sentido,correccion,vobstaculo):
+        #if nivel=!5:
         if pos_inicial[0]==600.0:
             if v[1]!=0:
                 self.lista.append(pos_inicial[1])
                 self.lista1.append(t)
         pos_final=pos_inicial[0]-v[0]*(0.03317*escala)+vobstaculo[0],pos_inicial[1]-(v[1]*(0.03317*escala))-((sentido)*(0.5*self.g*t*correccion))-vobstaculo[1]
+        #else:
+            
+        return pos_final
+
+    def pos_obstaculo(self,pos_inicial,radio,cx,cy):#,escala,correccion):
+        #if nivel==5:
+        #num_segmentos = 20
+        #rad = 300
+        #if k==0:
+         #   posobjetivo=[0,0]
+          #  pos_final=pos_inicial
+           # return pos_final
+        #posobjetivoo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
+        #cx = posobjetivo[0]
+        #cy = posobjetivo[1]
+        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
+        xx = radio * np.cos(angulo+0.1) + cx
+        yy = radio * np.sin(angulo+0.1) + cy      
+        pos_final=xx,yy 
+       # if k==0:
+        #    pos_final=pos_inicial
         return pos_final
 
     def dibujar_img(self,list_img):
@@ -434,12 +457,28 @@ class mundo:
         speedv0=0
         t=0
         t1=0                                                                                           #Variable de tiempo
-        pos_rover=1500,-2000
+        pos_rover=[xo-300,yo-300]#[1500,-2000]
         pos_rovertierra=400,250
         pos_phoenix=1000,-1000
         distanciarover=pos_rover[0]-x0
         distanciarovertierra=pos_rovertierra[0]-x0
         distanciaphoenix=pos_phoenix[0]-x0,pos_phoenix[1]-y0
+
+        #def pos_obstaculo(self,pos_inicial,radio):#,escala,correccion):
+        #if nivel==5:
+         #   num_segmentos = 20
+        #rad = 300
+         #   posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
+ #       cx = posobjetivo[0]
+  #      cy = posobjetivo[1]
+   #     angulo = math.atan((pos_rover[1]-cy)/(pos_rover[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
+    #    xx = 300 * np.cos(angulo+0.5) + cx
+     #   yy = 300 * np.sin(angulo+0.5) + cy      
+        #pos_final=xx,yy 
+            #return pos_final
+
+
+
 
         colision=False
         disparo=False
@@ -605,7 +644,7 @@ class mundo:
             explosionsita_rotated.set_alpha(image_alpha)
             pos_bola1=(pos_bola[0]-8,pos_bola[1]-8)
             posobjetivo1=(posobjetivo[0]-50,posobjetivo[1]-50)
-
+            pos_roversito=[distanciarover,450]
 
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1:
@@ -613,7 +652,7 @@ class mundo:
             elif mountain!=1:
              self.dibujar_img(((plano,posplano),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
             elif rover!=1:
-             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,self.pos_obstaculo(pos_roversito,25,posobjetivito[0],posobjetivito[1])),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
 
             #OBTENCION DE COLISION OBJETIVO-BOLA
@@ -627,13 +666,13 @@ class mundo:
             c=pos_rover[0]-500,pos_rover[1]+88
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix
-            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<1:
+            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<50:
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 #self.dibujar_img(explosion,pos_rover)
                 gameover=True
                 #t=0
                 #CHOQUE CON ROVERTIERRA
-            if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<60:
+            if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<100:
                 self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_bola1),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,(distanciarover,450)),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
                 step=(0,0)
                 gameover=True
@@ -750,10 +789,11 @@ class mundo:
              
 
 
-            if rover!=1 and nivel==2:
-             pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
-             pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
-             pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
+            if rover!=1 and nivel==0:
+                pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1])
+                #pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
+                pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
+                pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
 
             if rover!=1 and nivel>4:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(2*vr,0))
@@ -1006,7 +1046,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(space)
+                jugar_outro=mundo.main(ganimedes)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
