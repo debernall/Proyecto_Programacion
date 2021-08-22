@@ -29,7 +29,7 @@ pygame.init()
 letra_botones = pygame.font.Font('Fonts/Starjedi.ttf', 30)
 letra_titulos=pygame.font.Font('Fonts/Starjedi.ttf', 100)
 letra_outro=pygame.font.Font('Fonts/Starjedi.ttf', 75)
-letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',28)
+letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',18)
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
 letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
 # UBICACIONES DE ARCHIVOS
@@ -55,7 +55,8 @@ imagenes={'intro':"img/fondo_intro.jpg",
           'cañon':"img/cañon8.png",
           'base':"img/cañon9.png",
           'cañonsito':"img/cañon8sito.png",
-          'basesita':"img/cañon9sito.png"}
+          'basesita':"img/cañon9sito.png",
+          'cuadros':"img/cuadros.jpg"}
 
 sonidos={'fondo':"sound/sonidofondo.wav",
          'explosion':"sound/sonexp.wav"}
@@ -390,6 +391,7 @@ class mundo:
         explosionsita=pygame.image.load(imagenes['explosionsita'])
         objetivo=pygame.image.load(imagenes['objetivo'])
         objetivito=pygame.image.load(imagenes['objetivito'])
+        cuadros=pygame.image.load(imagenes['cuadros'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
 
         #CARGA DE SONIDO DE FONDO
@@ -656,11 +658,11 @@ class mundo:
 
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1:
-             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
+             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
             elif mountain!=1:
-             self.dibujar_img(((plano,posplano),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
+             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
             elif rover!=1:
-             self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
 
             #OBTENCION DE COLISION OBJETIVO-BOLA
@@ -675,20 +677,20 @@ class mundo:
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix
             if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<50:
-                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,pos_rover),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 #self.dibujar_img(explosion,pos_rover)
                 
                 gameover=True
                 #t=0
                 #CHOQUE CON ROVERTIERRA
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<100:
-                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_bola1),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,pos_bola1),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
                 step=(0,0)
                 gameover=True
                 #t=0
                 sonidofondo.stop()
             if self.rover!=1 and ((((e[0]-b[0])**2)+((e[1]-b[1])**2))**(0.5))<200:
-                self.dibujar_img(((plano,posplano),(objetivo,posobjetivo1),(explosion,pos_phoenix),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,pos_phoenix),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
                 sonidofondo.stop()
                 gameover=True
                 #step=(0,0)
@@ -851,14 +853,14 @@ class mundo:
             #CUADROS DE TEXTO
             print(explosion,angle,pos_canon)
             #print(cd,pos_expl,(int(explosion_rotated.get_width()//2),int(explosion_rotated.get_height()//2)))
-            menu.crear_cuadro_de_texto(screen,87,25,175,50,'Ángulo',letra_letreros,black,green,green)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,87,75,175,50,str(angle)+'º',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,300,25,250,50,'Velocidad inicial',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,300,75,250,50,str(v0)+"m/s",letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,550,25,250,50,'Objetivo(x,y)',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,550,75,250,50,'('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,725,25,150,50,'Gravedad',letra_letreros,black,green,green)
-            menu.crear_cuadro_de_texto(screen,725,75,150,50,str(self.g)+'m/s^2',letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,87,45,175,50,'Ángulo',letra_letreros,None,white,None)                       #Agrega un cuadro de texto con el angulo.
+            menu.crear_cuadro_de_texto(screen,87,70,175,50,str(angle)+'º',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,270,45,250,50,'Velocidad inicial',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,270,70,250,50,str(v0)+"m/s",letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,470,45,250,50,'Objetivo(x,y)',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,470,70,250,50,'('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,680,45,150,50,'Gravedad',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,680,70,150,50,str(self.g)+'m/s^2',letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,87,125,175,50,'Nivel',letra_creditos,None,yellow,None)
             menu.crear_cuadro_de_texto(screen,87,175,175,50,str(nivel),letra_creditos,None,yellow,None)     
             menu.crear_cuadro_de_texto(screen,700,125,175,50,'Puntos',letra_creditos,None,yellow,None)      
