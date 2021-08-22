@@ -890,7 +890,7 @@ p_space={'g':0.0001,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-2000,
-          'lim_angle':0}                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
+          'lim_angle':-23}                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
 
@@ -966,22 +966,7 @@ p_triton={'g':0.78,
           'py2':-3000,
           'lim_angle':-89}
 
-p_luna2={'g':1.6,
-          'im_fondo': "img/luna1.jpg",
-          'son_mundo':"sound/sonidofondo2.wav",
-          'factor_perdida':0.9,
-          'nombre_planeta':'LUNA',
-          'vlimt':32,
-          'im_min':"img/mluna.jpg",'px':0,
-          'py':-3000,
-          'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
-          'im_objetivo2':"img/phoenix.png",
-          'im_roversito':"img/roversito.png",
-          'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png",
-          'py2':-3000,
-          'lim_angle':0}
+
 p_ganimedes={'g':1.46,
           'im_fondo': "img/ganim.png",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -1004,43 +989,7 @@ p_ganimedes={'g':1.46,
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
           'lim_angle':0}
-p_marte2={'g':3.721,
-          'im_fondo': "img/marte.jpg",
-          'son_mundo':"sound/sonidofondo3.wav",
-          'factor_perdida':0.9,
-          'nombre_planeta':'MARTE',
-          'vlimt':51,
-          'im_min':"img/mmarte.jpg",
-          'px':0,
-          'py':-3000,
-          'yi':200,
-          'yf':3350,'mountain':1,
-          'little_mountain':1,
-          'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
-          'im_objetivo2':"img/phoenix.png",
-          'im_roversito':"img/roversito.png",
-          'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png",
-          'py2':-3000,
-          'lim_angle':0}
-p_tierra2={'g':9.8,
-          'im_fondo': "img/pradera (2).jpg",
-          'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':0.9,
-          'nombre_planeta':'TIERRA',
-          'vlimt':81,
-          'im_min':"img/mpradera.jpg",
-          'px':0,
-          'py':-3000,
-          'yi':200,
-          'yf':3350,
-          'mountain':1,'little_mountain':1,'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
-          'im_objetivo2':"img/phoenix.png",
-          'im_roversito':"img/roversito.png",
-          'im_rovertierrita':"img/rovertierrita.png",
-          'im_fenixito':"img/fenixito.png",
-          'py2':-3000,
-          'lim_angle':0}
+
 
 
 luna=mundo(list(p_luna.values()))
@@ -1048,9 +997,7 @@ space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
 marte=mundo(list(p_marte.values()))
 triton=mundo(list(p_triton.values()))
-luna2=mundo(list(p_luna2.values()))
-tierra2=mundo(list(p_tierra2.values()))
-marte2=mundo(list(p_marte2.values()))
+
 ganimedes=mundo(list(p_ganimedes.values()))
 
 
@@ -1065,7 +1012,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(marte2)
+                jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
@@ -1076,12 +1023,7 @@ while jugar:
                 jugar_outro=mundo.main(tierra)
             elif nivel==5:
                 jugar_outro=mundo.main(ganimedes)
-            elif nivel==6:
-                jugar_outro=mundo.main(marte2)
-            elif nivel==7:
-                jugar_outro=mundo.main(luna2)
-            elif nivel==8:
-                jugar_outro=mundo.main(tierra2)
+         
             else:
                 jugar_outro=False
 
