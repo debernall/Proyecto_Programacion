@@ -429,8 +429,10 @@ class mundo:
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                     #Limites de la imagen de fondo
-
-        posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
+        if nivel==1:
+            posobjetivo= random.randrange(200,xf-100), 0
+        elif nivel!=1:
+              posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
         yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))          #Parece ser un ajuste a la parabola de seguridad
@@ -510,8 +512,8 @@ class mundo:
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
                     if event.key==pygame.K_SPACE:                                                      #Tecla espacio
-                        #if colision==True:# and choque==False:                                        #NO TIENE EFECTO
-                        #    step=(0,0)
+                        if colision==True: #and choque==False:                                        #NO TIENE EFECTO
+                            step=(0,0)
 
                         if disparo==False:
                             v_x0=vi*np.cos(np.radians(angle))                                         #Velocidad inicial en x
@@ -666,11 +668,11 @@ class mundo:
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
 
             #OBTENCION DE COLISION OBJETIVO-BOLA
-            #objetivorect=objetivo.get_rect(center=posobjetivo)
+            objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
-            #a=objetivorect.center
+            a=objetivorect.center
             b=bolarect.center
-            #r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
+            r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
 
            # COLISION CON ROVER, PHOENIX Y ROVERTIERRA
             c=pos_rover[0]-500,pos_rover[1]+88
@@ -701,16 +703,16 @@ class mundo:
             #if t1>9:
             #    ns=clock.tick(60)
             # CONDICION DE IMPACTO
-            #if r<50:
-            #    step=(0,0)
-            #    t=0
-            #    colision=True
-            #    sonidofondo.stop()
+            if r<50:
+                step=(0,0)
+                t=0
+                colision=True
+                sonidofondo.stop()
             # ESTADOS DEL JUEGO
             if colision==True:
                 menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
 
-            if gameover==True:
+            if gameover==True and colision==False:
                 menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
                 t=0
                 #step=(0,0)
