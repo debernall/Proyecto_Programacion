@@ -861,13 +861,13 @@ class mundo:
             menu.crear_cuadro_de_texto(screen,470,70,250,50,'('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,680,45,150,50,'Gravedad',letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,680,70,150,50,str(self.g)+'m/s^2',letra_letreros,None,white,None)
-            menu.crear_cuadro_de_texto(screen,87,125,175,50,'Nivel',letra_creditos,None,yellow,None)
-            menu.crear_cuadro_de_texto(screen,87,175,175,50,str(nivel),letra_creditos,None,yellow,None)     
-            menu.crear_cuadro_de_texto(screen,700,125,175,50,'Puntos',letra_creditos,None,yellow,None)      
-            menu.crear_cuadro_de_texto(screen,700,175,175,50,str(puntos),letra_creditos,None,yellow,None)      
-            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,black,green,green)
+            menu.crear_cuadro_de_texto(screen,87,130,175,50,'Nivel',letra_creditos,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,87,180,175,50,str(nivel),letra_creditos,None,blue,None)     
+            menu.crear_cuadro_de_texto(screen,700,130,175,50,'Puntos',letra_creditos,None,blue,None)      
+            menu.crear_cuadro_de_texto(screen,700,180,175,50,str(puntos),letra_creditos,None,blue,None)      
+            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,None,blue,None)
             menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,green)
-            menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,yellow,None)
+            menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,blue,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################
@@ -1065,7 +1065,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(ganimedes)
+                jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
