@@ -761,7 +761,7 @@ class mundo:
             ################    Aplicar el escalado de los puntos
             ################    El minimapa puede ser obtenido de manera similar pero con un segundo escalado
 
-
+            
             # CALCULO DE NUEVAS POSICIONES
             if disparo==True:
                 #print(posplano,-10*(aa[0][k]-40),self.yp+10*(aa[1][k]-65))
@@ -881,7 +881,7 @@ p_space={'g':0.0001,
           'im_min':"img/mmnebula.png",
           'px':0,
           'py':-2000,
-          'yi':200,
+          'yi':500,
           'yf':2350,
           'mountain':1,'little_mountain':1,'im_objetivo':1,
           'im_objetivo':1,'im_objetivo1':1,
@@ -889,7 +889,7 @@ p_space={'g':0.0001,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
-          'py2':-2000,
+          'py2':-3000,
           'lim_angle':-23}                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
@@ -963,7 +963,7 @@ p_triton={'g':0.78,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
-          'py2':-3000,
+          'py2':-2000,
           'lim_angle':-89}
 
 
