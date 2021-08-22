@@ -839,15 +839,21 @@ class mundo:
             if pos_phoenix[1]<=posplano[1]:
                 vrpy=-vrpy
             #CUADROS DE TEXTO
-            menu.crear_cuadro_de_texto(screen,175,25,350,50,'Ángulo:'+str(angle)+"°",letra_letreros,black,blue,blue)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,175,75,350,50,'Velocidad incial:'+str(v0)+"m/s",letra_letreros,black,blue,blue)
-            menu.crear_cuadro_de_texto(screen,175,125,350,50,'Objetivo(x,y): ('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,blue,blue)
-            menu.crear_cuadro_de_texto(screen,175,175,350,50,'Gravedad: '+str(self.g)+' m/s^2',letra_letreros,black,blue,blue)
-            menu.crear_cuadro_de_texto(screen,725,25,150,50,str(puntos)+' puntos',letra_letreros,black,blue,blue)
-            menu.crear_cuadro_de_texto(screen,725,75,150,50,'Nivel '+str(nivel),letra_letreros,black,blue,blue)
-            menu.crear_cuadro_de_texto(screen,725,125,150,50,str(int(t1*0.03317))+'s',letra_letreros,black,blue,blue)
-            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_botones,black,blue,blue)
-            menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,blue,blue)
+            
+            menu.crear_cuadro_de_texto(screen,87,25,175,50,'Ángulo',letra_letreros,black,green,green)                       #Agrega un cuadro de texto con el angulo.
+            menu.crear_cuadro_de_texto(screen,87,75,175,50,str(angle)+'º',letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,300,25,250,50,'Velocidad inicial',letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,300,75,250,50,str(v0)+"m/s",letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,550,25,250,50,'Objetivo(x,y)',letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,550,75,250,50,'('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,725,25,150,50,'Gravedad',letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,725,75,150,50,str(self.g)+'m/s^2',letra_letreros,black,green,green)
+            menu.crear_cuadro_de_texto(screen,87,125,175,50,'Nivel',letra_creditos,None,yellow,None)
+            menu.crear_cuadro_de_texto(screen,87,175,175,50,str(nivel),letra_creditos,None,yellow,None)     
+            menu.crear_cuadro_de_texto(screen,700,125,175,50,'Puntos',letra_creditos,None,yellow,None)      
+            menu.crear_cuadro_de_texto(screen,700,175,175,50,str(puntos),letra_creditos,None,yellow,None)      
+            menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,black,green,green)
+            menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,green)
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,yellow,None)
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
