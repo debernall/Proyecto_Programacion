@@ -745,7 +745,7 @@ class mundo:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
              pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(vrpx,vrpy))
-<<<<<<< HEAD
+
             
             if rover!=1 and nivel==2:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
@@ -756,8 +756,7 @@ class mundo:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(2*vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(2*vrt,0))
              pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
-=======
->>>>>>> afc8e86edbd71974b97c080344fe7fa8285e9b7a
+
              
             # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
             # horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
