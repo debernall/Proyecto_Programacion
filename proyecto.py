@@ -728,6 +728,9 @@ class mundo:
                 #step=(0,0)
                 #menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
                 #t=0
+            if self.piedra!=1 and (pos_base[0]+1600)<b[0]<pos_base[0]+1300 +1000 and pos_base[1]-900<b[1]<pos_base[1]+91:
+                step=(0,0)
+                gameover=True
             t=t+n
             t1+=n
             #if t1>9:
