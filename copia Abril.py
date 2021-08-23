@@ -775,7 +775,7 @@ class mundo:
                 if (k+4)>len(aa[0]):
                     sonidofondo.stop()
                     gameover=True
-            
+
             #print(posplano)
             #posplano=self.nueva_pos(posplano,step,t,10,1,0.022,(0,0))
             #posobjetivo=self.nueva_pos(posobjetivo,step,t,10,1,0.022,(0,0))
