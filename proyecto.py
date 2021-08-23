@@ -436,14 +436,14 @@ class mundo:
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                     #Limites de la imagen de fondo
-        if nivel==1:
-            posobjetivo= random.randrange(200,xf-100), 0
+        if nivel==1 or nivel==0:
+            posobjetivo= random.randrange(3000,xf-100), 0
         elif nivel!=1:
               posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
               
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
-        if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))) and nivel!=1:          #Parece ser un ajuste a la parabola de seguridad
+        if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))) and nivel!=1 and nivel!=0:          #Parece ser un ajuste a la parabola de seguridad
             yo=yo+400
         #xo=x0+200
         #yo=y0-200
@@ -1027,7 +1027,7 @@ p_proximab={'g':626*10**(-1),
           'son_mundo':"sound/sonproximab.wav",
           'factor_perdida':55,
           'nombre_planeta':'Próxima b',
-          'vlimt':250,
+          'vlimt':209,
           'im_min':"img/mproximab.jpg",'px':0,
           'py':-3150,
           'yi':200,
@@ -1036,7 +1036,7 @@ p_proximab={'g':626*10**(-1),
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
-          'py2':-3150,
+          'py2':-3250,
           'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png'
           
           }
