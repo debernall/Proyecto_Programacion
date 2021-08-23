@@ -1064,7 +1064,7 @@ p_ganimedes={'g':1.46,
 p_proximab={'g':626*10**(-1),
           'im_fondo': "img/proximab.jpg",
           'son_mundo':"sound/sonproximab.wav",
-          'factor_perdida':55,
+          'factor_perdida':0.1,
           'nombre_planeta':'Próxima b',
           'vlimt':209,
           'im_min':"img/mproximab.jpg",'px':0,
@@ -1081,7 +1081,7 @@ p_proximab={'g':626*10**(-1),
 p_ross={'g':57*10**(-1),
           'im_fondo': "img/ross.jpg",
           'son_mundo':"sound/clair.wav",
-          'factor_perdida':15,
+          'factor_perdida':0.1,
           'nombre_planeta':'Trappist-1d',
           'vlimt':60,
           'im_min':"img/mross.jpg",'px':0,
@@ -1095,6 +1095,23 @@ p_ross={'g':57*10**(-1),
           'py2':-3000,
           'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
           }
+p_gliese={'g':17.39,
+          'im_fondo': "img/gliese.jpg",
+          'son_mundo':"sound/clair.wav",
+          'factor_perdida':0.8,
+          'nombre_planeta':'Gliese 581-C',
+          'vlimt':300,
+          'im_min':"img/gliesemini.jpg",'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'im_objetivo2':1,
+          'im_roversito':1,
+          'im_rovertierrita':1,
+          'im_fenixito':1,
+          'py2':-3000,
+          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.3,'tipo':1
+          }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
@@ -1104,6 +1121,7 @@ triton=mundo(list(p_triton.values()))
 ganimedes=mundo(list(p_ganimedes.values()))
 ross=mundo(list(p_ross.values()))
 proximab=mundo(list(p_proximab.values()))
+gliese=mundo(list(p_gliese.values()))
 ###############################         EJECUCION DEL JUEGO         ##################################
 jugar=True
 jugar_outro=True
@@ -1132,6 +1150,8 @@ while jugar:
 
             elif nivel==7:
                 jugar_outro=mundo.main(ganimedes)
+            elif nivel==8:
+                jugar_outro=mundo.main(gliese)
 
             else:
                 jugar_outro=False
