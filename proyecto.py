@@ -583,7 +583,8 @@ class mundo:
 
                     elif event.key==pygame.K_RIGHT and disparo==False:                                  #Tecla derecha rotación en sentido negativo
                         speedangle=-1
-
+                    elif event.key==pygame.K_n and disparo==False:                                  #Tecla derecha rotación en sentido negativo
+                        gameover=True
                     elif event.key==pygame.K_a and colision==True:                                      #Tecla a permite avanzar de nivel y sumar puntos tras choque
                         puntos+=1
                         nivel+=1
@@ -844,7 +845,7 @@ class mundo:
              
 
 
-            if rover!=1 and nivel==0:
+            if rover!=1 and nivel==7:
                 pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1])
                 #pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
@@ -1084,12 +1085,12 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(ganimedes)
+                jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
                 jugar_outro=mundo.main(tierra)
-            if nivel==3:
+            elif nivel==3:
                 jugar_outro=mundo.main(ross)
             
             elif nivel==4:
