@@ -318,6 +318,7 @@ class mundo:
         self.vinf=parametros[21]
         self.piedra=parametros[22]
         self.little_piedra=parametros[23]
+        self.lim_anglesup=parametros[24]
         
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
@@ -436,12 +437,16 @@ class mundo:
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                     #Limites de la imagen de fondo
+       
+        if nivel==6:
+            posobjetivo= random.randrange(1800,xf-200), -1200
+       
         if nivel==3:
             posobjetivo= random.randrange(1800,xf-200), 980
         
         if nivel==1 or nivel==4:
             posobjetivo= random.randrange(3000,xf-100), 0
-        elif nivel!=1 and nivel!=3 and nivel!=4:
+        elif nivel!=1 and nivel!=3 and nivel!=4 and nivel!=6:
               posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
               
         xo=x0+posobjetivo[0]
@@ -631,8 +636,8 @@ class mundo:
             #ROTACION DEL CAÑON
             angle=angle+speedangle                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
             #LIMITES DE ROTACION DEL CAÑON
-            if angle>=90:
-                angle=90
+            if angle>=self.lim_anglesup:
+                angle=self.lim_anglesup
 
             elif angle<=self.lim_angle:
                 angle=self.lim_angle
@@ -930,7 +935,7 @@ p_space={'g':0.0001,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':-23,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1
+          'lim_angle':-23,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90
           }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
@@ -951,7 +956,7 @@ p_tierra={'g':9.8,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -967,7 +972,7 @@ p_luna={'g':1.6,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -986,7 +991,7 @@ p_marte={'g':3.721,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -1004,8 +1009,9 @@ p_triton={'g':0.78,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
-          'py2':-2000,
-          'lim_angle':-89,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
+          'py2':-3000,
+          'lim_angle':-0,'vinf':8,'im_piedra':1,'piedrita':1,
+          'lim_anglesup':0}
 
 
 p_ganimedes={'g':1.46,
@@ -1013,7 +1019,7 @@ p_ganimedes={'g':1.46,
           'son_mundo':"sound/sonidofondo4.wav",
           'factor_perdida':0.6,
           'nombre_planeta':'Ganimedes',
-          'vlimt':35,
+          'vlimt':31,
           'im_min':"img/mganimed.jpg",'px':0,
           'py':-3000,
           'yi':200,
@@ -1029,7 +1035,7 @@ p_ganimedes={'g':1.46,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
 
 p_proximab={'g':626*10**(-1),
           'im_fondo': "img/proximab.jpg",
@@ -1046,11 +1052,11 @@ p_proximab={'g':626*10**(-1),
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3220,
-          'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png'
+          'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png','lim_anglesup':90
           }
 p_ross={'g':57*10**(-1),
           'im_fondo': "img/ross.jpg",
-          'son_mundo':"sound/sonproximab.wav",
+          'son_mundo':"sound/clair.wav",
           'factor_perdida':15,
           'nombre_planeta':'Trappist-1d',
           'vlimt':60,
@@ -1063,7 +1069,7 @@ p_ross={'g':57*10**(-1),
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90
           }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
