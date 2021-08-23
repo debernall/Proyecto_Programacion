@@ -1053,7 +1053,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(luna)
+                jugar_outro=mundo.main(ganimedes)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
