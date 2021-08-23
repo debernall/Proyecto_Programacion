@@ -145,7 +145,7 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
             if aux[i][-1]==True:
                 aux2.append(aux[i][0])                                              #GUARDA LAS POSICIONES X DE IMPACTO
                 aux3.append(aux[i][-2])                                             #GUARDA EL NUMERO DEL OBSTACULO U OBJETIVO
-        print(y)
+        #print(y)
         if len(aux2)!=0:                                                            #SI EL VECTOR DE POSICIONES X DE IMPACTO ES VACIO
             if f == True:                                                           #SI LA DIRECCIÓN ES ADELANTE SE ELIGE LA DE MENOR X
                 xc=min(aux2)                                                        
@@ -162,7 +162,7 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
             inf=True
         else:                                                                       #SI NO SE ENCUENTRA CON NINGUN OBSTACULO:
             if objetivo==False:
-                kc=np.where(y[1:]<0.001)[0][0]                   
+                kc=np.where(y[1:]<yliminf)[0][0]                   
                 vdis_i=-1
             
         xc=np.copy(x[:kc])
@@ -170,7 +170,7 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
         tc=np.copy(t[:kc])
         vc=np.sqrt((vx[kc])**2+(vy[kc])**2)
         if inf==False:
-            if theta0>0:
+            if theta0>=0:
                 thetac=np.arctan2(y[kc+1]-y[kc],x[kc+1]-x[kc]) 
                 if thetac<0:
                         thetac=2*pi+thetac
@@ -263,19 +263,19 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
 
 #VARIABLES NECESARIAS PARA OBTENER LOS VECTORES POSICION
 # x0=0                            #POSICION INICIAL
-# y0=0
-# theta0=1.5            #ANGULO DE LANZAMIENTO
-# v0=14                           #MAGNITUD DE VELOCIDAD INICIAL
+# y0=10
+# theta0=0            #ANGULO DE LANZAMIENTO
+# v0=11                           #MAGNITUD DE VELOCIDAD INICIAL
 # g=10                            
-# e=0.9                           #FACTOR DE PERDIDA DE VELOCIDAD
-# xlim=20                        #LONGITUD MAXIMA DEL TABLERO EN X
+# e=0.8                           #FACTOR DE PERDIDA DE VELOCIDAD
+# xlim=50                        #LONGITUD MAXIMA DEL TABLERO EN X
 # ylim=10
 # epsilon=0.01                  #ESPACIAMIENTO DEL VECTOR TIEMPO
-# impactos=((20,9,1.1,False),(16,4,1,True),(7,4,1,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
+# impactos=((20,9,1.1,False),(38,4,1,False),(7,4,1,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
 # max_rebotes=10
 # yliminf=0
 # b=0.01
-# tipo=0
+# tipo=2
 
 # a=calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes,b,tipo)
 # graficar(a[3],a[0],a[1])
