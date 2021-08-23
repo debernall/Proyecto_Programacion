@@ -316,7 +316,9 @@ class mundo:
         self.yp2=parametros[19]
         self.lim_angle=parametros[20]
         self.vinf=parametros[21]
-
+        self.piedra=parametros[22]
+        self.little_piedra=parametros[23]
+        
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
         self.lista1=[]
@@ -404,7 +406,11 @@ class mundo:
             little_mountain=pygame.image.load(self.little_mountain)
         elif self.mountain==1:
               mountain=1
-
+        if self.piedra!=1:
+            piedra=pygame.image.load(self.piedra)
+            little_piedra=pygame.image.load(self.little_piedra)
+        elif self.piedra==1:
+              piedra=1
         #DIBUJAR OBSTACULOS
         if self.rover!=1:
             rover=pygame.image.load(self.rover)
@@ -664,14 +670,15 @@ class mundo:
             pos_roversito=distanciarover
 
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
-            if mountain==1 and rover==1:
+            if mountain==1 and rover==1 and piedra==1:
              self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
             elif mountain!=1:
              self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
             elif rover!=1:
              self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
-
+            elif piedra!=1:
+             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(piedra,(pos_base[0]+1300,pos_base[1]-1000)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_piedra,(pos_basesita[0]+60,pos_basesita[1]-40))))
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
@@ -832,10 +839,6 @@ class mundo:
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
                 pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
 
-            if rover!=1 and nivel>4:
-             pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(2*vr,0))
-             pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(2*vrt,0))
-             pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
 
             # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
             # horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
@@ -915,7 +918,7 @@ p_space={'g':0.0001,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':-23,'vinf':1
+          'lim_angle':-23,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1
           }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
@@ -936,7 +939,7 @@ p_tierra={'g':9.8,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1}
+          'lim_angle':0,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -952,7 +955,7 @@ p_luna={'g':1.6,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1}
+          'lim_angle':0,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -971,7 +974,7 @@ p_marte={'g':3.721,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1}
+          'lim_angle':0,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -990,7 +993,7 @@ p_triton={'g':0.78,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-2000,
-          'lim_angle':-89,'vinf':1}
+          'lim_angle':-89,'vinf':1,'vinf':1,'im_piedra':1,'piedrita':1}
 
 
 p_ganimedes={'g':1.46,
@@ -1014,7 +1017,7 @@ p_ganimedes={'g':1.46,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1}
 
 p_proximab={'g':626*10**(-1),
           'im_fondo': "img/proximab.jpg",
@@ -1031,7 +1034,8 @@ p_proximab={'g':626*10**(-1),
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3150,
-          'lim_angle':0,'vinf':100
+          'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png'
+          
           }
 
 luna=mundo(list(p_luna.values()))
