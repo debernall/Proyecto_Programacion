@@ -352,8 +352,8 @@ class mundo:
         #cx = posobjetivo[0]
         #cy = posobjetivo[1]
         angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
-        xx = radio * np.cos(angulo+0.1) + cx
-        yy = radio * np.sin(angulo+0.1) + cy      
+        xx = radio * np.cos(angulo+0.05) + cx
+        yy = radio * np.sin(angulo+0.05) + cy      
         pos_final=xx,yy 
        # if k==0:
         #    pos_final=pos_inicial
@@ -436,12 +436,12 @@ class mundo:
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                     #Limites de la imagen de fondo
-        if nivel==0:
+        if nivel==3:
             posobjetivo= random.randrange(1800,xf-200), 980
         
-        if nivel==1 or nivel==3:
+        if nivel==1 or nivel==4:
             posobjetivo= random.randrange(3000,xf-100), 0
-        elif nivel!=1 and nivel!=3 and nivel!=0:
+        elif nivel!=1 and nivel!=3 and nivel!=4:
               posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
               
         xo=x0+posobjetivo[0]
@@ -735,7 +735,7 @@ class mundo:
                 step=(0,0)
                 sonidofondo.stop()
                 gameover=True
-            if nivel==0 and (pos_base[0]+2100)<b[0] and pos_base[1]-700<b[1]<pos_base[1]+91 :
+            if nivel==3 and (pos_base[0]+2100)<b[0] and pos_base[1]-700<b[1]<pos_base[1]+91 :
                 step=(0,0)
                 sonidofondo.stop()
                 gameover=True
@@ -844,7 +844,7 @@ class mundo:
              
 
 
-            if rover!=1 and nivel==5:
+            if rover!=1 and nivel==0:
                 pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1])
                 #pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
@@ -1008,12 +1008,12 @@ p_triton={'g':0.78,
 
 
 p_ganimedes={'g':1.46,
-          'im_fondo': "img/ganim.png",
+          'im_fondo': "img/ganimed.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
           'factor_perdida':0.6,
           'nombre_planeta':'Ganimedes',
           'vlimt':35,
-          'im_min':"img/ganimini.png",'px':0,
+          'im_min':"img/mganimed.jpg",'px':0,
           'py':-3000,
           'yi':200,
           'yf':3350,'mountain':1,'little_mountain':1,
@@ -1084,19 +1084,22 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(ross)
+                jugar_outro=mundo.main(ganimedes)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
                 jugar_outro=mundo.main(tierra)
-            elif nivel==3:
-                jugar_outro=mundo.main(proximab)
+            if nivel==3:
+                jugar_outro=mundo.main(ross)
+            
             elif nivel==4:
-                jugar_outro=mundo.main(marte)
+                jugar_outro=mundo.main(proximab)
             elif nivel==5:
+                jugar_outro=mundo.main(marte)
+            elif nivel==6:
                 jugar_outro=mundo.main(triton)
            
-            elif nivel==6:
+            elif nivel==7:
                 jugar_outro=mundo.main(ganimedes)
          
             else:
