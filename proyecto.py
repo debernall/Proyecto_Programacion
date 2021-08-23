@@ -344,23 +344,12 @@ class mundo:
 
         return pos_final
 
-    def pos_obstaculo(self,pos_inicial,radio,cx,cy):#,escala,correccion):
-        #if nivel==5:
-        #num_segmentos = 20
-        #rad = 300
-        #if k==0:
-         #   posobjetivo=[0,0]
-          #  pos_final=pos_inicial
-           # return pos_final
-        #posobjetivoo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
-        #cx = posobjetivo[0]
-        #cy = posobjetivo[1]
+    def pos_obstaculo(self,pos_inicial,radio,cx,cy):
         angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)
-        xx = radio * np.cos(angulo+0.05) + cx
-        yy = radio * np.sin(angulo+0.05) + cy
+        xx = -radio * np.cos(angulo+0.04) + cx
+        yy = -radio * np.sin(angulo+0.04) + cy
         pos_final=xx,yy
-       # if k==0:
-        #    pos_final=pos_inicial
+       
         return pos_final
 
     def dibujar_img(self,list_img):
@@ -608,6 +597,7 @@ class mundo:
                             speedangle=-1
 
                     elif event.key==pygame.K_n and disparo==False:                                  #Tecla derecha rotación en sentido negativo
+                        sonidofondo.stop()
                         gameover=True
                     elif event.key==pygame.K_a and colision==True:                                      #Tecla a permite avanzar de nivel y sumar puntos tras choque
                         puntos+=1
@@ -724,7 +714,7 @@ class mundo:
             c=pos_rover[0]+100,pos_rover[1]+65
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix[0]+100,pos_phoenix[1]+35
-            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<50:
+            if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<100:
                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_rover[0]-220,pos_rover[1]-100)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 step=(0,0)
                 vr=0
@@ -876,7 +866,7 @@ class mundo:
 
 
             if rover!=1 and nivel==7:
-                pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0],posobjetivo[1])
+                pos_rover=self.pos_obstaculo(pos_rover,500,posobjetivo[0],posobjetivo[1])
                 #pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
                 pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
@@ -985,7 +975,7 @@ p_tierra={'g':9.8,
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
-          'factor_perdida':0.9,
+          'factor_perdida':0.4,
           'nombre_planeta':'LUNA',
           'vlimt':32,
           'im_min':"img/mluna.jpg",'px':0,
@@ -1041,7 +1031,7 @@ p_triton={'g':0.78,
 
 p_ganimedes={'g':1.46,
           'im_fondo': "img/ganimed.jpg",
-          'son_mundo':"sound/sonidofondo4.wav",
+          'son_mundo':"sound/nocturne.wav",
           'factor_perdida':0.6,
           'nombre_planeta':'Ganimedes',
           'vlimt':31,
@@ -1065,7 +1055,7 @@ p_ganimedes={'g':1.46,
 p_proximab={'g':626*10**(-1),
           'im_fondo': "img/proximab.jpg",
           'son_mundo':"sound/sonproximab.wav",
-          'factor_perdida':0.1,
+          'factor_perdida':0.3,
           'nombre_planeta':'Próxima b',
           'vlimt':209,
           'im_min':"img/mproximab.jpg",'px':0,
