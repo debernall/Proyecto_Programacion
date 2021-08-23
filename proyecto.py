@@ -435,7 +435,8 @@ class mundo:
               posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
-        yo<=(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g)))          #Parece ser un ajuste a la parabola de seguridad
+        if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))):          #Parece ser un ajuste a la parabola de seguridad
+            posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
         #xo=x0+200
         #yo=y0-200
         posobjetivo=(xo,yo)
