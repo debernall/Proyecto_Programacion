@@ -315,6 +315,7 @@ class mundo:
         self.fenixito=parametros[18]
         self.yp2=parametros[19]
         self.lim_angle=parametros[20]
+        self.vinf=parametros[21]
 
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
@@ -462,8 +463,8 @@ class mundo:
         angle=0                                                                                         #Declaración de variable ángulo del cañon
         speedangle=0                                                                                    #Variable que almacena la rotación del cañon
         n=0
-        v0=1                                                                                            #Velocidad inicial
-        vi=1
+        v0=self.vinf                                                                                           #Velocidad inicial
+        vi=self.vinf
         vr=10
         vrt=10
         vrpy=10
@@ -632,8 +633,10 @@ class mundo:
                 v0=self.vlimt
             if vi>=self.vlimt:
                 vi=self.vlimt
-            if v0<=1:
-                v0=1
+            if v0<=self.vinf:
+                v0=self.vinf
+            if vi<=self.vlimt:
+                vi=self.vlimt
 
 
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
@@ -912,7 +915,8 @@ p_space={'g':0.0001,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':-23}                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
+          'lim_angle':-23,'vinf':1
+          }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
 
@@ -932,7 +936,7 @@ p_tierra={'g':9.8,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0}
+          'lim_angle':0,'vinf':1}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -948,7 +952,7 @@ p_luna={'g':1.6,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0}
+          'lim_angle':0,'vinf':1}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -967,7 +971,7 @@ p_marte={'g':3.721,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0}
+          'lim_angle':0,'vinf':1}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -986,7 +990,7 @@ p_triton={'g':0.78,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-2000,
-          'lim_angle':-89}
+          'lim_angle':-89,'vinf':1}
 
 
 p_ganimedes={'g':1.46,
@@ -1010,9 +1014,25 @@ p_ganimedes={'g':1.46,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0}
+          'lim_angle':0,'vinf':1}
 
-
+p_proximab={'g':626*10**(-1),
+          'im_fondo': "img/proximab.jpg",
+          'son_mundo':"sound/sonproximab.wav",
+          'factor_perdida':55,
+          'nombre_planeta':'Próxima b',
+          'vlimt':250,
+          'im_min':"img/mproximab.jpg",'px':0,
+          'py':-3150,
+          'yi':200,
+          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'im_objetivo2':1,
+          'im_roversito':1,
+          'im_rovertierrita':1,
+          'im_fenixito':1,
+          'py2':-3150,
+          'lim_angle':0,'vinf':100
+          }
 
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
@@ -1022,7 +1042,7 @@ triton=mundo(list(p_triton.values()))
 
 ganimedes=mundo(list(p_ganimedes.values()))
 
-
+proximab=mundo(list(p_proximab.values()))
 ###############################         EJECUCION DEL JUEGO         ##################################
 jugar=True
 jugar_outro=True
@@ -1034,7 +1054,7 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(marte)
+                jugar_outro=mundo.main(proximab)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
