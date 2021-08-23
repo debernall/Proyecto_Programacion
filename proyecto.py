@@ -677,11 +677,11 @@ class mundo:
             r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
 
            # COLISION CON ROVER, PHOENIX Y ROVERTIERRA
-            c=pos_rover[0]-500,pos_rover[1]+88
+            c=pos_rover[0]+100,pos_rover[1]+65
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
-            e=pos_phoenix
+            e=pos_phoenix[0]+100,pos_phoenix[1]+35
             if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<50:
-                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_rover[0]-100,pos_rover[1]-100)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_rover[0]-220,pos_rover[1]-100)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
                 vr=0
                 vrt=0
                 vrpx=0
@@ -694,21 +694,23 @@ class mundo:
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<100:
                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
                 step=(0,0)
-                gameover=True
+                
                 vr=0
                 vrt=0
                 vrpx=0
                 vrpy=0
+                gameover=True
                 #t=0
                 sonidofondo.stop()
             if self.rover!=1 and ((((e[0]-b[0])**2)+((e[1]-b[1])**2))**(0.5))<200:
-                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_phoenix[0]-100,pos_phoenix[1]-100)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
                 sonidofondo.stop()
-                gameover=True
+                step=(0,0)
                 vr=0
                 vrt=0
                 vrpx=0
                 vrpy=0
+                gameover=True
                 #step=(0,0)
                 #menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
                 #t=0
