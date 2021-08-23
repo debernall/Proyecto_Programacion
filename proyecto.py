@@ -949,14 +949,14 @@ p_space={'g':0.0001,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':-23,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
+          'lim_angle':-23,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
           }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
 
           'im_fondo': "img/pradera (2).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
-          'factor_perdida':0.9,
+          'factor_perdida':0.2,
           'nombre_planeta':'TIERRA',
           'vlimt':81,
           'im_min':"img/mpradera.jpg",
@@ -970,7 +970,7 @@ p_tierra={'g':9.8,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -986,13 +986,13 @@ p_luna={'g':1.6,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
-          'factor_perdida':0.9,
+          'factor_perdida':0.7,
           'nombre_planeta':'MARTE',
-          'vlimt':51,
+          'vlimt':49,
           'im_min':"img/mmarte.jpg",
           'px':0,
           'py':-3000,
@@ -1005,7 +1005,7 @@ p_marte={'g':3.721,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -1049,14 +1049,14 @@ p_ganimedes={'g':1.46,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 
-p_proximab={'g':626*10**(-1),
+p_proximab={'g':int(626*10**(-1.5)),
           'im_fondo': "img/proximab.jpg",
           'son_mundo':"sound/sonproximab.wav",
-          'factor_perdida':0.3,
+          'factor_perdida':0.01,
           'nombre_planeta':'Próxima b',
-          'vlimt':209,
+          'vlimt':115,
           'im_min':"img/mproximab.jpg",'px':0,
           'py':-3150,
           'yi':200,
@@ -1066,14 +1066,14 @@ p_proximab={'g':626*10**(-1),
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3220,
-          'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png','lim_anglesup':90,'b':0,'tipo':0
+          'lim_angle':0,'vinf':50,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png','lim_anglesup':90,'b':0,'tipo':0
           }
 p_ross={'g':57*10**(-1),
           'im_fondo': "img/ross.jpg",
           'son_mundo':"sound/clair.wav",
           'factor_perdida':0.1,
           'nombre_planeta':'Trappist-1d',
-          'vlimt':60,
+          'vlimt':61,
           'im_min':"img/mross.jpg",'px':0,
           'py':-3000,
           'yi':200,
