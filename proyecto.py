@@ -436,15 +436,18 @@ class mundo:
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                     #Limites de la imagen de fondo
-        if nivel==1 or nivel==0:
+        if nivel==0:
+            posobjetivo= random.randrange(1800,xf-200), 980
+        
+        if nivel==1 or nivel==3:
             posobjetivo= random.randrange(3000,xf-100), 0
-        elif nivel!=1:
+        elif nivel!=1 and nivel!=3 and nivel!=0:
               posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
               
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
-        if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))) and nivel!=1 and nivel!=0:          #Parece ser un ajuste a la parabola de seguridad
-            yo=yo+400
+        #if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))) and nivel!=1 and nivel!=0:          #Parece ser un ajuste a la parabola de seguridad
+            #yo=yo+400
         #xo=x0+200
         #yo=y0-200
         posobjetivo=(xo,yo)
@@ -730,6 +733,11 @@ class mundo:
                 #t=0
             if self.piedra!=1 and (pos_base[0]+1600)<b[0]<pos_base[0]+1300 +1000 and pos_base[1]-900<b[1]<pos_base[1]+91:
                 step=(0,0)
+                sonidofondo.stop()
+                gameover=True
+            if nivel==0 and (pos_base[0]+2100)<b[0] and pos_base[1]-700<b[1]<pos_base[1]+91 :
+                step=(0,0)
+                sonidofondo.stop()
                 gameover=True
             t=t+n
             t1+=n
@@ -882,7 +890,7 @@ class mundo:
             if pos_phoenix[1]<=posplano[1]:
                 vrpy=-vrpy
             #CUADROS DE TEXTO
-            print(explosion,angle,pos_canon)
+            print(step[0],step)
             #print(cd,pos_expl,(int(explosion_rotated.get_width()//2),int(explosion_rotated.get_height()//2)))
             menu.crear_cuadro_de_texto(screen,87,45,175,50,'Ángulo',letra_letreros,None,white,None)                       #Agrega un cuadro de texto con el angulo.
             menu.crear_cuadro_de_texto(screen,87,70,175,50,str(angle)+'º',letra_letreros,None,white,None)
@@ -1036,11 +1044,26 @@ p_proximab={'g':626*10**(-1),
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
-          'py2':-3250,
+          'py2':-3220,
           'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png'
-          
           }
-
+p_ross={'g':57*10**(-1),
+          'im_fondo': "img/ross.jpg",
+          'son_mundo':"sound/sonproximab.wav",
+          'factor_perdida':15,
+          'nombre_planeta':'Trappist-1d',
+          'vlimt':60,
+          'im_min':"img/mross.jpg",'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'im_objetivo2':1,
+          'im_roversito':1,
+          'im_rovertierrita':1,
+          'im_fenixito':1,
+          'py2':-3000,
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1
+          }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
@@ -1048,7 +1071,7 @@ marte=mundo(list(p_marte.values()))
 triton=mundo(list(p_triton.values()))
 
 ganimedes=mundo(list(p_ganimedes.values()))
-
+ross=mundo(list(p_ross.values()))
 proximab=mundo(list(p_proximab.values()))
 ###############################         EJECUCION DEL JUEGO         ##################################
 jugar=True
@@ -1061,16 +1084,19 @@ while jugar:
         puntos=0
         while jugar_outro:
             if nivel==0:
-                jugar_outro=mundo.main(proximab)
+                jugar_outro=mundo.main(ross)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
-                jugar_outro=mundo.main(marte)
-            elif nivel==3:
-                jugar_outro=mundo.main(triton)
-            elif nivel==4:
                 jugar_outro=mundo.main(tierra)
+            elif nivel==3:
+                jugar_outro=mundo.main(proximab)
+            elif nivel==4:
+                jugar_outro=mundo.main(marte)
             elif nivel==5:
+                jugar_outro=mundo.main(triton)
+           
+            elif nivel==6:
                 jugar_outro=mundo.main(ganimedes)
          
             else:
