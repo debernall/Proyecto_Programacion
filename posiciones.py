@@ -88,7 +88,7 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
             distancia=Distancia(x,i[0],y,i[1])-i[2]                                 #CALCULA LAS DISTANCIAS AL BORDE DE CADA OBSTACULO
             vdistancia.append(distancia)                                            #GUARDA EN UN VECTOR LAS DISTANCIAS
         
-        if len(distancia)==0:
+        if len(distancia)==0:                               
             break    
         
         aux=[]
@@ -236,17 +236,17 @@ def posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebote
 
 #VARIABLES NECESARIAS PARA OBTENER LOS VECTORES POSICION
 # x0=0                            #POSICION INICIAL
-# y0=10
+# y0=0
 # theta0=1.2            #ANGULO DE LANZAMIENTO
 # v0=13                           #MAGNITUD DE VELOCIDAD INICIAL
 # g=10                            
-# e=0.8                           #FACTOR DE PERDIDA DE VELOCIDAD
+# e=1                           #FACTOR DE PERDIDA DE VELOCIDAD
 # xlim=4000                        #LONGITUD MAXIMA DEL TABLERO EN X
 # ylim=10000
 # epsilon=0.01                  #ESPACIAMIENTO DEL VECTOR TIEMPO
-# impactos=((20,3,1.1,False),(20,5,1,True),(10,8,2,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
+# impactos=((20,30,1.1,False),(23,5,1,False),(10,8,2,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
 # max_rebotes=10
-# yliminf=6
+# yliminf=0
 
 
 # a=posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes)
