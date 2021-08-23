@@ -436,7 +436,7 @@ class mundo:
               
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
-        if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))):          #Parece ser un ajuste a la parabola de seguridad
+        if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))) and nivel!=1:          #Parece ser un ajuste a la parabola de seguridad
             yo=yo+400
         #xo=x0+200
         #yo=y0-200
