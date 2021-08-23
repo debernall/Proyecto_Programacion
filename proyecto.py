@@ -596,6 +596,7 @@ class mundo:
                             speedangle=-1
 
                     elif event.key==pygame.K_n and disparo==False:                                  #Tecla derecha rotación en sentido negativo
+                        sonidofondo.stop()
                         gameover=True
                     elif event.key==pygame.K_a and colision==True:                                      #Tecla a permite avanzar de nivel y sumar puntos tras choque
                         puntos+=1
@@ -1029,7 +1030,7 @@ p_triton={'g':0.78,
 
 p_ganimedes={'g':1.46,
           'im_fondo': "img/ganimed.jpg",
-          'son_mundo':"sound/sonidofondo4.wav",
+          'son_mundo':"sound/nocturne.wav",
           'factor_perdida':0.6,
           'nombre_planeta':'Ganimedes',
           'vlimt':31,
