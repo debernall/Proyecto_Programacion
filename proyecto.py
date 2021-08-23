@@ -12,6 +12,7 @@ from pygame.constants import MOUSEBUTTONDOWN
 import codecs
 import menu
 import posiciones
+import mov
 import math
 
 ###############################      DECLARACIONES INICIALES        ##################################
@@ -319,17 +320,19 @@ class mundo:
         self.piedra=parametros[22]
         self.little_piedra=parametros[23]
         self.lim_anglesup=parametros[24]
-        
+        self.b=parametros[25]
+        self.tipo=parametros[26]
+
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
         self.lista1=[]
 
-    
+
     def rotate(self,surface, angle,g):
         rotated_surface=pygame.transform.rotozoom(surface,angle,1)
         rotated_rect = rotated_surface.get_rect(center=g)
         return rotated_surface,rotated_rect
-    
+
     def nueva_pos(self,pos_inicial,v,t,escala,sentido,correccion,vobstaculo):
         #if nivel=!5:
         if pos_inicial[0]==600.0:
@@ -338,7 +341,7 @@ class mundo:
                 self.lista1.append(t)
         pos_final=pos_inicial[0]-v[0]*(0.03317*escala)+vobstaculo[0],pos_inicial[1]-(v[1]*(0.03317*escala))-((sentido)*(0.5*self.g*t*correccion))-vobstaculo[1]
         #else:
-            
+
         return pos_final
 
     def pos_obstaculo(self,pos_inicial,radio,cx,cy):#,escala,correccion):
@@ -352,10 +355,10 @@ class mundo:
         #posobjetivoo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
         #cx = posobjetivo[0]
         #cy = posobjetivo[1]
-        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
+        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)
         xx = radio * np.cos(angulo+0.05) + cx
-        yy = radio * np.sin(angulo+0.05) + cy      
-        pos_final=xx,yy 
+        yy = radio * np.sin(angulo+0.05) + cy
+        pos_final=xx,yy
        # if k==0:
         #    pos_final=pos_inicial
         return pos_final
@@ -437,18 +440,18 @@ class mundo:
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
         xf=3600                                                                                     #Limites de la imagen de fondo
-       
+
         if nivel==6:
             posobjetivo= random.randrange(1800,xf-200), -1200
-       
+
         if nivel==3:
             posobjetivo= random.randrange(1800,xf-200), 980
-        
+
         if nivel==1 or nivel==4:
             posobjetivo= random.randrange(3000,xf-100), 0
         elif nivel!=1 and nivel!=3 and nivel!=4 and nivel!=6:
               posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
-              
+
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
         #if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))) and nivel!=1 and nivel!=0:          #Parece ser un ajuste a la parabola de seguridad
@@ -492,7 +495,7 @@ class mundo:
         distanciarover=pos_rover[0]-x0, pos_rover[1]-y0
         distanciarovertierra=pos_rovertierra[0]-x0
         distanciaphoenix=pos_phoenix[0]-x0,pos_phoenix[1]-y0
-
+        fino=False
         #def pos_obstaculo(self,pos_inicial,radio):#,escala,correccion):
         #if nivel==5:
          #   num_segmentos = 20
@@ -500,10 +503,10 @@ class mundo:
          #   posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
  #       cx = posobjetivo[0]
   #      cy = posobjetivo[1]
-   #     angulo = math.atan((pos_rover[1]-cy)/(pos_rover[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)           
+   #     angulo = math.atan((pos_rover[1]-cy)/(pos_rover[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)
     #    xx = 300 * np.cos(angulo+0.5) + cx
-     #   yy = 300 * np.sin(angulo+0.5) + cy      
-        #pos_final=xx,yy 
+     #   yy = 300 * np.sin(angulo+0.5) + cy
+        #pos_final=xx,yy
             #return pos_final
 
 
@@ -568,8 +571,10 @@ class mundo:
                             IMPACTOS.append((X0+(xo-x0)/10,YOBJ,5,True))
                             MAX_REBOTES=10
                             #print(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
-
-                            aa=posiciones.posiciones(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
+                            B=self.b
+                            TIPO=self.tipo
+                            #aa=posiciones.posiciones(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
+                            aa=mov.calc_vect(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES,B,TIPO)
                             #posiciones.graficar(aa[3],aa[0],aa[1])
                             #print(aa[2])
                             #for u in aa[2]:
@@ -578,16 +583,29 @@ class mundo:
                             #AQUÍ SE EJECUTA LA FUNCION CALCULAR VECTORES X,Y
 
                     elif event.key==pygame.K_UP and disparo==False:                                     #Tecla izquierda rotación en sentido positivo
-                        speedv0=1
+                        if fino==True:
+                            speedv0=0.1
+                        else:
+                            speedv0=1
 
                     elif event.key==pygame.K_DOWN and disparo==False:                                   #Tecla derecha rotación en sentido negativo
-                        speedv0=-1
+                        if fino==True:
+                            speedv0=-0.1
+                        else:
+                            speedv0=-1
 
                     elif (event.key==pygame.K_LEFT and disparo==False):                                 #Tecla izquierda rotación en sentido positivo
-                        speedangle=1
+                        if fino==True:
+                            speedangle=0.1
+                        else:
+                            speedangle=1
 
                     elif event.key==pygame.K_RIGHT and disparo==False:                                  #Tecla derecha rotación en sentido negativo
-                        speedangle=-1
+                        if fino==True:
+                            speedangle=-0.1
+                        else:
+                            speedangle=-1
+
                     elif event.key==pygame.K_n and disparo==False:                                  #Tecla derecha rotación en sentido negativo
                         gameover=True
                     elif event.key==pygame.K_a and colision==True:                                      #Tecla a permite avanzar de nivel y sumar puntos tras choque
@@ -625,6 +643,12 @@ class mundo:
 
                     elif event.key==pygame.K_UP and disparo==True:                                      #Tecla derecha rotación en sentido negativo
                         ns=clock.tick(60)
+
+                    elif event.key==pygame.K_r and disparo==False:
+                        fino=True
+
+                    elif event.key==pygame.K_t and disparo==False:
+                        fino=False
 
             if disparo==True and gameover==False:
                 k2=t1*0.03317
@@ -708,14 +732,14 @@ class mundo:
                 vrpy=0
                 sonidofondo.stop()
                 #self.dibujar_img(explosion,pos_rover)
-                
+
                 gameover=True
                 #t=0
                 #CHOQUE CON ROVERTIERRA
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<100:
                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
                 step=(0,0)
-                
+
                 vr=0
                 vrt=0
                 vrpx=0
@@ -810,7 +834,7 @@ class mundo:
             ################    Aplicar el escalado de los puntos
             ################    El minimapa puede ser obtenido de manera similar pero con un segundo escalado
 
-            
+
             # CALCULO DE NUEVAS POSICIONES
             if disparo==True:
                 #print(posplano,-10*(aa[0][k]-40),self.yp+10*(aa[1][k]-65))
@@ -847,7 +871,7 @@ class mundo:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
              pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(vrpx,vrpy))
-             
+
 
 
             if rover!=1 and nivel==7:
@@ -896,20 +920,20 @@ class mundo:
             if pos_phoenix[1]<=posplano[1]:
                 vrpy=-vrpy
             #CUADROS DE TEXTO
-            print(step[0],step)
+            #print(step[0],step)
             #print(cd,pos_expl,(int(explosion_rotated.get_width()//2),int(explosion_rotated.get_height()//2)))
             menu.crear_cuadro_de_texto(screen,87,45,175,50,'Ángulo',letra_letreros,None,white,None)                       #Agrega un cuadro de texto con el angulo.
-            menu.crear_cuadro_de_texto(screen,87,70,175,50,str(angle)+'º',letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,87,70,175,50,str("{0:.1f}".format(angle))+'º',letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,270,45,250,50,'Velocidad inicial',letra_letreros,None,white,None)
-            menu.crear_cuadro_de_texto(screen,270,70,250,50,str(v0)+"m/s",letra_letreros,None,white,None)
+            menu.crear_cuadro_de_texto(screen,270,70,250,50,str("{0:.1f}".format(v0))+"m/s",letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,470,45,250,50,'Objetivo(x,y)',letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,470,70,250,50,'('+str(distancia[0])+"m,"+str(distancia[1])+"m)",letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,680,45,150,50,'Gravedad',letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,680,70,150,50,str(self.g)+'m/s^2',letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,87,130,175,50,'Nivel',letra_creditos,None,blue,None)
-            menu.crear_cuadro_de_texto(screen,87,180,175,50,str(nivel),letra_creditos,None,blue,None)     
-            menu.crear_cuadro_de_texto(screen,700,130,175,50,'Puntos',letra_creditos,None,blue,None)      
-            menu.crear_cuadro_de_texto(screen,700,180,175,50,str(puntos),letra_creditos,None,blue,None)      
+            menu.crear_cuadro_de_texto(screen,87,180,175,50,str(nivel),letra_creditos,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,700,130,175,50,'Puntos',letra_creditos,None,blue,None)
+            menu.crear_cuadro_de_texto(screen,700,180,175,50,str(puntos),letra_creditos,None,blue,None)
             menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,None,blue,None)
             menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,blue)
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,blue,None)
@@ -935,7 +959,7 @@ p_space={'g':0.0001,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':-23,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90
+          'lim_angle':-23,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
           }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
@@ -956,7 +980,7 @@ p_tierra={'g':9.8,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -972,7 +996,7 @@ p_luna={'g':1.6,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -991,7 +1015,7 @@ p_marte={'g':3.721,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -1011,7 +1035,7 @@ p_triton={'g':0.78,
           'im_fenixito':1,
           'py2':-3000,
           'lim_angle':-0,'vinf':8,'im_piedra':1,'piedrita':1,
-          'lim_anglesup':0}
+          'lim_anglesup':0,'b':0,'tipo':0}
 
 
 p_ganimedes={'g':1.46,
@@ -1035,7 +1059,7 @@ p_ganimedes={'g':1.46,
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90}
+          'lim_angle':0,'vinf':1,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
 
 p_proximab={'g':626*10**(-1),
           'im_fondo': "img/proximab.jpg",
@@ -1052,7 +1076,7 @@ p_proximab={'g':626*10**(-1),
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3220,
-          'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png','lim_anglesup':90
+          'lim_angle':0,'vinf':100,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png','lim_anglesup':90,'b':0,'tipo':0
           }
 p_ross={'g':57*10**(-1),
           'im_fondo': "img/ross.jpg",
@@ -1069,7 +1093,7 @@ p_ross={'g':57*10**(-1),
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
           }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
@@ -1098,17 +1122,17 @@ while jugar:
                 jugar_outro=mundo.main(tierra)
             elif nivel==3:
                 jugar_outro=mundo.main(ross)
-            
+
             elif nivel==4:
                 jugar_outro=mundo.main(proximab)
             elif nivel==5:
                 jugar_outro=mundo.main(marte)
             elif nivel==6:
                 jugar_outro=mundo.main(triton)
-           
+
             elif nivel==7:
                 jugar_outro=mundo.main(ganimedes)
-         
+
             else:
                 jugar_outro=False
 
