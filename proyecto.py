@@ -545,8 +545,7 @@ class mundo:
                             pos_expl=(x0+50,y0-100)                                                                                      #posición de la explosión al disparar
                             pos_expli=(20,400+(self.yf*0.05))
                             disparo=True
-                            sonidofondo.set_volume(0.5)
-                            sonidoexplosión.play()
+                            
                             speedv0=0
                             speedangle=0
                             ESCALA=self.escala
@@ -581,6 +580,8 @@ class mundo:
                                 #print(u)
                             #print('adsdasd',aa[2])
                             #AQUÍ SE EJECUTA LA FUNCION CALCULAR VECTORES X,Y
+                            sonidofondo.set_volume(0.5)
+                            sonidoexplosión.play()
 
                     elif event.key==pygame.K_UP and disparo==False:                                     #Tecla izquierda rotación en sentido positivo
                         if fino==True:
@@ -1110,7 +1111,7 @@ p_gliese={'g':17.39,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.3,'tipo':1
+          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1
           }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
