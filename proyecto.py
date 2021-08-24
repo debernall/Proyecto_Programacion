@@ -1215,7 +1215,7 @@ p_kepler={'g':20,
           }
 p_tokio={'g':9.8,
           'im_fondo': "img/tokio.jpg",
-          'son_mundo':"sound/clair.wav",
+          'son_mundo':"sound/tokio.wav",
           'factor_perdida':0.8,
           'nombre_planeta':'Invasión Alien',
           'vlimt':3000,
