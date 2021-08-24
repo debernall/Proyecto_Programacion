@@ -60,7 +60,8 @@ imagenes={'intro':"img/fondo_intro.jpg",
           'base':"img/cañon9.png",
           'cañonsito':"img/cañon8sito.png",
           'basesita':"img/cañon9sito.png",
-          'cuadros':"img/cuadros.jpg"}
+          'cuadros':"img/cuadros.jpg",
+          'cuadro1':"img/cuadros1.jpg"}
 
 sonidos={'fondo':"sound/sonidofondo.wav",
          'explosion':"sound/sonexp.wav"}
@@ -407,6 +408,7 @@ class mundo:
         objetivo=pygame.image.load(imagenes['objetivo'])
         objetivito=pygame.image.load(imagenes['objetivito'])
         cuadros=pygame.image.load(imagenes['cuadros'])
+        cuadros1=pygame.image.load(imagenes['cuadro1'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         navecita=pygame.image.load('img/navemini.png')
         
@@ -857,7 +859,7 @@ class mundo:
                 menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
 
             if gameover==True and colision==False:
-                menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar ó s para repetir el nivel!',letra_letreros,black,blue,blue)
+                menu.crear_cuadro_de_texto(screen,425,375,470,37,'¡Fallaste, presiona A para continuar ó s para repetir el nivel!',letra_letreros,black,blue,blue)
                 t=0
                 #step=(0,0)
 
@@ -1014,6 +1016,11 @@ class mundo:
             menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,None,blue,None)
             menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,blue)
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,blue,None)
+            if self.b>0:
+                screen.blit(cuadros1,(625,500))
+                menu.crear_cuadro_de_texto(screen,715,550,175,50,'Coef de arrastre',letra_letreros,None,white,None)
+                menu.crear_cuadro_de_texto(screen,715,570,175,50,str(self.b)+"N*s/m",letra_letreros,None,white,None)
+                
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################
