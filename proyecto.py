@@ -1135,6 +1135,23 @@ p_gliese={'g':17.39,
           'py2':-3000,
           'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
           }
+p_kepler={'g':20,
+          'im_fondo': "img/Kepler22b.jpg",
+          'son_mundo':"sound/clair.wav",
+          'factor_perdida':0.8,
+          'nombre_planeta':'Kepler 22b',
+          'vlimt':3000,
+          'im_min':"img/Kepler22bmini.jpg",'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'im_objetivo2':1,
+          'im_roversito':1,
+          'im_rovertierrita':1,
+          'im_fenixito':1,
+          'py2':-3000,
+          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.3,'tipo':1
+          }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
@@ -1145,6 +1162,7 @@ ganimedes=mundo(list(p_ganimedes.values()))
 ross=mundo(list(p_ross.values()))
 proximab=mundo(list(p_proximab.values()))
 gliese=mundo(list(p_gliese.values()))
+kepler=mundo(list(p_kepler.values()))
 ###############################         EJECUCION DEL JUEGO         ##################################
 jugar=True
 jugar_outro=True
@@ -1175,6 +1193,8 @@ while jugar:
                 jugar_outro=mundo.main(ganimedes)
             elif nivel==8:
                 jugar_outro=mundo.main(tierra)
+            elif nivel==9:
+                jugar_outro=mundo.main(kepler)
 
             else:
                 jugar_outro=False
