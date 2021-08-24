@@ -526,16 +526,17 @@ class mundo:
 
         sonidofondo.set_volume(0.8)
         sonidofondo.play(-1)
-
+        pseg=True
         while(running):
 
 
+            
             ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:                                                          #Permite salir del juego
                     pygame.quit()
                     quit()
-
+                    
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
                     if event.key==pygame.K_SPACE:                                                      #Tecla espacio
@@ -589,29 +590,29 @@ class mundo:
                             #AQUÍ SE EJECUTA LA FUNCION CALCULAR VECTORES X,Y
                             sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
-
+                    
                     elif event.key==pygame.K_UP and disparo==False:                                     #Tecla izquierda rotación en sentido positivo
-                        if fino==True:
+                        if fino==True and pseg==True:
                             speedv0=0.1
-                        else:
+                        elif fino==False and pseg==True:
                             speedv0=1
 
                     elif event.key==pygame.K_DOWN and disparo==False:                                   #Tecla derecha rotación en sentido negativo
                         if fino==True:
                             speedv0=-0.1
-                        else:
+                        elif fino==False:
                             speedv0=-1
 
                     elif (event.key==pygame.K_LEFT and disparo==False):                                 #Tecla izquierda rotación en sentido positivo
-                        if fino==True:
+                        if fino==True and pseg==True:
                             speedangle=0.1
-                        else:
+                        elif fino==False and pseg==True:
                             speedangle=1
 
                     elif event.key==pygame.K_RIGHT and disparo==False:                                  #Tecla derecha rotación en sentido negativo
                         if fino==True:
                             speedangle=-0.1
-                        else:
+                        elif fino==False:
                             speedangle=-1
 
                     elif event.key==pygame.K_n and disparo==False:                                  #Tecla derecha rotación en sentido negativo
@@ -665,7 +666,16 @@ class mundo:
                 k=np.where(aa[2]==k1)[0][0]
                 #print(k2,k1,k)
 
-
+            pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
+            
+            if self.g<0.1:
+                pseg=True
+            
+            if pseg==False and self.g>0.1:
+                angle=angle-1
+                v0=v0-1
+                pseg=True
+                
             #ROTACION DEL CAÑON
             angle=angle+speedangle                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
             #LIMITES DE ROTACION DEL CAÑON
@@ -687,6 +697,10 @@ class mundo:
                 vi=self.vlimt
 
 
+                
+            # pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
+            #print(pseg)
+            
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
             image3_rotated , image3_rotated_rect = self.rotate(cañonsito,angle,pos_canonsito)
 
@@ -977,7 +991,7 @@ p_tierra={'g':9.8,
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':0.2,
           'nombre_planeta':'TIERRA',
-          'vlimt':81,
+          'vlimt':300,
           'im_min':"img/mpradera.jpg",
           'px':0,
           'py':-3000,
@@ -995,7 +1009,7 @@ p_luna={'g':1.6,
           'son_mundo':"sound/sonidofondo2.wav",
           'factor_perdida':0.4,
           'nombre_planeta':'LUNA',
-          'vlimt':32,
+          'vlimt':320,
           'im_min':"img/mluna.jpg",'px':0,
           'py':-3000,
           'yi':200,
