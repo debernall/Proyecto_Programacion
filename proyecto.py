@@ -1159,7 +1159,7 @@ while jugar:
                 jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
-            elif nivel==3:
+            elif nivel==2:
                 jugar_outro=mundo.main(gliese)
             elif nivel==3:
                 jugar_outro=mundo.main(ross)
