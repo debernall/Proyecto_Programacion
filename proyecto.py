@@ -1003,7 +1003,7 @@ p_tierra={'g':9.8,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -1133,7 +1133,7 @@ p_gliese={'g':17.39,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1
+          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
           }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
@@ -1159,8 +1159,8 @@ while jugar:
                 jugar_outro=mundo.main(space)
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
-            elif nivel==2:
-                jugar_outro=mundo.main(tierra)
+            elif nivel==3:
+                jugar_outro=mundo.main(gliese)
             elif nivel==3:
                 jugar_outro=mundo.main(ross)
 
@@ -1174,7 +1174,7 @@ while jugar:
             elif nivel==7:
                 jugar_outro=mundo.main(ganimedes)
             elif nivel==8:
-                jugar_outro=mundo.main(gliese)
+                jugar_outro=mundo.main(tierra)
 
             else:
                 jugar_outro=False
