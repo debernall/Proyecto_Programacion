@@ -857,7 +857,7 @@ class mundo:
                 menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
 
             if gameover==True and colision==False:
-                menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar ó s para repetir el nivel!',letra_letreros,black,blue,blue)
+                menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar ó S para repetir el nivel!',letra_letreros,black,blue,blue)
                 t=0
                 #step=(0,0)
 
