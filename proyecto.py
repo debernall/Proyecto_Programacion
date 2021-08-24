@@ -408,6 +408,8 @@ class mundo:
         objetivito=pygame.image.load(imagenes['objetivito'])
         cuadros=pygame.image.load(imagenes['cuadros'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
+        navecita=pygame.image.load('img/navemini.png')
+        
 
         #CARGA DE SONIDO DE FONDO
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
@@ -435,6 +437,9 @@ class mundo:
               rover=1
               rovertierra=1
               phoenix=1
+              
+        if nivel==10:
+            nave=pygame.image.load(self.fenixito)
 
   #      if self.rover!=1:
    #        rover=pygame.image.load(self.rover)
@@ -497,6 +502,18 @@ class mundo:
         speedv0=0
         t=0
         t1=0                                                                                           #Variable de tiempo
+        if nivel == 10:
+            vv=True
+            while vv:
+                xn,yn=x0+random.randrange(200,xf-200), y0-random.randrange(self.yi,self.yf-200)
+                #xn,yn=x0+300,y0-300
+                pos_nave=xn,yn
+                distancia_n=((pos_nave[0]-posimg[0])/self.escala),-((pos_nave[1]-posimg[1])/self.escala)
+                v=np.sqrt((distancia[0]-distancia_n[1])**2+(distancia[1]-distancia_n[1])**2)-40
+                if v>0:
+                    vv=False
+                pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)    
+            
         pos_rover=[xo-300,yo-300]#[1500,-2000]
         pos_rovertierra=400,250
         pos_phoenix=1000,-1000
@@ -578,6 +595,8 @@ class mundo:
                             IMPACTOS=[]
                             IMPACTOS.append((X0+(xo-x0)/10,YOBJ,5,True))
                             MAX_REBOTES=10
+                            if nivel==10:
+                                IMPACTOS.append((X0+(xn-x0)/10,int((4000+self.yp-yn)/ESCALA),20,False))
                             #print(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
                             B=self.b
                             TIPO=self.tipo
@@ -728,7 +747,11 @@ class mundo:
 
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1 and piedra==1:
-             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
+             if nivel==10:
+                 pos_nave1=pos_nave[0]-200,pos_nave[1]-200                    
+                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(nave,pos_nave1),(navecita,pos_navecita)))
+             else:
+                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
             elif mountain!=1:
              self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
             elif rover!=1:
@@ -736,6 +759,7 @@ class mundo:
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
             elif piedra!=1:
              self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(piedra,(pos_base[0]+1300,pos_base[1]-1000)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_piedra,(pos_basesita[0]+60,pos_basesita[1]-40))))
+                
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
@@ -876,9 +900,11 @@ class mundo:
                 #print(pos_bolita,(0.5*(aa[0][k])),-self.yp-0.5*(aa[1][k])-1400)
                 pos_bolita=0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp
                 #print(pos_bolita,0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp,2000+self.yp)
-
+                #print(pos_nave,posobjetivo)
+                if nivel==10:
+                    pos_nave=(-10*(aa[0][k]-40)+xn,10*(aa[1][k]+35)+yn-4000-self.yp)
              #   print(pos_canon,10*(aa[1][k]+35+13.6)+yo-4000-self.yp)
-
+                 
 
                 if (k+4)>len(aa[0]):
                     sonidofondo.stop()
@@ -1153,17 +1179,35 @@ p_kepler={'g':20,
           'py2':-3000,
           'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.3,'tipo':1
           }
+p_tokio={'g':9.8,
+          'im_fondo': "img/tokio.jpg",
+          'son_mundo':"sound/clair.wav",
+          'factor_perdida':0.8,
+          'nombre_planeta':'Invasión Alien',
+          'vlimt':3000,
+          'im_min':"img/tokiomini.jpg",'px':0,
+          'py':-3000,
+          'yi':200,
+          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'im_objetivo2':1,
+          'im_roversito':1,
+          'im_rovertierrita':1,
+          'im_fenixito':"img/nave.png",
+          'py2':-3000,
+          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1
+          }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
 tierra=mundo(list(p_tierra.values()))
 marte=mundo(list(p_marte.values()))
 triton=mundo(list(p_triton.values()))
-
 ganimedes=mundo(list(p_ganimedes.values()))
 ross=mundo(list(p_ross.values()))
 proximab=mundo(list(p_proximab.values()))
 gliese=mundo(list(p_gliese.values()))
 kepler=mundo(list(p_kepler.values()))
+tokio=mundo(list(p_tokio.values()))
+
 ###############################         EJECUCION DEL JUEGO         ##################################
 jugar=True
 jugar_outro=True
@@ -1196,6 +1240,8 @@ while jugar:
                 jugar_outro=mundo.main(tierra)
             elif nivel==9:
                 jugar_outro=mundo.main(kepler)
+            elif nivel==10:
+                jugar_outro=mundo.main(tokio)
 
             else:
                 jugar_outro=False
