@@ -1,0 +1,6 @@
+En los niveles superiores
+encontrarás planetas con atmósfera
+para poder resolverlos deberás utilizar 
+las ecuaciones diferenciales generales 
+y las funciones que deberás deducir con
+los datos que se te suministren

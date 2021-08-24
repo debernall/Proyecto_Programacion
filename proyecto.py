@@ -40,8 +40,10 @@ lista_instrucciones=('Inst/instruccion1.txt',
                      'Inst/instruccion3.txt',
                      'Inst/instruccion4.txt',
                      'Inst/instruccion5.txt',
-                     'Inst/instruccion7.txt')
-lista_imagenes_inst=("img/cañon7.png",0,'img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png','img/rover.png')
+                     'Inst/instruccion7.txt',
+                     'Inst/instruccion8.txt',
+                     'Inst/instruccion9.txt')
+lista_imagenes_inst=("img/cañon7.png",'img/letrero_inst.png','img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png','img/rover.png','img/r.png','img/ecuaciones2.png')
 lista_integrantes=('brian santiago vasquez sarin',
                    'jeisson andres abril masmelas',
                    'daniel eduardo bernal lozano',
@@ -86,22 +88,21 @@ def instrucciones_juego(numero_instruccion):
     alto=200
 
     c_texto=codecs.open(instruccion,'r','utf-8').readlines()
-    if numero_instruccion!=1:
-        if numero_instruccion== 3 :
-            ancho=400
-        elif numero_instruccion==4:
-            ancho=300
-            alto=250
 
-        else:
-            ancho=200
-
-        imagen_inst=pygame.transform.scale(pygame.image.load(lista_imagenes_inst[numero_instruccion]),[ancho,alto])
-        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,450,ancho,200,' ',letra_botones,white,black,None)
-        screen_instrucciones.blit(imagen_inst,[screen_instrucciones.get_rect().centerx-ancho/2,350])
-
+    if numero_instruccion== 3 :
+        ancho=400
+    elif numero_instruccion==4:
+        ancho=300
+        alto=250
+    elif numero_instruccion==7:
+        ancho=800
     else:
-        menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,450,350,50,'Ángulo:25°',letra_letreros,None,green,green)
+        ancho=200
+
+    imagen_inst=pygame.transform.scale(pygame.image.load(lista_imagenes_inst[numero_instruccion]),[ancho,alto])
+    menu.crear_cuadro_de_texto(screen_instrucciones,screen_instrucciones.get_rect().centerx,450,ancho,200,' ',letra_botones,white,black,None)
+    screen_instrucciones.blit(imagen_inst,[screen_instrucciones.get_rect().centerx-ancho/2,350])
+
 
 
     for i in range(len(c_texto)):
@@ -131,7 +132,7 @@ def instrucciones_juego(numero_instruccion):
                         instrucciones_juego(numero_instruccion-1)
                     elif numero_instruccion-1 not in range(len(lista_instrucciones)):
                         inst=False
-                        instrucciones_juego(numero_instruccion=5)
+                        instrucciones_juego(numero_instruccion=len(lista_instrucciones)-1)
 
                 elif boton_siguiente.collidepoint(pygame.mouse.get_pos()):
                     if numero_instruccion+1 in range(len(lista_instrucciones)):

@@ -1,0 +1,5 @@
+Si requieres más precisión, puedes
+oprimir la tecla R para entrar en el
+modo de ajuste por decimales, también puedes 
+utilizar la tecla T para volver al modo de 
+ajuste por unidades.
