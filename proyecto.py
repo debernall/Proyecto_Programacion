@@ -503,17 +503,38 @@ class mundo:
         t=0
         t1=0                                                                                           #Variable de tiempo
         if nivel == 10:
-            vv=True
-            while vv:
-                xn,yn=x0+random.randrange(200,xf-200), y0-random.randrange(self.yi,self.yf-200)
-                #xn,yn=x0+300,y0-300
-                pos_nave=xn,yn
-                distancia_n=((pos_nave[0]-posimg[0])/self.escala),-((pos_nave[1]-posimg[1])/self.escala)
-                v=np.sqrt((distancia[0]-distancia_n[1])**2+(distancia[1]-distancia_n[1])**2)-40
-                if v>0:
-                    vv=False
-                pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)    
             
+            Naves=[]
+            for i in range(3):
+                vv=True
+                while vv:
+                    xn,yn=x0+random.randrange(200,xf-200), y0-random.randrange(self.yi,self.yf-200)
+                    #xn,yn=x0+300,y0-300
+                    pos_nave=xn,yn
+                    distancia_n=((pos_nave[0]-posimg[0])/self.escala),-((pos_nave[1]-posimg[1])/self.escala)
+                    v=np.sqrt((distancia[0]-distancia_n[1])**2+(distancia[1]-distancia_n[1])**2)-40
+                    if v>0:
+                        vv=False
+                    pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)    
+                Naves.append(((xn,yn),(pos_navecita)))
+
+            
+            xn0=Naves[0][0][0]
+            yn0=Naves[0][0][1]
+            pos_nave0=xn0,yn0
+            pos_navecita0=Naves[0][1]
+            
+            xn1=Naves[1][0][0]
+            yn1=Naves[1][0][1]
+            pos_nave1=xn1,yn1
+            pos_navecita1=Naves[1][1]
+            
+            xn2=Naves[2][0][0]
+            yn2=Naves[2][0][1]
+            pos_nave2=xn2,yn2
+            pos_navecita2=Naves[2][1]
+            
+                
         pos_rover=[xo-300,yo-300]#[1500,-2000]
         pos_rovertierra=400,250
         pos_phoenix=1000,-1000
@@ -596,7 +617,9 @@ class mundo:
                             IMPACTOS.append((X0+(xo-x0)/10,YOBJ,5,True))
                             MAX_REBOTES=10
                             if nivel==10:
-                                IMPACTOS.append((X0+(xn-x0)/10,int((4000+self.yp-yn)/ESCALA),20,False))
+                                IMPACTOS.append((X0+(xn0-x0)/10,int((4000+self.yp-yn0)/ESCALA),20,False))
+                                IMPACTOS.append((X0+(xn1-x0)/10,int((4000+self.yp-yn1)/ESCALA),20,False))
+                                IMPACTOS.append((X0+(xn2-x0)/10,int((4000+self.yp-yn2)/ESCALA),20,False))
                             #print(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
                             B=self.b
                             TIPO=self.tipo
@@ -748,8 +771,10 @@ class mundo:
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1 and piedra==1:
              if nivel==10:
-                 pos_nave1=pos_nave[0]-200,pos_nave[1]-200                    
-                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(nave,pos_nave1),(navecita,pos_navecita)))
+                 pos_nave10=pos_nave0[0]-200,pos_nave0[1]-200
+                 pos_nave11=pos_nave1[0]-200,pos_nave1[1]-200
+                 pos_nave12=pos_nave2[0]-200,pos_nave2[1]-200                    
+                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(nave,pos_nave10),(nave,pos_nave11),(nave,pos_nave12),(navecita,pos_navecita0),(navecita,pos_navecita1),(navecita,pos_navecita2)))
              else:
                  self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
             elif mountain!=1:
@@ -902,7 +927,9 @@ class mundo:
                 #print(pos_bolita,0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp,2000+self.yp)
                 #print(pos_nave,posobjetivo)
                 if nivel==10:
-                    pos_nave=(-10*(aa[0][k]-40)+xn,10*(aa[1][k]+35)+yn-4000-self.yp)
+                    pos_nave0=(-10*(aa[0][k]-40)+xn0,10*(aa[1][k]+35)+yn0-4000-self.yp)
+                    pos_nave1=(-10*(aa[0][k]-40)+xn1,10*(aa[1][k]+35)+yn1-4000-self.yp)
+                    pos_nave2=(-10*(aa[0][k]-40)+xn2,10*(aa[1][k]+35)+yn2-4000-self.yp)
              #   print(pos_canon,10*(aa[1][k]+35+13.6)+yo-4000-self.yp)
                  
 
