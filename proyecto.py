@@ -212,9 +212,9 @@ def creditos():                                                                 
 
     for i in range(len(lista_integrantes)):
         menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,150+20*i,600,100,lista_integrantes[i],letra_creditos1,None,green,None)
-    
+
     menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,280,100,100,'Música',letra_botones,None,blue,None)
-    
+
     for i in range(len(lista_canciones)):
         menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,310+20*i,100,100,lista_canciones[i],letra_creditos1,None,green,None)
 
@@ -222,8 +222,8 @@ def creditos():                                                                 
 
     for i in range(len(lista_paginas_imagenes)):
          menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,510+20*i,100,100,lista_paginas_imagenes[i],letra_creditos1,None,green,None)
-       
-  
+
+
 
     exit_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,650,350,50)
     return_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,580,350,50)
@@ -369,7 +369,7 @@ class mundo:
         xx = -radio * np.cos(angulo+0.04) + cx
         yy = -radio * np.sin(angulo+0.04) + cy
         pos_final=xx,yy
-       
+
         return pos_final
 
     def dibujar_img(self,list_img):
@@ -411,7 +411,7 @@ class mundo:
         cuadros1=pygame.image.load(imagenes['cuadro1'])
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         navecita=pygame.image.load('img/navemini.png')
-        
+
 
         #CARGA DE SONIDO DE FONDO
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
@@ -439,7 +439,7 @@ class mundo:
               rover=1
               rovertierra=1
               phoenix=1
-              
+
         if nivel==10:
             nave=pygame.image.load(self.fenixito)
 
@@ -505,7 +505,7 @@ class mundo:
         t=0
         t1=0                                                                                           #Variable de tiempo
         if nivel == 10:
-            
+
             Naves=[]
             for i in range(3):
                 vv=True
@@ -517,26 +517,26 @@ class mundo:
                     v=np.sqrt((distancia[0]-distancia_n[1])**2+(distancia[1]-distancia_n[1])**2)-40
                     if v>0:
                         vv=False
-                    pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)    
+                    pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)
                 Naves.append(((xn,yn),(pos_navecita)))
 
-            
+
             xn0=Naves[0][0][0]
             yn0=Naves[0][0][1]
             pos_nave0=xn0,yn0
             pos_navecita0=Naves[0][1]
-            
+
             xn1=Naves[1][0][0]
             yn1=Naves[1][0][1]
             pos_nave1=xn1,yn1
             pos_navecita1=Naves[1][1]
-            
+
             xn2=Naves[2][0][0]
             yn2=Naves[2][0][1]
             pos_nave2=xn2,yn2
             pos_navecita2=Naves[2][1]
-            
-                
+
+
         pos_rover=[xo-300,yo-300]#[1500,-2000]
         pos_rovertierra=400,250
         pos_phoenix=1000,-1000
@@ -571,13 +571,13 @@ class mundo:
         while(running):
 
 
-            
+
             ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:                                                          #Permite salir del juego
                     pygame.quit()
                     quit()
-                    
+
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
                     if event.key==pygame.K_SPACE:                                                      #Tecla espacio
@@ -594,7 +594,7 @@ class mundo:
                             pos_expl=(x0+50,y0-100)                                                                                      #posición de la explosión al disparar
                             pos_expli=(20,400+(self.yf*0.05))
                             disparo=True
-                            
+
                             speedv0=0
                             speedangle=0
                             ESCALA=self.escala
@@ -635,7 +635,7 @@ class mundo:
                             #AQUÍ SE EJECUTA LA FUNCION CALCULAR VECTORES X,Y
                             sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
-                    
+
                     elif event.key==pygame.K_UP and disparo==False:                                     #Tecla izquierda rotación en sentido positivo
                         if fino==True and pseg==True:
                             speedv0=0.1
@@ -712,15 +712,15 @@ class mundo:
                 #print(k2,k1,k)
 
             pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
-            
+
             if self.g<0.1:
                 pseg=True
-            
+
             if pseg==False and self.g>0.1:
                 angle=angle-1
                 v0=v0-1
                 pseg=True
-                
+
             #ROTACION DEL CAÑON
             angle=angle+speedangle                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
             #LIMITES DE ROTACION DEL CAÑON
@@ -742,10 +742,10 @@ class mundo:
                 vi=self.vlimt
 
 
-                
+
             # pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
             #print(pseg)
-            
+
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
             image3_rotated , image3_rotated_rect = self.rotate(cañonsito,angle,pos_canonsito)
 
@@ -775,7 +775,7 @@ class mundo:
              if nivel==10:
                  pos_nave10=pos_nave0[0]-200,pos_nave0[1]-200
                  pos_nave11=pos_nave1[0]-200,pos_nave1[1]-200
-                 pos_nave12=pos_nave2[0]-200,pos_nave2[1]-200                    
+                 pos_nave12=pos_nave2[0]-200,pos_nave2[1]-200
                  self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(nave,pos_nave10),(nave,pos_nave11),(nave,pos_nave12),(navecita,pos_navecita0),(navecita,pos_navecita1),(navecita,pos_navecita2)))
              else:
                  self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
@@ -786,7 +786,7 @@ class mundo:
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
             elif piedra!=1:
              self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(piedra,(pos_base[0]+1300,pos_base[1]-1000)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_piedra,(pos_basesita[0]+60,pos_basesita[1]-40))))
-                
+
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
@@ -933,7 +933,7 @@ class mundo:
                     pos_nave1=(-10*(aa[0][k]-40)+xn1,10*(aa[1][k]+35)+yn1-4000-self.yp)
                     pos_nave2=(-10*(aa[0][k]-40)+xn2,10*(aa[1][k]+35)+yn2-4000-self.yp)
              #   print(pos_canon,10*(aa[1][k]+35+13.6)+yo-4000-self.yp)
-                 
+
 
                 if (k+4)>len(aa[0]):
                     sonidofondo.stop()
@@ -1020,7 +1020,7 @@ class mundo:
                 screen.blit(cuadros1,(625,500))
                 menu.crear_cuadro_de_texto(screen,715,550,175,50,'Coef de arrastre',letra_letreros,None,white,None)
                 menu.crear_cuadro_de_texto(screen,715,570,175,50,str(self.b)+"N*s/m",letra_letreros,None,white,None)
-                
+
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
 
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################
