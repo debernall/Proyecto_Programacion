@@ -33,6 +33,7 @@ letra_outro=pygame.font.Font('Fonts/Starjedi.ttf', 75)
 letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',18)
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
 letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
+letra_creditos1=pygame.font.Font('Fonts/Starjedi.ttf',18)
 # UBICACIONES DE ARCHIVOS
 lista_instrucciones=('Inst/instruccion1.txt',
                      'Inst/instruccion2.txt',
@@ -62,6 +63,8 @@ imagenes={'intro':"img/fondo_intro.jpg",
 sonidos={'fondo':"sound/sonidofondo.wav",
          'explosion':"sound/sonexp.wav"}
 
+lista_canciones=('luna:main theme, hans zimmer','marte:gymnopedie no.1, erik satie','tritón:1812 overture, thaikovsky ','próxima b:arrival of the birds & transformation,the cinematic orchesta','trappist-1d:claire de lune, debussy','ganimedes:nocturne op.9,chopin','espacio:daylight, teremock')
+lista_paginas_imagenes=('wall.alphacoders.com/search.php?search=planeta&lang=Spanish','www.nasa.gov/multimedia/imagegallery/index.html','www.freepik.es/fotos-vectores-gratis/png')
 # VARIABLES GLOBALES
 puntos=0
 nivel=0
@@ -200,11 +203,26 @@ def creditos():                                                                 
 
     intro_background = pygame.image.load(imagenes['intro'])
     screen_creditos.blit(intro_background,(0,0))
-    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,80,600,100,'Créditos',letra_titulos,None,blue,None)
+
     sonidofondo=pygame.mixer.Sound(sonidos['fondo'])
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,50,600,100,'Créditos',letra_outro,None,blue,None)
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,120,600,100,'Producción',letra_botones,None,blue,None)
 
     for i in range(len(lista_integrantes)):
-        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,200+70*i,600,100,lista_integrantes[i],letra_creditos,None,green,None)
+        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,150+20*i,600,100,lista_integrantes[i],letra_creditos1,None,green,None)
+    
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,280,100,100,'Música',letra_botones,None,blue,None)
+    
+    for i in range(len(lista_canciones)):
+        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,310+20*i,100,100,lista_canciones[i],letra_creditos1,None,green,None)
+
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,480,100,100,'imágenes',letra_botones,None,blue,None)
+
+    for i in range(len(lista_paginas_imagenes)):
+         menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,510+20*i,100,100,lista_paginas_imagenes[i],letra_creditos1,None,green,None)
+       
+  
+
     exit_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,650,350,50)
     return_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,580,350,50)
     sonidofondo.set_volume(0.2)
@@ -508,16 +526,17 @@ class mundo:
 
         sonidofondo.set_volume(0.8)
         sonidofondo.play(-1)
-
+        pseg=True
         while(running):
 
 
+            
             ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:                                                          #Permite salir del juego
                     pygame.quit()
                     quit()
-
+                    
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
                     if event.key==pygame.K_SPACE:                                                      #Tecla espacio
@@ -571,29 +590,29 @@ class mundo:
                             #AQUÍ SE EJECUTA LA FUNCION CALCULAR VECTORES X,Y
                             sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
-
+                    
                     elif event.key==pygame.K_UP and disparo==False:                                     #Tecla izquierda rotación en sentido positivo
-                        if fino==True:
+                        if fino==True and pseg==True:
                             speedv0=0.1
-                        else:
+                        elif fino==False and pseg==True:
                             speedv0=1
 
                     elif event.key==pygame.K_DOWN and disparo==False:                                   #Tecla derecha rotación en sentido negativo
                         if fino==True:
                             speedv0=-0.1
-                        else:
+                        elif fino==False:
                             speedv0=-1
 
                     elif (event.key==pygame.K_LEFT and disparo==False):                                 #Tecla izquierda rotación en sentido positivo
-                        if fino==True:
+                        if fino==True and pseg==True:
                             speedangle=0.1
-                        else:
+                        elif fino==False and pseg==True:
                             speedangle=1
 
                     elif event.key==pygame.K_RIGHT and disparo==False:                                  #Tecla derecha rotación en sentido negativo
                         if fino==True:
                             speedangle=-0.1
-                        else:
+                        elif fino==False:
                             speedangle=-1
 
                     elif event.key==pygame.K_n and disparo==False:                                  #Tecla derecha rotación en sentido negativo
@@ -647,7 +666,16 @@ class mundo:
                 k=np.where(aa[2]==k1)[0][0]
                 #print(k2,k1,k)
 
-
+            pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
+            
+            if self.g<0.1:
+                pseg=True
+            
+            if pseg==False and self.g>0.1:
+                angle=angle-1
+                v0=v0-1
+                pseg=True
+                
             #ROTACION DEL CAÑON
             angle=angle+speedangle                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
             #LIMITES DE ROTACION DEL CAÑON
@@ -669,6 +697,10 @@ class mundo:
                 vi=self.vlimt
 
 
+                
+            # pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
+            #print(pseg)
+            
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
             image3_rotated , image3_rotated_rect = self.rotate(cañonsito,angle,pos_canonsito)
 
@@ -959,7 +991,7 @@ p_tierra={'g':9.8,
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':0.2,
           'nombre_planeta':'TIERRA',
-          'vlimt':81,
+          'vlimt':300,
           'im_min':"img/mpradera.jpg",
           'px':0,
           'py':-3000,
@@ -971,13 +1003,13 @@ p_tierra={'g':9.8,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
           'factor_perdida':0.4,
           'nombre_planeta':'LUNA',
-          'vlimt':32,
+          'vlimt':320,
           'im_min':"img/mluna.jpg",'px':0,
           'py':-3000,
           'yi':200,
@@ -1101,7 +1133,7 @@ p_gliese={'g':17.39,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1
+          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
           }
 luna=mundo(list(p_luna.values()))
 space=mundo(list(p_space.values()))
@@ -1128,7 +1160,7 @@ while jugar:
             elif nivel==1:
                 jugar_outro=mundo.main(luna)
             elif nivel==2:
-                jugar_outro=mundo.main(tierra)
+                jugar_outro=mundo.main(gliese)
             elif nivel==3:
                 jugar_outro=mundo.main(ross)
 
@@ -1142,7 +1174,7 @@ while jugar:
             elif nivel==7:
                 jugar_outro=mundo.main(ganimedes)
             elif nivel==8:
-                jugar_outro=mundo.main(gliese)
+                jugar_outro=mundo.main(tierra)
 
             else:
                 jugar_outro=False

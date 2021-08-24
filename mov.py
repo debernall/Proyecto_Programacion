@@ -90,7 +90,6 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
     x_f=[]
     y_f=[]
     t_f=[]
-    t0=0
     f=True                          #TRUE: AVANZA EN SENTIDO X+
     alpha=0                         #ANGULO MEDIDA DESDE LA HORIZONTAL EN SENT POSTIVO DEL PUNTO DE IMPACTO EN LA CIRCUNF
     beta=0                          #ANGULO DE IMPACTO MEDIDA DESDE LA NORMAL AL PUNTO DE IMPACTO EN LA CIRCUNF
@@ -216,7 +215,7 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
             x0=xc[-1]
             y0=yc[-1]
         
-            if tt>max_rebotes:
+            if tt>=max_rebotes:
                 x0=xlim+1
             elif x0<0:
                 x0=xlim+1
@@ -263,16 +262,16 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
 
 #VARIABLES NECESARIAS PARA OBTENER LOS VECTORES POSICION
 # x0=0                            #POSICION INICIAL
-# y0=10
-# theta0=0            #ANGULO DE LANZAMIENTO
+# y0=0
+# theta0=0.3            #ANGULO DE LANZAMIENTO
 # v0=11                           #MAGNITUD DE VELOCIDAD INICIAL
-# g=10                            
+# g=1                           
 # e=0.8                           #FACTOR DE PERDIDA DE VELOCIDAD
-# xlim=50                        #LONGITUD MAXIMA DEL TABLERO EN X
-# ylim=10
-# epsilon=0.01                  #ESPACIAMIENTO DEL VECTOR TIEMPO
-# impactos=((20,9,1.1,False),(38,4,1,False),(7,4,1,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
-# max_rebotes=10
+# xlim=100                        #LONGITUD MAXIMA DEL TABLERO EN X
+# ylim=21
+# epsilon=0.1                  #ESPACIAMIENTO DEL VECTOR TIEMPO
+# impactos=((20,9,1.1,False),(38,5,1,False),(7,4,1,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
+# max_rebotes=2
 # yliminf=0
 # b=0.01
 # tipo=2
@@ -280,3 +279,4 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
 # a=calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes,b,tipo)
 # graficar(a[3],a[0],a[1])
 # est_pseg=parabolaseguridad(x0,y0,theta0,v0,g,xlim,ylim,epsilon,b,tipo)
+# print(est_pseg)
