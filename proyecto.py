@@ -33,6 +33,7 @@ letra_outro=pygame.font.Font('Fonts/Starjedi.ttf', 75)
 letra_letreros=pygame.font.Font('Fonts/arial_narrow_7.ttf',18)
 letra_instrucciones= pygame.font.Font('Fonts/arial_narrow_7.ttf',35)
 letra_creditos=pygame.font.Font('Fonts/Starjedi.ttf',40)
+letra_creditos1=pygame.font.Font('Fonts/Starjedi.ttf',18)
 # UBICACIONES DE ARCHIVOS
 lista_instrucciones=('Inst/instruccion1.txt',
                      'Inst/instruccion2.txt',
@@ -62,6 +63,8 @@ imagenes={'intro':"img/fondo_intro.jpg",
 sonidos={'fondo':"sound/sonidofondo.wav",
          'explosion':"sound/sonexp.wav"}
 
+lista_canciones=('luna:main theme, hans zimmer','marte:gymnopedie no.1, erik satie','tritón:1812 overture, thaikovsky ','próxima b:arrival of the birds & transformation,the cinematic orchesta','trappist-1d:claire de lune, debussy','ganimedes:nocturne op.9,chopin','espacio:daylight, teremock')
+lista_paginas_imagenes=('wall.alphacoders.com/search.php?search=planeta&lang=Spanish','www.nasa.gov/multimedia/imagegallery/index.html','www.freepik.es/fotos-vectores-gratis/png')
 # VARIABLES GLOBALES
 puntos=0
 nivel=0
@@ -200,11 +203,26 @@ def creditos():                                                                 
 
     intro_background = pygame.image.load(imagenes['intro'])
     screen_creditos.blit(intro_background,(0,0))
-    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,80,600,100,'Créditos',letra_titulos,None,blue,None)
+
     sonidofondo=pygame.mixer.Sound(sonidos['fondo'])
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,50,600,100,'Créditos',letra_outro,None,blue,None)
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,120,600,100,'Producción',letra_botones,None,blue,None)
 
     for i in range(len(lista_integrantes)):
-        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,200+70*i,600,100,lista_integrantes[i],letra_creditos,None,green,None)
+        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,150+20*i,600,100,lista_integrantes[i],letra_creditos1,None,green,None)
+    
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,280,100,100,'Música',letra_botones,None,blue,None)
+    
+    for i in range(len(lista_canciones)):
+        menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,310+20*i,100,100,lista_canciones[i],letra_creditos1,None,green,None)
+
+    menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,480,100,100,'imágenes',letra_botones,None,blue,None)
+
+    for i in range(len(lista_paginas_imagenes)):
+         menu.crear_cuadro_de_texto(screen_creditos,screen_creditos.get_rect().centerx,510+20*i,100,100,lista_paginas_imagenes[i],letra_creditos1,None,green,None)
+       
+  
+
     exit_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,650,350,50)
     return_creditos=pygame.Rect(screen_creditos.get_rect().centerx-350/2,580,350,50)
     sonidofondo.set_volume(0.2)
