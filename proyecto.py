@@ -354,13 +354,11 @@ class mundo:
         return rotated_surface,rotated_rect
 
     def nueva_pos(self,pos_inicial,v,t,escala,sentido,correccion,vobstaculo):
-        #if nivel=!5:
         if pos_inicial[0]==600.0:
             if v[1]!=0:
                 self.lista.append(pos_inicial[1])
                 self.lista1.append(t)
         pos_final=pos_inicial[0]-v[0]*(0.03317*escala)+vobstaculo[0],pos_inicial[1]-(v[1]*(0.03317*escala))-((sentido)*(0.5*self.g*t*correccion))-vobstaculo[1]
-        #else:
 
         return pos_final
 
@@ -443,14 +441,6 @@ class mundo:
         if nivel==10:
             nave=pygame.image.load(self.fenixito)
 
-  #      if self.rover!=1:
-   #        rover=pygame.image.load(self.rover)
-    #       roversito=pygame.image.load(self.roversito)
-     #   if self.rovertierra!=1:
-      ##    rovertierrita=pygame.image.load(self.rovertierrita)
-      #  if self.phoenix!=1:
-       #     phoenix=pygame.image.load(self.phoenix)
-        #    fenixito=pygame.image.load(self.fenixito)
 
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
@@ -469,10 +459,7 @@ class mundo:
 
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
-        #if yo>(-(((1/2)*self.g*(xo)**2)/(self.vlimt)**2)+(((1/2)*(self.vlimt)**2)/(self.g))) and nivel!=1 and nivel!=0:          #Parece ser un ajuste a la parabola de seguridad
-            #yo=yo+400
-        #xo=x0+200
-        #yo=y0-200
+
         posobjetivo=(xo,yo)
 
         posplano=self.xp,self.yp
@@ -511,7 +498,6 @@ class mundo:
                 vv=True
                 while vv:
                     xn,yn=x0+random.randrange(200,xf-200), y0-random.randrange(self.yi,self.yf-200)
-                    #xn,yn=x0+300,y0-300
                     pos_nave=xn,yn
                     distancia_n=((pos_nave[0]-posimg[0])/self.escala),-((pos_nave[1]-posimg[1])/self.escala)
                     v=np.sqrt((distancia[0]-distancia_n[1])**2+(distancia[1]-distancia_n[1])**2)-40
@@ -544,21 +530,6 @@ class mundo:
         distanciarovertierra=pos_rovertierra[0]-x0
         distanciaphoenix=pos_phoenix[0]-x0,pos_phoenix[1]-y0
         fino=False
-        #def pos_obstaculo(self,pos_inicial,radio):#,escala,correccion):
-        #if nivel==5:
-         #   num_segmentos = 20
-        #rad = 300
-         #   posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)
- #       cx = posobjetivo[0]
-  #      cy = posobjetivo[1]
-   #     angulo = math.atan((pos_rover[1]-cy)/(pos_rover[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)
-    #    xx = 300 * np.cos(angulo+0.5) + cx
-     #   yy = 300 * np.sin(angulo+0.5) + cy
-        #pos_final=xx,yy
-            #return pos_final
-
-
-
 
         colision=False
         disparo=False
@@ -569,8 +540,6 @@ class mundo:
         sonidofondo.play(-1)
         pseg=True
         while(running):
-
-
 
             ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
             for event in pygame.event.get():
@@ -625,14 +594,9 @@ class mundo:
                             #print(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
                             B=self.b
                             TIPO=self.tipo
-                            #aa=posiciones.posiciones(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
+
                             aa=mov.calc_vect(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES,B,TIPO)
-                            #posiciones.graficar(aa[3],aa[0],aa[1])
-                            #print(aa[2])
-                            #for u in aa[2]:
-                                #print(u)
-                            #print('adsdasd',aa[2])
-                            #AQUÍ SE EJECUTA LA FUNCION CALCULAR VECTORES X,Y
+
                             sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
 
@@ -709,7 +673,6 @@ class mundo:
                 k2=t1*0.03317
                 k1=aa[2].flat[np.abs(aa[2]-k2).argmin()]
                 k=np.where(aa[2]==k1)[0][0]
-                #print(k2,k1,k)
 
             pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
 
@@ -740,11 +703,6 @@ class mundo:
                 v0=self.vinf
             if vi<=self.vlimt:
                 vi=self.vlimt
-
-
-
-            # pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
-            #print(pseg)
 
             image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
             image3_rotated , image3_rotated_rect = self.rotate(cañonsito,angle,pos_canonsito)
@@ -806,10 +764,8 @@ class mundo:
                 vrpx=0
                 vrpy=0
                 sonidofondo.stop()
-                #self.dibujar_img(explosion,pos_rover)
-
                 gameover=True
-                #t=0
+
                 #CHOQUE CON ROVERTIERRA
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<100:
                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
@@ -821,7 +777,6 @@ class mundo:
                 vrpy=0
                 sonidofondo.stop()
                 gameover=True
-                #t=0
                 sonidofondo.stop()
             if self.rover!=1 and ((((e[0]-b[0])**2)+((e[1]-b[1])**2))**(0.5))<50:
                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
@@ -833,9 +788,6 @@ class mundo:
                 vrpy=0
                 sonidofondo.stop()
                 gameover=True
-                #step=(0,0)
-                #menu.crear_cuadro_de_texto(screen,425,375,450,37,'¡Fallaste, presiona A para continuar!',letra_letreros,black,blue,blue)
-                #t=0
             if self.piedra!=1 and (pos_base[0]+1600)<b[0]<pos_base[0]+1300 +1000 and pos_base[1]-900<b[1]<pos_base[1]+91:
                 step=(0,0)
                 sonidofondo.stop()
@@ -846,8 +798,7 @@ class mundo:
                 gameover=True
             t=t+n
             t1+=n
-            #if t1>9:
-            #    ns=clock.tick(60)
+
             # CONDICION DE IMPACTO
             if r<50:
                 step=(0,0)
@@ -861,91 +812,24 @@ class mundo:
             if gameover==True and colision==False:
                 menu.crear_cuadro_de_texto(screen,425,375,470,37,'¡Fallaste, presiona A para continuar ó s para repetir el nivel!',letra_letreros,black,blue,blue)
                 t=0
-                #step=(0,0)
-
-            # REBOTES DE LA BOLA
-            # if posplano[0]<-(xf-20) or posplano[0]>= x0 :
-            #     step=(0,0)
-            #     sonidofondo.stop()
-            #     gameover=True                                                                                                      #   AQUI HAY UNA SALIDA SI SE IMPACTA CON LAS PAREDES
-
-            #********************************** USO DE LA FUNCION POSICIONES *******************************
-
-
-            ##################  COLOCAR LAS CONDICIONES INICIALES DEL LANZAMIENTO EN S.I.
-            # x0=0                            #POSICION INICIAL DE LA BALA EN X
-            # y0=0                            #POSICION INICIAL DE LA BALA EN Y
-            # theta0=1.6*math.pi/4            #ANGULO DE LANZAMIENTO
-            # v0=16                           #MAGNITUD DE VELOCIDAD INICIAL
-            # g=9.8                           #GRAVEDAD
-            # e=0.8                           #FACTOR DE PERDIDA DE VELOCIDAD
-            # xlim=100                        #LONGITUD MAXIMA DEL TABLERO EN X
-            # ylim=10000                      #LONGITUD MAXIMA DEL TABLERO EN Y
-            # epsilon=0.0001                  #ESPACIAMIENTO DEL VECTOR TIEMPO
-            # impactos=((20,3,1.1,False),(35,8,2,True),(10,8,2,False))    #VECTOR DE OBSTACULOS Y OBJETIVO: (X_CENTRO,Y_CENTRO,RADIO,TRUE:OBJETIVO/FALSE:OBSTACULO)
-            # max_rebotes=10                  #PERMITE ESTABLECER UN MAXIMO DE REBOTES
-
-            ################   FUNCION QUE DA COMO RESULTA UN 4 VECTORES: X(t), Y(t), t y de nuevo devuelve impactos
-            #(x,y,t,impactos)=posiciones.posiciones(x0,y0,theta0,v0,g,e,xlim,ylim,epsilon,impactos,max_rebotes)
-            #posiciones.graficar(a[3],a[0],a[1])
-
-            ################    LOS VECTORES ENCONTRADOS DEFINEN LA TRAYECTORIA DE LA BALA
-            ################    para obtener el efecto de desplazamiento se deben aplicar transformaciones
-            ################    1. Las reflexiones en x,y se obtienen con x'=-x, y'=-y
-            ################    2. Las traslaciones permiten ubicar cada elemento en un posicion primada
-            ################    3. Aplicar un escalado de los puntos que esta relacionado por la proporcion metros/pixel
-
-            ################    UN CONJUNTO DE VECTORES DETERMINAN EL DESPLAZAMIENTO TOTAL DEL SISTEMA
-            ################    no es necesario calcular repetidamente dicho vector, se debe calcular una sola vez
-            ################    teniendo en cuenta que x,y son funciones de t. Las coordenadas en un tiempo dado
-            ################    deben calcularse asi:
-            ################    1. Establecer un t1(s) en el bucle principal del juego
-            ################    2. Buscar con k=np.where(t>t1)[0] la posicion del elemento del vector que cumple la condicion
-            ################    3. La posicion obtenida (x,y) para un t1 dado será: (x[k],y[k])
-            ################    4. Aplicar las transformaciones necesarias
-            ################    Conviene definir un origen en la parte inferior derecha (traslacion1)
-            ################    Luego calcular las posiciones de los objetos respecto a dicho nuevo origen (traslacion2)
-            ################    Aplicar una reflexión sobre el sistema de puntos para obtener el efecto de desplazamiento
-            ################    Aplicar el escalado de los puntos
-            ################    El minimapa puede ser obtenido de manera similar pero con un segundo escalado
-
 
             # CALCULO DE NUEVAS POSICIONES
             if disparo==True:
-                #print(posplano,-10*(aa[0][k]-40),self.yp+10*(aa[1][k]-65))
-                #print(posobjetivo,self.yp+10*(aa[1][k]+35)+yo,k)
-
                 posplano=x0-10*(aa[0][k]),self.yp+10*(aa[1][k]-65)-3000-self.yp
-                #print(posplano,x0-10*(aa[0][k]),self.yp+10*(aa[1][k]-65)-3000-self.yp,-3000-self.yp)
                 posobjetivo=(-10*(aa[0][k]-40)+xo,10*(aa[1][k]+35)+yo-4000-self.yp)
-                #print(posobjetivo,10*(aa[1][k]+35)+yo-4000-self.yp,YOBJ,yo-4000-self.yp)
                 pos_expl=850-10*(aa[0][k]),10*(aa[1][k]-65)+y0-100-(3000+self.yp)
-                #print(pos_expl[1],10*(aa[1][k]-65)+y0-100-(3000+self.yp),3000+self.yp,y0-100)
                 pos_canon=336-10*(aa[0][k]-40),250+10*(aa[1][k]-65+3.6)-3000-self.yp
-                #print(pos_canon,336-10*(aa[0][k]-40),250+10*(aa[1][k]-65+3.6)-3000-self.yp)
-                #print(len(aa[0]),k)
-                #print(pos_bolita,(0.5*(aa[0][k])),-self.yp-0.5*(aa[1][k])-1400)
                 pos_bolita=0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp
-                #print(pos_bolita,0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp,2000+self.yp)
-                #print(pos_nave,posobjetivo)
                 if nivel==10:
                     pos_nave0=(-10*(aa[0][k]-40)+xn0,10*(aa[1][k]+35)+yn0-4000-self.yp)
                     pos_nave1=(-10*(aa[0][k]-40)+xn1,10*(aa[1][k]+35)+yn1-4000-self.yp)
                     pos_nave2=(-10*(aa[0][k]-40)+xn2,10*(aa[1][k]+35)+yn2-4000-self.yp)
-             #   print(pos_canon,10*(aa[1][k]+35+13.6)+yo-4000-self.yp)
 
 
                 if (k+4)>len(aa[0]):
                     sonidofondo.stop()
                     gameover=True
 
-            #print(posplano)
-            #posplano=self.nueva_pos(posplano,step,t,10,1,0.022,(0,0))
-            #posobjetivo=self.nueva_pos(posobjetivo,step,t,10,1,0.022,(0,0))
-            #pos_expl=self.nueva_pos(pos_expl,step,t,10,1,0.022,(0,0))
-            #pos_canon=self.nueva_pos(pos_canon,step,t,10,1,0.022,(0,0))
-
-            #pos_bolita=self.nueva_pos(pos_bolita,(-step[0],-step[1]),t,0.5,-1,0.0011,(0,0))
             if rover!=1:
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
@@ -955,32 +839,15 @@ class mundo:
 
             if rover!=1 and nivel==7:
                 pos_rover=self.pos_obstaculo(pos_rover,500,posobjetivo[0],posobjetivo[1])
-                #pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
                 pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
 
 
             # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
-            # horizonte_rect=plano.get_rect(center=(posplano[0]+2000,posplano[1]+5370))                                               #1900 Y 2750 CORRESPONDEN AL DESPLAZAMIENTO DEL RECTANGULO IMAGEN HACIA LA PARTE INFERIOR PARA QUE SIRVA DE REFERENCIA AL CHOQUE BOLA-PISO
+                                             
             distanciarover=(pos_rover[0]-pos_base[0])*0.05 , 560+ (pos_rover[1]-pos_base[1])*0.05
             distanciarovertierra=(pos_rovertierra[0]-pos_base[0])*0.05
             distanciaphoenix=(pos_phoenix[0]-pos_base[0])*0.05,560+(pos_phoenix[1]-pos_base[1])*0.05
-            # if bolarect.colliderect(horizonte_rect) and t>0.3:                                                                      #t>0.3 evita rebotes debidos a una lectura anomala
-            #     if (step[1]>-0.001 and step[1]<0) or (step[0]<0.1):
-            #         step=(0,0)
-            #         sonidofondo.stop()
-            #         gameover = True                                                                                                #   AQUI HAY UNA SALIDA SI REBOTA
-
-            #     else:
-            #         t=0
-            #         step=self.f_rebote(step,self.perdida)
-
-            # LIMITE SUPERIOR
-            # if posplano[1]>(y0-50):
-            #     step=(0,0)
-            #     sonidofondo.stop()                                                                                                  #   AQUI HAY UNA SALIDA SI SE IMPACTA EL TECHO
-            #     gameover=True
-            #print(distanciaphoenix)
 
             if pos_rover[0]>=posplano[0]+4000:
                 vr=-vr
@@ -999,8 +866,7 @@ class mundo:
             if pos_phoenix[1]<=posplano[1]:
                 vrpy=-vrpy
             #CUADROS DE TEXTO
-            #print(step[0],step)
-            #print(cd,pos_expl,(int(explosion_rotated.get_width()//2),int(explosion_rotated.get_height()//2)))
+
             menu.crear_cuadro_de_texto(screen,87,45,175,50,'Ángulo',letra_letreros,None,white,None)                       #Agrega un cuadro de texto con el angulo.
             menu.crear_cuadro_de_texto(screen,87,70,175,50,str("{0:.1f}".format(angle))+'º',letra_letreros,None,white,None)
             menu.crear_cuadro_de_texto(screen,270,45,250,50,'Velocidad inicial',letra_letreros,None,white,None)
@@ -1132,11 +998,6 @@ p_ganimedes={'g':1.46,
           'py':-3000,
           'yi':200,
           'yf':3350,'mountain':1,'little_mountain':1,
-#          'px':0,
- #         'py':-2000,
-  #        'yi':200,
-   #       'yf':2350,'mountain':1,
-    #      'little_mountain':1,
           'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
