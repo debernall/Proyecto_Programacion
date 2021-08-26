@@ -357,6 +357,7 @@ class mundo:
         self.lim_anglesup=parametros["lim_anglesup"]
         self.b=parametros["b"]
         self.tipo=parametros["tipo"]
+        self.nobjmov=parametros["n_obj_mov"]
 
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
@@ -387,6 +388,11 @@ class mundo:
 
     def dibujar_img(self,list_img):
         screen= pygame.display.set_mode((800,700))
+        for i in list_img:
+            screen.blit(i[0],i[1])
+        return
+
+    def dibujar(self,screen,list_img):
         for i in list_img:
             screen.blit(i[0],i[1])
         return
@@ -423,6 +429,7 @@ class mundo:
         cuadros=pygame.image.load(imagenes['cuadros'])
         cuadros1=pygame.image.load(imagenes['cuadro1'])
         navecita=pygame.image.load('img/navemini.png')
+        nave=pygame.image.load("img/nave.png")
 
         #DIBUJAR MONTAÑA
         if self.mountain!=1:
@@ -448,9 +455,8 @@ class mundo:
               rover=1
               rovertierra=1
               phoenix=1
-        #DIBUJAR OBSTACULOS QUE PERMITEN REBOTAR
-        if nivel==10:
-            nave=pygame.image.load(self.fenixito)
+
+            
 
         #CARGA DE SONIDOS
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
@@ -498,32 +504,23 @@ class mundo:
 
         if nivel == 10:
             Naves=[]
-            for i in range(3):
+            for i in range(self.nobjmov):
                 vv=True
                 while vv:
                     xn,yn=x0+random.randrange(200,xf-200), y0-random.randrange(self.yi,self.yf-200)
                     pos_nave=xn,yn
-                    distancia_n=((pos_nave[0]-posimg[0])/self.escala),-((pos_nave[1]-posimg[1])/self.escala)
-                    v=np.sqrt((distancia[0]-distancia_n[1])**2+(distancia[1]-distancia_n[1])**2)-40
-                    if v>0:
+                    distancia_n=((xn-posimg[0])/self.escala),-((yn-posimg[1])/self.escala)
+                    v=np.sqrt(((xo-xn)**2)+((yn-yo)**2))
+                    if v>500:
                         vv=False
-                    pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)
-                Naves.append(((xn,yn),(pos_navecita)))
-
-            xn0=Naves[0][0][0]
-            yn0=Naves[0][0][1]
-            pos_nave0=xn0,yn0
-            pos_navecita0=Naves[0][1]
-
-            xn1=Naves[1][0][0]
-            yn1=Naves[1][0][1]
-            pos_nave1=xn1,yn1
-            pos_navecita1=Naves[1][1]
-
-            xn2=Naves[2][0][0]
-            yn2=Naves[2][0][1]
-            pos_nave2=xn2,yn2
-            pos_navecita2=Naves[2][1]
+                        pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)
+                        Naves.append(((xn,yn),(pos_navecita)))               
+                
+            pos_nave=[]
+            for i in range(self.nobjmov):
+                pos_nave.append([Naves[i][0][0],Naves[i][0][1]])
+                
+            pos_nave=np.array(pos_nave)    
 
         #VARIABLES DE INICIALIZACION DEL JUEGO
         step= 0,0                                                                                       #vector velocidad
@@ -549,7 +546,7 @@ class mundo:
 
         while(running):
 
-            ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
+            clock.tick(30)                                                                          #Periodo de recarga de imagen
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:                                                          #Permite salir del juego
                     pygame.quit()
@@ -595,10 +592,9 @@ class mundo:
                             IMPACTOS=[]
                             IMPACTOS.append((X0+(xo-x0)/10,YOBJ,5,True))
                             MAX_REBOTES=10
-                            if nivel==10:
-                                IMPACTOS.append((X0+(xn0-x0)/10,int((4000+self.yp-yn0)/ESCALA),20,False))
-                                IMPACTOS.append((X0+(xn1-x0)/10,int((4000+self.yp-yn1)/ESCALA),20,False))
-                                IMPACTOS.append((X0+(xn2-x0)/10,int((4000+self.yp-yn2)/ESCALA),20,False))
+                            if self.nobjmov!=0:
+                                for i in range(self.nobjmov):
+                                    IMPACTOS.append((X0+(Naves[i][0][0]-x0)/10,int((4000+self.yp-Naves[i][0][1])/ESCALA),20,False))
                             B=self.b
                             TIPO=self.tipo
                             aa=mov.calc_vect(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES,B,TIPO)
@@ -732,20 +728,23 @@ class mundo:
 
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1 and piedra==1:
-             if nivel==10:
-                 pos_nave10=pos_nave0[0]-200,pos_nave0[1]-200
-                 pos_nave11=pos_nave1[0]-200,pos_nave1[1]-200
-                 pos_nave12=pos_nave2[0]-200,pos_nave2[1]-200
-                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(nave,pos_nave10),(nave,pos_nave11),(nave,pos_nave12),(navecita,pos_navecita0),(navecita,pos_navecita1),(navecita,pos_navecita2)))
+             if self.nobjmov!=0:
+                 pos_nave1=pos_nave-200
+                 self.dibujar(screen,((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base)))
+                 for i in range(self.nobjmov):
+                     screen.blit(nave,pos_nave1[i])
+                 self.dibujar(screen,((mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
+                 for i in range(self.nobjmov):
+                     screen.blit(navecita,Naves[i][1])
              else:
-                 self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
+                 self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito))))
             elif mountain!=1:
-             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3))))
+             self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3)))))
             elif rover!=1:
-             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+             self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550)))))
              #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
             elif piedra!=1:
-             self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(piedra,(pos_base[0]+1300,pos_base[1]-1000)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_piedra,(pos_basesita[0]+60,pos_basesita[1]-40))))
+             self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(piedra,(pos_base[0]+1300,pos_base[1]-1000)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_piedra,(pos_basesita[0]+60,pos_basesita[1]-40)))))
 
             #OBTENCION DE COLISION OBJETIVO-BOLA
             objetivorect=objetivo.get_rect(center=posobjetivo)
@@ -759,7 +758,7 @@ class mundo:
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix[0]+100,pos_phoenix[1]+35
             if self.rover!=1 and ((((c[0]-b[0])**2)+((c[1]-b[1])**2))**(0.5))<100:
-                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_rover[0]-220,pos_rover[1]-100)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix)))#,(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_rover[0]-220,pos_rover[1]-100)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix))))#,(rovertierrita,(distanciarovertierra,550))))
                 step=(0,0)
                 vr=0
                 vrt=0
@@ -770,7 +769,7 @@ class mundo:
 
                 #CHOQUE CON ROVERTIERRA
             if self.rover!=1 and ((((d[0]-b[0])**2)+((d[1]-b[1])**2))**(0.5))<100:
-                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550)))))
                 step=(0,0)
 
                 vr=0
@@ -781,7 +780,7 @@ class mundo:
                 gameover=True
                 sonidofondo.stop()
             if self.rover!=1 and ((((e[0]-b[0])**2)+((e[1]-b[1])**2))**(0.5))<50:
-                self.dibujar_img(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550))))
+                self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(explosion,(pos_bola1[0]-220,pos_bola1[1]-120)),(bola,pos_bola1),(explosion_rotated,pos_rover),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,distanciarover),(rovertierra,pos_rovertierra),(rovertierrita,(distanciarovertierra,550)))))
                 sonidofondo.stop()
                 step=(0,0)
                 vr=0
@@ -822,10 +821,9 @@ class mundo:
                 pos_expl=x0+450-10*(aa[0][k]),y0-3750-self.yp+10*(aa[1][k])
                 pos_canon=x0+336-10*(aa[0][k]),-3364-self.yp+10*(aa[1][k])
                 pos_bolita=0.5*(aa[0][k]),600-0.5*(aa[1][k])
-                if nivel==10:
-                    pos_nave0=(x0+xn0-10*(aa[0][k]),y0+yn0-4000-self.yp+10*(aa[1][k]))
-                    pos_nave1=(x0+xn1-10*(aa[0][k]),y0+yn1-4000-self.yp+10*(aa[1][k]))
-                    pos_nave2=(x0+xn2-10*(aa[0][k]),y0+yn2-4000-self.yp+10*(aa[1][k]))
+                if self.nobjmov!=0:
+                    for i in range(self.nobjmov):
+                        pos_nave[i]=(x0+Naves[i][0][0]-10*(aa[0][k]),y0+Naves[i][0][1]-4000-self.yp+10*(aa[1][k]))
 
 
                 if (k+4)>len(aa[0]):
@@ -888,9 +886,9 @@ class mundo:
                 screen.blit(cuadros1,(625,500))
                 menu.crear_cuadro_de_texto(screen,715,550,175,50,'Coef de arrastre',letra_letreros,None,white,None)
                 menu.crear_cuadro_de_texto(screen,715,570,175,50,str(self.b)+"N*s/m",letra_letreros,None,white,None)
-
+              
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
-
+            screen.fill((black))
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################
 p_space={'g':0.0001,
 
@@ -919,7 +917,8 @@ p_space={'g':0.0001,
           'piedrita':1,
           'lim_anglesup':90,
           'b':0,
-          'tipo':0
+          'tipo':0,
+          'n_obj_mov':0
           }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
@@ -948,7 +947,8 @@ p_tierra={'g':9.8,
           'piedrita':1,
           'lim_anglesup':90,
           'b':0.01,
-          'tipo':1}
+          'tipo':1,
+          'n_obj_mov':0}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
@@ -975,7 +975,8 @@ p_luna={'g':1.6,
           'piedrita':1,
           'lim_anglesup':90,
           'b':0,
-          'tipo':0}
+          'tipo':0,
+          'n_obj_mov':0}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -988,13 +989,21 @@ p_marte={'g':3.721,
           'yi':200,
           'yf':3350,'mountain':1,
           'little_mountain':1,
-          'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
+          'im_objetivo':"img/rover.png",
+          'im_objetivo1':"img/rovertierra.png",
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,
+          'vinf':10,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0,
+          'tipo':0,
+          'n_obj_mov':0}
 p_triton={'g':0.78,
           'im_fondo': "img/triton.jpg",
           'son_mundo':"sound/sonidofondo4.wav",
@@ -1007,118 +1016,194 @@ p_triton={'g':0.78,
           'yi':-1850,
           'yf':1350,'mountain':"img/montaña.png",
           'little_mountain':"img/montañita.png",
-          'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':-0,'vinf':8,'im_piedra':1,'piedrita':1,
-          'lim_anglesup':0,'b':0,'tipo':0}
+          'lim_angle':-0,
+          'vinf':8,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':0,
+          'b':0,
+          'tipo':0,
+          'n_obj_mov':0}
 
 
 p_ganimedes={'g':1.46,
           'im_fondo': "img/ganimed.jpg",
           'son_mundo':"sound/nocturne.wav",
           'factor_perdida':0.2,
-          'nombre_planeta':'Ganimedes',
+          'nombre_planeta':'GANIMEDES',
           'vlimt':31,
           'im_min':"img/mganimed.jpg",'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,
-          'im_objetivo':"img/rover.png",'im_objetivo1':"img/rovertierra.png",
+          'yf':3350,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':"img/rover.png",
+          'im_objetivo1':"img/rovertierra.png",
           'im_objetivo2':"img/phoenix.png",
           'im_roversito':"img/roversito.png",
           'im_rovertierrita':"img/rovertierrita.png",
           'im_fenixito':"img/fenixito.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,
+          'vinf':10,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0,
+          'tipo':0,
+          'n_obj_mov':0}
 
 p_proximab={'g':int(626*10**(-1.5)),
           'im_fondo': "img/proximab.jpg",
           'son_mundo':"sound/sonproximab.wav",
           'factor_perdida':0.01,
-          'nombre_planeta':'Próxima b',
+          'nombre_planeta':'PRÓXIMA B',
           'vlimt':11500,
           'im_min':"img/mproximab.jpg",'px':0,
           'py':-3150,
           'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'yf':3350,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3220,
-          'lim_angle':0,'vinf':50,'im_piedra':'img/piedra.png','piedrita':'img/piedrita.png','lim_anglesup':90,'b':0,'tipo':0
+          'lim_angle':0,
+          'vinf':50,
+          'im_piedra':'img/piedra.png',
+          'piedrita':'img/piedrita.png',
+          'lim_anglesup':90,
+          'b':0,
+          'tipo':0,
+          'n_obj_mov':0
           }
 p_ross={'g':57*10**(-1),
           'im_fondo': "img/ross.jpg",
           'son_mundo':"sound/clair.wav",
           'factor_perdida':0.1,
-          'nombre_planeta':'Trappist-1d',
+          'nombre_planeta':'TRAPPIST-1D',
           'vlimt':6100,
           'im_min':"img/mross.jpg",'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'yf':3350,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
+          'lim_angle':0,
+          'vinf':10,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0,
+          'tipo':0,
+          'n_obj_mov':0
           }
 p_gliese={'g':17.39,
           'im_fondo': "img/plan.jpg",
           'son_mundo':"sound/Giorni.wav",
           'factor_perdida':0.8,
-          'nombre_planeta':'Gliese 581-C',
+          'nombre_planeta':'GLIESE 581-C',
           'vlimt':30000,
           'im_min':"img/mplan.jpg",'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'yf':3350,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
+          'lim_angle':0,
+          'vinf':50,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0,
+          'tipo':0,
+          'n_obj_mov':0
           }
 p_kepler={'g':20,
           'im_fondo': "img/Kepler22b.jpg",
           'son_mundo':"sound/Mattina.wav",
           'factor_perdida':0.8,
-          'nombre_planeta':'Kepler 22b',
+          'nombre_planeta':'KEPLER 22b',
           'vlimt':3000,
           'im_min':"img/Kepler22bmini.jpg",'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'yf':3350,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.3,'tipo':1
+          'lim_angle':0,
+          'vinf':50,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0.3,
+          'tipo':1,
+          'n_obj_mov':0
           }
 p_tokio={'g':9.8,
           'im_fondo': "img/tokio.jpg",
           'son_mundo':"sound/tokio.wav",
           'factor_perdida':0.8,
-          'nombre_planeta':'Invasión Alien',
+          'nombre_planeta':'INVASIÓN ALIEN',
           'vlimt':3000,
           'im_min':"img/tokiomini.jpg",'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'yf':3350,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':"img/nave.png",
           'py2':-3000,
-          'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1
+          'lim_angle':0,
+          'vinf':50,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0.01,
+          'tipo':1,
+          'n_obj_mov':5
           }
 luna=mundo(p_luna)
 space=mundo(p_space)
@@ -1150,14 +1235,12 @@ while jugar:
                 jugar_outro=mundo.main(gliese)
             elif nivel==3:
                 jugar_outro=mundo.main(ross)
-
             elif nivel==4:
                 jugar_outro=mundo.main(proximab)
             elif nivel==5:
                 jugar_outro=mundo.main(marte)
             elif nivel==6:
                 jugar_outro=mundo.main(triton)
-
             elif nivel==7:
                 jugar_outro=mundo.main(ganimedes)
             elif nivel==8:
