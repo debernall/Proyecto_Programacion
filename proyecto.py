@@ -2,7 +2,7 @@
 """
 Created on Sun Aug 22 15:14:16 2021
 
-@author: ANDRES
+@author: GRUPO 3
 """
 
 import pygame
@@ -11,7 +11,6 @@ import numpy as np
 from pygame.constants import MOUSEBUTTONDOWN
 import codecs
 import menu
-import posiciones
 import mov
 import math
 
@@ -43,7 +42,14 @@ lista_instrucciones=('Inst/instruccion1.txt',
                      'Inst/instruccion7.txt',
                      'Inst/instruccion8.txt',
                      'Inst/instruccion9.txt')
-lista_imagenes_inst=("img/cañon7.png",'img/letrero_inst.png','img/teclas_inst.png','img/ecuaciones.png','img/imagen_mapa.png','img/rover.png','img/r.png','img/ecuaciones2.png')
+lista_imagenes_inst=("img/cañon7.png",
+                     'img/letrero_inst.png',
+                     'img/teclas_inst.png',
+                     'img/ecuaciones.png',
+                     'img/imagen_mapa.png',
+                     'img/rover.png',
+                     'img/r.png',
+                     'img/ecuaciones2.png')
 lista_integrantes=('brian santiago vasquez sarin',
                    'jeisson andres abril masmelas',
                    'daniel eduardo bernal lozano',
@@ -66,8 +72,17 @@ imagenes={'intro':"img/fondo_intro.jpg",
 sonidos={'fondo':"sound/sonidofondo.wav",
          'explosion':"sound/sonexp.wav"}
 
-lista_canciones=('luna:main theme, hans zimmer','marte:gymnopedie no.1, erik satie','tritón:1812 overture, thaikovsky ','próxima b:arrival of the birds & transformation,the cinematic orchesta','trappist-1d:claire de lune, debussy','ganimedes:nocturne op.9,chopin','espacio:daylight, teremock')
-lista_paginas_imagenes=('wall.alphacoders.com/search.php?search=planeta&lang=Spanish','www.nasa.gov/multimedia/imagegallery/index.html','www.freepik.es/fotos-vectores-gratis/png')
+lista_canciones=('luna:main theme, hans zimmer',
+                 'marte:gymnopedie no.1, erik satie',
+                 'tritón:1812 overture, thaikovsky ',
+                 'próxima b:arrival of the birds & transformation,the cinematic orchesta',
+                 'trappist-1d:claire de lune, debussy',
+                 'ganimedes:nocturne op.9,chopin',
+                 'espacio:daylight, teremock')
+lista_paginas_imagenes=('wall.alphacoders.com/search.php?search=planeta&lang=Spanish',
+                        'www.nasa.gov/multimedia/imagegallery/index.html',
+                        'www.freepik.es/fotos-vectores-gratis/png')
+
 # VARIABLES GLOBALES
 puntos=0
 nivel=0
@@ -315,33 +330,33 @@ def outro(titulo,estado):                                                       
 class mundo:
 
     def __init__(self,parametros):
-        self.g=parametros[0]
-        self.mplano=parametros[1]
-        self.son_mundo=parametros[2]
-        self.perdida=parametros[3]
-        self.planet=parametros[4]
-        self.vlimt=parametros[5]
-        self.mmini=parametros[6]
-        self.xp=parametros[7]
-        self.yp=parametros[8]
-        self.yi=parametros[9]
-        self.yf=parametros[10]
-        self.mountain=parametros[11]
-        self.little_mountain=parametros[12]
-        self.rover=parametros[13]
-        self.rovertierra=parametros[14]
-        self.phoenix=parametros[15]
-        self.roversito=parametros[16]
-        self.rovertierrita=parametros[17]
-        self.fenixito=parametros[18]
-        self.yp2=parametros[19]
-        self.lim_angle=parametros[20]
-        self.vinf=parametros[21]
-        self.piedra=parametros[22]
-        self.little_piedra=parametros[23]
-        self.lim_anglesup=parametros[24]
-        self.b=parametros[25]
-        self.tipo=parametros[26]
+        self.g=parametros["g"]
+        self.mplano=parametros["im_fondo"]
+        self.son_mundo=parametros["son_mundo"]
+        self.perdida=parametros["factor_perdida"]
+        self.planet=parametros["nombre_planeta"]
+        self.vlimt=parametros["vlimt"]
+        self.mmini=parametros["im_min"]
+        self.xp=parametros["px"]
+        self.yp=parametros["py"]
+        self.yi=parametros["yi"]
+        self.yf=parametros["yf"]
+        self.mountain=parametros["mountain"]
+        self.little_mountain=parametros["little_mountain"]
+        self.rover=parametros["im_objetivo"]
+        self.rovertierra=parametros["im_objetivo1"]
+        self.phoenix=parametros["im_objetivo2"]
+        self.roversito=parametros["im_roversito"]
+        self.rovertierrita=parametros["im_rovertierrita"]
+        self.fenixito=parametros["im_fenixito"]
+        self.yp2=parametros["py2"]
+        self.lim_angle=parametros["lim_angle"]
+        self.vinf=parametros["vinf"]
+        self.piedra=parametros["im_piedra"]
+        self.little_piedra=parametros["piedrita"]
+        self.lim_anglesup=parametros["lim_anglesup"]
+        self.b=parametros["b"]
+        self.tipo=parametros["tipo"]
 
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
@@ -363,7 +378,7 @@ class mundo:
         return pos_final
 
     def pos_obstaculo(self,pos_inicial,radio,cx,cy):
-        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     # np.linspace(0, 2*np.pi, num_segmentos+1)
+        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     
         xx = -radio * np.cos(angulo+0.04) + cx
         yy = -radio * np.sin(angulo+0.04) + cy
         pos_final=xx,yy
@@ -407,12 +422,7 @@ class mundo:
         objetivito=pygame.image.load(imagenes['objetivito'])
         cuadros=pygame.image.load(imagenes['cuadros'])
         cuadros1=pygame.image.load(imagenes['cuadro1'])
-        sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         navecita=pygame.image.load('img/navemini.png')
-
-
-        #CARGA DE SONIDO DE FONDO
-        sonidofondo=pygame.mixer.Sound(self.son_mundo)
 
         #DIBUJAR MONTAÑA
         if self.mountain!=1:
@@ -420,12 +430,13 @@ class mundo:
             little_mountain=pygame.image.load(self.little_mountain)
         elif self.mountain==1:
               mountain=1
+        #DIBUJAR PIEDRA
         if self.piedra!=1:
             piedra=pygame.image.load(self.piedra)
             little_piedra=pygame.image.load(self.little_piedra)
         elif self.piedra==1:
               piedra=1
-        #DIBUJAR OBSTACULOS
+        #DIBUJAR OBSTACULOS QUE EXPLOTAN
         if self.rover!=1:
             rover=pygame.image.load(self.rover)
             rovertierra=pygame.image.load(self.rovertierra)
@@ -437,62 +448,55 @@ class mundo:
               rover=1
               rovertierra=1
               phoenix=1
-
+        #DIBUJAR OBSTACULOS QUE PERMITEN REBOTAR
         if nivel==10:
             nave=pygame.image.load(self.fenixito)
 
+        #CARGA DE SONIDOS
+        sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
+        sonidofondo=pygame.mixer.Sound(self.son_mundo)
+        sonidofondo.set_volume(0.8)
+        sonidofondo.play(-1)
 
         #POSICION DE IMAGENES Y VARIABLES A UTILIZAR
         x0,y0=400,350
+        posimg=x0,y0
         xf=3600                                                                                     #Limites de la imagen de fondo
-
+        
+        #POSICION DE OBJETIVO
         if nivel==6:
             posobjetivo= random.randrange(1800,xf-200), -1200
-
-        if nivel==3:
+        elif nivel==3:
             posobjetivo= random.randrange(1800,xf-200), 980
-
-        if nivel==1 or nivel==4:
+        elif nivel==1 or nivel==4:
             posobjetivo= random.randrange(3000,xf-100), 0
-        elif nivel!=1 and nivel!=3 and nivel!=4 and nivel!=6:
-              posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
+        else:
+            posobjetivo= random.randrange(200,xf-100), random.randrange(self.yi,self.yf-100)            #Posición aleatoria del objetivo
 
         xo=x0+posobjetivo[0]
         yo=y0-posobjetivo[1]
-
         posobjetivo=(xo,yo)
-
+        distancia=((posobjetivo[0]-posimg[0])/self.escala),-((posobjetivo[1]-posimg[1])/self.escala)
+        
+        #POSICIONES DE OTROS ELEMENTOS
         posplano=self.xp,self.yp
-        pos_canona=(x0,y0)
         pos_canon=(x0-64,y0-64)
+        pos_bola= -x0,-y0
+        pos_expl= -x0,-y0                                                                               #Posición de la explosión antes de disparar
 
         pos_canonsito=(20,400+(self.yf*0.05))
-        pos_bolita=(20,400+(self.yf*0.05))
-
-
-        running=True                                                                                    #Variable que mantiene activo el juego
-        posimg=x0,y0
-        distancia=((posobjetivo[0]-posimg[0])/self.escala),-((posobjetivo[1]-posimg[1])/self.escala)
-        posobjetivito=(20+(distancia[0]*0.5),400+(self.yf*0.05)-(distancia[1]*0.5))                     #Distancia al objetivo
-        pos_bola= -x0,-y0
-        pos_bolita=-x0,-y0                                                                              #Declaración de posición inicial de la bala
-        pos_expl= -x0,-y0                                                                               #Posición de la explosión antes de disparar
         pos_expli= -x0,-y0
-        step= 0,0                                                                                       #vector velocidad
-        angle=0                                                                                         #Declaración de variable ángulo del cañon
-        speedangle=0                                                                                    #Variable que almacena la rotación del cañon
-        n=0
-        v0=self.vinf                                                                                           #Velocidad inicial
-        vi=self.vinf
-        vr=10
-        vrt=10
-        vrpy=10
-        vrpx=10
-        speedv0=0
-        t=0
-        t1=0                                                                                           #Variable de tiempo
-        if nivel == 10:
+        posobjetivito=(20+(distancia[0]*0.5),400+(self.yf*0.05)-(distancia[1]*0.5))                     #Distancia al objetivo
+        pos_bolita=-x0,-y0                                                                              #Declaración de posición inicial de la bala
 
+        pos_rover=[xo-300,yo-300]#[1500,-2000]
+        pos_rovertierra=400,250
+        pos_phoenix=1000,-1000
+        distanciarover=pos_rover[0]-x0, pos_rover[1]-y0
+        distanciarovertierra=pos_rovertierra[0]-x0
+        distanciaphoenix=pos_phoenix[0]-x0,pos_phoenix[1]-y0
+
+        if nivel == 10:
             Naves=[]
             for i in range(3):
                 vv=True
@@ -505,7 +509,6 @@ class mundo:
                         vv=False
                     pos_navecita=(20+(distancia_n[0]*0.5)-7.5,400+(self.yf*0.05)-(distancia_n[1]*0.5)-7.5)
                 Naves.append(((xn,yn),(pos_navecita)))
-
 
             xn0=Naves[0][0][0]
             yn0=Naves[0][0][1]
@@ -522,23 +525,28 @@ class mundo:
             pos_nave2=xn2,yn2
             pos_navecita2=Naves[2][1]
 
-
-        pos_rover=[xo-300,yo-300]#[1500,-2000]
-        pos_rovertierra=400,250
-        pos_phoenix=1000,-1000
-        distanciarover=pos_rover[0]-x0, pos_rover[1]-y0
-        distanciarovertierra=pos_rovertierra[0]-x0
-        distanciaphoenix=pos_phoenix[0]-x0,pos_phoenix[1]-y0
+        #VARIABLES DE INICIALIZACION DEL JUEGO
+        step= 0,0                                                                                       #vector velocidad
+        angle=0                                                                                         #Declaración de variable ángulo del cañon
+        speedangle=0                                                                                    #Variable que almacena la rotación del cañon
+        dt=0
+        v0=self.vinf                                                                                           #Velocidad inicial
+        vi=self.vinf
+        vr=10
+        vrt=10
+        vrpy=10
+        vrpx=10
+        speedv0=0
+        t=0
+        t1=0                                                                                           #Variable de tiempo
+        image_alpha=254
         fino=False
-
         colision=False
         disparo=False
         gameover=False
-        image_alpha=254
-
-        sonidofondo.set_volume(0.8)
-        sonidofondo.play(-1)
         pseg=True
+        running=True                                                                                    #Variable que mantiene activo el juego
+
         while(running):
 
             ns=clock.tick(30)                                                                          #Periodo de recarga de imagen
@@ -557,7 +565,7 @@ class mundo:
                             v_x0=vi*np.cos(np.radians(angle))                                         #Velocidad inicial en x
                             v_y0=-vi*np.sin(np.radians(angle))                                                                      #Velocidad inicial en y(Es negativa porque el pixel (0,0) se encuentra en la esquina sup izq)
                             step=v_x0,v_y0                                                                                          #Tras presionar la tecla espacio
-                            n=1
+                            dt=1
                             pos_bola=(x0,y0)
                             pos_bolita=(20,400+(self.yf*0.05))
                             pos_expl=(x0+50,y0-100)                                                                                      #posición de la explosión al disparar
@@ -591,12 +599,9 @@ class mundo:
                                 IMPACTOS.append((X0+(xn0-x0)/10,int((4000+self.yp-yn0)/ESCALA),20,False))
                                 IMPACTOS.append((X0+(xn1-x0)/10,int((4000+self.yp-yn1)/ESCALA),20,False))
                                 IMPACTOS.append((X0+(xn2-x0)/10,int((4000+self.yp-yn2)/ESCALA),20,False))
-                            #print(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES)
                             B=self.b
                             TIPO=self.tipo
-
                             aa=mov.calc_vect(X0,Y0,THETA0,V0,G,E,XLIM,YLIM,YLIMINF,EPSILON,IMPACTOS,MAX_REBOTES,B,TIPO)
-
                             sonidofondo.set_volume(0.5)
                             sonidoexplosión.play()
 
@@ -660,9 +665,6 @@ class mundo:
                     elif event.key==pygame.K_RIGHT and disparo==False:                                  #Dejar de presionar tecla derecha detiene la rotación
                         speedangle=0
 
-                    elif event.key==pygame.K_UP and disparo==True:                                      #Tecla derecha rotación en sentido negativo
-                        ns=clock.tick(60)
-
                     elif event.key==pygame.K_r and disparo==False:
                         fino=True
 
@@ -704,10 +706,10 @@ class mundo:
             if vi<=self.vlimt:
                 vi=self.vlimt
 
-            image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,pos_canona)
+            image2_rotated , image2_rotated_rect = self.rotate(cañon,angle,posimg)
             image3_rotated , image3_rotated_rect = self.rotate(cañonsito,angle,pos_canonsito)
 
-            explosion_rotated , explosion_rotated_rect = self.rotate(explosion,angle,pos_canona)                                                         #Rota el cañon
+            explosion_rotated , explosion_rotated_rect = self.rotate(explosion,angle,posimg)                                                         #Rota el cañon
             explosionsita_rotated , explosionsita_rotated_rect = self.rotate(explosionsita,angle,pos_canonsito)
 
             cc = (pos_canon[0]+63-int(image2_rotated.get_width()//2),pos_canon[1]+63-int(image2_rotated.get_height()//2))
@@ -796,8 +798,8 @@ class mundo:
                 step=(0,0)
                 sonidofondo.stop()
                 gameover=True
-            t=t+n
-            t1+=n
+            t=t+dt
+            t1+=dt
 
             # CONDICION DE IMPACTO
             if r<50:
@@ -815,15 +817,15 @@ class mundo:
 
             # CALCULO DE NUEVAS POSICIONES
             if disparo==True:
-                posplano=x0-10*(aa[0][k]),self.yp+10*(aa[1][k]-65)-3000-self.yp
-                posobjetivo=(-10*(aa[0][k]-40)+xo,10*(aa[1][k]+35)+yo-4000-self.yp)
-                pos_expl=850-10*(aa[0][k]),10*(aa[1][k]-65)+y0-100-(3000+self.yp)
-                pos_canon=336-10*(aa[0][k]-40),250+10*(aa[1][k]-65+3.6)-3000-self.yp
-                pos_bolita=0.5*(aa[0][k]),-self.yp-0.5*(aa[1][k])-1400+2000+self.yp
+                posplano=x0-10*aa[0][k],y0-4000+10*(aa[1][k])
+                posobjetivo=x0+xo-10*aa[0][k],y0+yo-4000-self.yp+10*(aa[1][k])
+                pos_expl=x0+450-10*(aa[0][k]),y0-3750-self.yp+10*(aa[1][k])
+                pos_canon=x0+336-10*(aa[0][k]),-3364-self.yp+10*(aa[1][k])
+                pos_bolita=0.5*(aa[0][k]),600-0.5*(aa[1][k])
                 if nivel==10:
-                    pos_nave0=(-10*(aa[0][k]-40)+xn0,10*(aa[1][k]+35)+yn0-4000-self.yp)
-                    pos_nave1=(-10*(aa[0][k]-40)+xn1,10*(aa[1][k]+35)+yn1-4000-self.yp)
-                    pos_nave2=(-10*(aa[0][k]-40)+xn2,10*(aa[1][k]+35)+yn2-4000-self.yp)
+                    pos_nave0=(x0+xn0-10*(aa[0][k]),y0+yn0-4000-self.yp+10*(aa[1][k]))
+                    pos_nave1=(x0+xn1-10*(aa[0][k]),y0+yn1-4000-self.yp+10*(aa[1][k]))
+                    pos_nave2=(x0+xn2-10*(aa[0][k]),y0+yn2-4000-self.yp+10*(aa[1][k]))
 
 
                 if (k+4)>len(aa[0]):
@@ -902,18 +904,25 @@ p_space={'g':0.0001,
           'py':-2000,
           'yi':500,
           'yf':2350,
-          'mountain':1,'little_mountain':1,'im_objetivo':1,
-          'im_objetivo':1,'im_objetivo1':1,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':-23,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0
+          'lim_angle':4,
+          'vinf':10,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0,
+          'tipo':0
           }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
 
 p_tierra={'g':9.8,
-
           'im_fondo': "img/pradera (2).jpg",
           'son_mundo':"sound/sonidofondo1.wav",
           'factor_perdida':0.2,
@@ -924,29 +933,49 @@ p_tierra={'g':9.8,
           'py':-3000,
           'yi':200,
           'yf':3350,
-          'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1}
+          'lim_angle':0,
+          'vinf':10,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0.01,
+          'tipo':1}
 p_luna={'g':1.6,
           'im_fondo': "img/luna1.jpg",
           'son_mundo':"sound/sonidofondo2.wav",
           'factor_perdida':0.4,
           'nombre_planeta':'LUNA',
           'vlimt':320,
-          'im_min':"img/mluna.jpg",'px':0,
+          'im_min':"img/mluna.jpg",
+          'px':0,
           'py':-3000,
           'yi':200,
-          'yf':3350,'mountain':1,'little_mountain':1,'im_objetivo':1,'im_objetivo':1,'im_objetivo1':1,
+          'yf':3350,
+          'mountain':1,
+          'little_mountain':1,
+          'im_objetivo':1,
+          'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
           'im_rovertierrita':1,
           'im_fenixito':1,
           'py2':-3000,
-          'lim_angle':0,'vinf':10,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0,'tipo':0}
+          'lim_angle':0,
+          'vinf':10,
+          'im_piedra':1,
+          'piedrita':1,
+          'lim_anglesup':90,
+          'b':0,
+          'tipo':0}
 p_marte={'g':3.721,
           'im_fondo': "img/marte.jpg",
           'son_mundo':"sound/sonidofondo3.wav",
@@ -1091,17 +1120,17 @@ p_tokio={'g':9.8,
           'py2':-3000,
           'lim_angle':0,'vinf':50,'im_piedra':1,'piedrita':1,'lim_anglesup':90,'b':0.01,'tipo':1
           }
-luna=mundo(list(p_luna.values()))
-space=mundo(list(p_space.values()))
-tierra=mundo(list(p_tierra.values()))
-marte=mundo(list(p_marte.values()))
-triton=mundo(list(p_triton.values()))
-ganimedes=mundo(list(p_ganimedes.values()))
-ross=mundo(list(p_ross.values()))
-proximab=mundo(list(p_proximab.values()))
-gliese=mundo(list(p_gliese.values()))
-kepler=mundo(list(p_kepler.values()))
-tokio=mundo(list(p_tokio.values()))
+luna=mundo(p_luna)
+space=mundo(p_space)
+tierra=mundo(p_tierra)
+marte=mundo(p_marte)
+triton=mundo(p_triton)
+ganimedes=mundo(p_ganimedes)
+ross=mundo(p_ross)
+proximab=mundo(p_proximab)
+gliese=mundo(p_gliese)
+kepler=mundo(p_kepler)
+tokio=mundo(p_tokio)
 
 ###############################         EJECUCION DEL JUEGO         ##################################
 jugar=True
