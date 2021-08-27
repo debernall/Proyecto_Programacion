@@ -358,11 +358,9 @@ class mundo:
         self.b=parametros["b"]
         self.tipo=parametros["tipo"]
         self.nobjmov=parametros["n_obj_mov"]
-
         self.escala=10/1 #10pixeles/1metros
         self.lista=[]
         self.lista1=[]
-
 
     def rotate(self,surface, angle,g):
         rotated_surface=pygame.transform.rotozoom(surface,angle,1)
@@ -379,28 +377,16 @@ class mundo:
         return pos_final
 
     def pos_obstaculo(self,pos_inicial,radio,cx,cy):
-        angulo = math.atan((pos_inicial[1]-cy)/(pos_inicial[0]-cx))     
-        xx = -radio * np.cos(angulo+0.04) + cx
-        yy = -radio * np.sin(angulo+0.04) + cy
+        angulo = np.arctan2(cy-pos_inicial[1],cx-pos_inicial[0])+0.04     
+        xx = cx-radio * np.cos(angulo)
+        yy = cy-radio * np.sin(angulo)
         pos_final=xx,yy
-
         return pos_final
-
-    def dibujar_img(self,list_img):
-        screen= pygame.display.set_mode((800,700))
-        for i in list_img:
-            screen.blit(i[0],i[1])
-        return
 
     def dibujar(self,screen,list_img):
         for i in list_img:
             screen.blit(i[0],i[1])
         return
-
-    def f_rebote(self,step,r):
-        step_nuevo=(step[0]/(r),step[1]/(r))
-        return step_nuevo
-
 
     def main(self):                      ################puntos
         global puntos
@@ -456,8 +442,6 @@ class mundo:
               rovertierra=1
               phoenix=1
 
-            
-
         #CARGA DE SONIDOS
         sonidoexplosión=pygame.mixer.Sound(sonidos['explosion'])
         sonidofondo=pygame.mixer.Sound(self.son_mundo)
@@ -492,7 +476,7 @@ class mundo:
 
         pos_canonsito=(20,400+(self.yf*0.05))
         pos_expli= -x0,-y0
-        posobjetivito=(20+(distancia[0]*0.5),400+(self.yf*0.05)-(distancia[1]*0.5))                     #Distancia al objetivo
+        posobjetivito=(15+(distancia[0]*0.5),395+(self.yf*0.05)-(distancia[1]*0.5))                     #Distancia al objetivo
         pos_bolita=-x0,-y0                                                                              #Declaración de posición inicial de la bala
 
         pos_rover=[xo-300,yo-300]#[1500,-2000]
@@ -518,8 +502,7 @@ class mundo:
                 
             pos_nave=[]
             for i in range(self.nobjmov):
-                pos_nave.append([Naves[i][0][0],Naves[i][0][1]])
-                
+                pos_nave.append([Naves[i][0][0],Naves[i][0][1]])  
             pos_nave=np.array(pos_nave)    
 
         #VARIABLES DE INICIALIZACION DEL JUEGO
@@ -555,7 +538,7 @@ class mundo:
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
                     if event.key==pygame.K_SPACE:                                                      #Tecla espacio
-                        if colision==True: #and choque==False:                                        #NO TIENE EFECTO
+                        if colision==True:                                                             #NO TIENE EFECTO
                             step=(0,0)
 
                         if disparo==False:
@@ -576,7 +559,6 @@ class mundo:
                             X0=int(x0/ESCALA)
                             Y0=4000+self.yp-y0
                             Y0=int(Y0/ESCALA)
-                            #print(Y0)
                             YOBJ=4000+self.yp-yo
                             YOBJ=int(YOBJ/ESCALA)
                             THETA0=np.radians(angle)
@@ -589,8 +571,7 @@ class mundo:
                             YLIMINF=4000+self.yp2-y0-20
                             YLIMINF=int(YLIMINF/ESCALA)
                             EPSILON=0.01                                                              #ESPACIAMIENTO DEL VECTOR TIEMPO
-                            IMPACTOS=[]
-                            IMPACTOS.append((X0+(xo-x0)/10,YOBJ,5,True))
+                            IMPACTOS=[(X0+(xo-x0)/10,YOBJ,5,True)]
                             MAX_REBOTES=10
                             if self.nobjmov!=0:
                                 for i in range(self.nobjmov):
@@ -671,7 +652,7 @@ class mundo:
                 k2=t1*0.03317
                 k1=aa[2].flat[np.abs(aa[2]-k2).argmin()]
                 k=np.where(aa[2]==k1)[0][0]
-
+            
             pseg=mov.parabolaseguridad(int(x0/self.escala),int((4000+self.yp-y0)/self.escala),np.radians(angle),v0,self.g,int(4000/self.escala),int(4000/self.escala),0.1,self.b,self.tipo)
 
             if self.g<0.1:
@@ -683,7 +664,8 @@ class mundo:
                 pseg=True
 
             #ROTACION DEL CAÑON
-            angle=angle+speedangle                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
+            angle=angle+speedangle
+                                                                      #Incrementa el ángulo del cañon de acuerdo a las teclas presionadas
             #LIMITES DE ROTACION DEL CAÑON
             if angle>=self.lim_anglesup:
                 angle=self.lim_anglesup
@@ -728,32 +710,29 @@ class mundo:
 
             #DIBUJAR EN PANTALLA LAS DIFERENTES IMAGENES
             if mountain==1 and rover==1 and piedra==1:
-             if self.nobjmov!=0:
-                 pos_nave1=pos_nave-200
-                 self.dibujar(screen,((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base)))
-                 for i in range(self.nobjmov):
-                     screen.blit(nave,pos_nave1[i])
-                 self.dibujar(screen,((mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
-                 for i in range(self.nobjmov):
-                     screen.blit(navecita,Naves[i][1])
-             else:
-                 self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito))))
+                self.dibujar(screen,((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base)))
+                if self.nobjmov!=0:
+                    pos_nave1=pos_nave-200
+                    for i in range(self.nobjmov):
+                        screen.blit(nave,pos_nave1[i])
+                    
+                    self.dibujar(screen,((mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito)))
+                    for i in range(self.nobjmov):
+                        screen.blit(navecita,Naves[i][1])
+                else:
+                    self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito))))
             elif mountain!=1:
-             self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3)))))
+                self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(mountain,(pos_base[0]-500,pos_base[1]-250)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_mountain,(pos_basesita[0]-10,pos_basesita[1]+3)))))
             elif rover!=1:
-             self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550)))))
-             #self.dibujar_img(((roversito,(distanciarover,450)),(fenixito,distanciaphoenix)))
+                self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(fenixito,distanciaphoenix),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(roversito,pos_roversito),(rover,pos_rover),(rovertierra,pos_rovertierra),(phoenix,pos_phoenix),(rovertierrita,(distanciarovertierra,550)))))
             elif piedra!=1:
-             self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(piedra,(pos_base[0]+1300,pos_base[1]-1000)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_piedra,(pos_basesita[0]+60,pos_basesita[1]-40)))))
+                self.dibujar(screen,(((plano,posplano),(cuadros,(0,0)),(piedra,(pos_base[0]+1300,pos_base[1]-1000)),(objetivo,posobjetivo1),(bola,pos_bola1),(explosion_rotated,cd),(image2_rotated,cc),(base,pos_base),(mini,(0,400)),(bolita,pos_bolita),(image3_rotated,cc1),(basesita,pos_basesita),(explosionsita_rotated,cd1),(objetivito,posobjetivito),(little_piedra,(pos_basesita[0]+60,pos_basesita[1]-40)))))
 
             #OBTENCION DE COLISION OBJETIVO-BOLA
-            objetivorect=objetivo.get_rect(center=posobjetivo)
             bolarect=bola.get_rect(center=pos_bola)
-            a=objetivorect.center
             b=bolarect.center
-            r=((((a[0]-b[0])**2)+((a[1]-b[1])**2))**(0.5))
 
-           # COLISION CON ROVER, PHOENIX Y ROVERTIERRA
+            #COLISION CON ROVER, PHOENIX Y ROVERTIERRA
             c=pos_rover[0]+100,pos_rover[1]+65
             d=pos_rovertierra[0]+100,pos_rovertierra[1]+88
             e=pos_phoenix[0]+100,pos_phoenix[1]+35
@@ -801,12 +780,6 @@ class mundo:
             t1+=dt
 
             # CONDICION DE IMPACTO
-            if r<50:
-                step=(0,0)
-                t=0
-                colision=True
-                sonidofondo.stop()
-            # ESTADOS DEL JUEGO
             if colision==True:
                 menu.crear_cuadro_de_texto(screen,425,375,450,35,'¡Buen tiro, presiona A para avanzar!',letra_letreros,black,blue,blue)
 
@@ -820,32 +793,32 @@ class mundo:
                 posobjetivo=x0+xo-10*aa[0][k],y0+yo-4000-self.yp+10*(aa[1][k])
                 pos_expl=x0+450-10*(aa[0][k]),y0-3750-self.yp+10*(aa[1][k])
                 pos_canon=x0+336-10*(aa[0][k]),-3364-self.yp+10*(aa[1][k])
-                pos_bolita=0.5*(aa[0][k]),600-0.5*(aa[1][k])
+                pos_bolita=0.5*(aa[0][k]),595-0.5*(aa[1][k])
                 if self.nobjmov!=0:
                     for i in range(self.nobjmov):
                         pos_nave[i]=(x0+Naves[i][0][0]-10*(aa[0][k]),y0+Naves[i][0][1]-4000-self.yp+10*(aa[1][k]))
 
-
                 if (k+4)>len(aa[0]):
                     sonidofondo.stop()
-                    gameover=True
+                    step=(0,0)
+                    t=0
+                    if aa[4]==True:
+                        colision=True
+                    else:
+                        gameover=True
+                        colision=False
 
-            if rover!=1:
+            if rover!=1 and not(nivel==7):
              pos_rover=self.nueva_pos(pos_rover,step,t,10,1,0.022,(vr,0))
              pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
              pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(vrpx,vrpy))
 
-
-
             if rover!=1 and nivel==7:
-                pos_rover=self.pos_obstaculo(pos_rover,500,posobjetivo[0],posobjetivo[1])
+                pos_rover=self.pos_obstaculo(pos_rover,300,posobjetivo[0]-100,posobjetivo[1]-65)
                 pos_rovertierra=self.nueva_pos(pos_rovertierra,step,t,10,1,0.022,(vrt,0))
                 pos_phoenix=self.nueva_pos(pos_phoenix,step,t,10,1,0.022,(2*vrpx,2*vrpy))
-
-
-            # REBOTES DE LA BOLA CUANDO IMPACTA CONTRA EL PISO
                                              
-            distanciarover=(pos_rover[0]-pos_base[0])*0.05 , 560+ (pos_rover[1]-pos_base[1])*0.05
+            distanciarover=9+(pos_rover[0]-pos_base[0])*0.05,560+ (pos_rover[1]-pos_base[1])*0.05 
             distanciarovertierra=(pos_rovertierra[0]-pos_base[0])*0.05
             distanciaphoenix=(pos_phoenix[0]-pos_base[0])*0.05,560+(pos_phoenix[1]-pos_base[1])*0.05
 
@@ -882,13 +855,14 @@ class mundo:
             menu.crear_cuadro_de_texto(screen,100,370,150,50,'mapa',letra_creditos,None,blue,None)
             menu.crear_cuadro_de_texto(screen,101,500,200,200,"",letra_botones,None,green,blue)
             menu.crear_cuadro_de_texto(screen,screen.get_rect().centerx ,650,700,200,self.planet.lower(),letra_outro,None,blue,None)
-            if self.b>0:
+            if self.b>0 and self.tipo!=0:
                 screen.blit(cuadros1,(625,500))
                 menu.crear_cuadro_de_texto(screen,715,550,175,50,'Coef de arrastre',letra_letreros,None,white,None)
                 menu.crear_cuadro_de_texto(screen,715,570,175,50,str(self.b)+"N*s/m",letra_letreros,None,white,None)
               
             pygame.display.flip()                                                                                                   #Hace visibles las imagenes cargadas
             screen.fill((black))
+            
 ###############################   VARIABLES Y CREACION DE MUNDOS    ##################################
 p_space={'g':0.0001,
 
@@ -919,7 +893,7 @@ p_space={'g':0.0001,
           'b':0,
           'tipo':0,
           'n_obj_mov':0
-          }                          #ESTA POSICION 2 SIRVE PARA SEÑALAR LA ALTURA DEL SUELO CUANDO EL CAÑON ESTA EN LA MONTAÑA
+          }
 
 p_tierra={'g':9.8,
           'im_fondo': "img/pradera (2).jpg",
@@ -1102,7 +1076,6 @@ p_ross={'g':57*10**(-1),
           'mountain':1,
           'little_mountain':1,
           'im_objetivo':1,
-          'im_objetivo':1,
           'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
@@ -1130,7 +1103,6 @@ p_gliese={'g':17.39,
           'yf':3350,
           'mountain':1,
           'little_mountain':1,
-          'im_objetivo':1,
           'im_objetivo':1,
           'im_objetivo1':1,
           'im_objetivo2':1,
@@ -1160,7 +1132,6 @@ p_kepler={'g':20,
           'mountain':1,
           'little_mountain':1,
           'im_objetivo':1,
-          'im_objetivo':1,
           'im_objetivo1':1,
           'im_objetivo2':1,
           'im_roversito':1,
@@ -1188,7 +1159,6 @@ p_tokio={'g':9.8,
           'yf':3350,
           'mountain':1,
           'little_mountain':1,
-          'im_objetivo':1,
           'im_objetivo':1,
           'im_objetivo1':1,
           'im_objetivo2':1,
@@ -1249,7 +1219,6 @@ while jugar:
                 jugar_outro=mundo.main(kepler)
             elif nivel==10:
                 jugar_outro=mundo.main(tokio)
-
             else:
                 jugar_outro=False
 

@@ -86,7 +86,7 @@ def parabolaseguridad(x0,y0,theta0,v0,g,xlim,ylim,epsilon,b,tipo):
 
 
         
-def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes,b,tipo):       
+def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes,b,tipo): 
     x_f=[]
     y_f=[]
     t_f=[]
@@ -257,21 +257,21 @@ def calc_vect(x0,y0,theta0,v0,g,e,xlim,ylim,yliminf,epsilon,impactos,max_rebotes
 
         tt+=1
 
-    return (x_f,y_f,t_f,impactos)
+    return (x_f,y_f,t_f,impactos,objetivo)
 
 
 #VARIABLES NECESARIAS PARA OBTENER LOS VECTORES POSICION
 # x0=0                            #POSICION INICIAL
 # y0=0
-# theta0=0.3            #ANGULO DE LANZAMIENTO
-# v0=11                           #MAGNITUD DE VELOCIDAD INICIAL
-# g=1                           
+# theta0=1.3            #ANGULO DE LANZAMIENTO
+# v0=22                           #MAGNITUD DE VELOCIDAD INICIAL
+# g=10                           
 # e=0.8                           #FACTOR DE PERDIDA DE VELOCIDAD
 # xlim=100                        #LONGITUD MAXIMA DEL TABLERO EN X
 # ylim=21
-# epsilon=0.1                  #ESPACIAMIENTO DEL VECTOR TIEMPO
-# impactos=((20,9,1.1,False),(38,5,1,False),(7,4,1,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
-# max_rebotes=2
+# epsilon=0.01                  #ESPACIAMIENTO DEL VECTOR TIEMPO
+# impactos=((20,9,1.1,False),(30,3.4,1,True),(7,4,1,False))    #VECTOR CON LOS CENTRO Y RADIOS DE LOS OBSTACULOS, True LO CONVIERTE EN OBJETIVO
+# max_rebotes=10
 # yliminf=0
 # b=0.01
 # tipo=2
