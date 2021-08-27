@@ -1,5 +1,21 @@
 # Proyecto_Programacion
  Proyecto para la enseñanza en física
+
+
+ Introducción
+
+ Los textos y las imágenes que aparecen en la interfaz se cargan en archivos de texto y png respectivamente. Luego se define una función para cada parte de la interfaz, es decir, créditos e introducción, y mediante condicionales que funcionan mientras el ciclo while de cada función continúe, se hace que pygame reconozca los clics del mouse para continuar. Luego se definió la clase mundo, la cual admite una lista de 27 parámetros, con los datos sobre la gravedad, obstáculos, factor de pérdida en colisión contra el suelo, factor de resistencia del aire, posición del objetivo, etc.
+
+ La posición del objetivo se define entre unos rangos que vienen de los parámetros de la clase mundo, y se genera mediante una función random en ese rango de posiciones.
+
+ Hay obstáculos en movimiento y estacionarios, en todos los casos cuando se produce el choque se pierde. Y la colisión se determina calculando la distancia entre los centros de la bola y el obstáculo, y con un condicional se pone el radio a partir del cual se considera colisión, y este radio está relacionado con el tamaño de la imagen del obstáculo. Los obstáculos tienen movimientos periódicos, por lo que es relativamente fácil predecir sus posiciones. Con condicionales se invierten las velocidades cuando llegan a los bordes del mapa.
+
+ En otra carpeta se definieron las funciones que calculan las posiciones, por lo que desde la carpeta principal se importan las funciones, con estas se guardan las posiciones en un vector y ya solo es llamar las componentes, y no es necesario hacer más cálculos después de usada, es decir, ya se tiene toda la trayectoria en el vector.
+
+ El juego es interactivo ya que permite al jugador cambiar el ángulo y la velocidad inicial, y esto se hace mediante condicionales dentro del ciclo principal, los cuales dan opción al jugador de aumentar o disminuir el ángulo y la velocidad inicial a partir de las flechas del teclado. Y se hizo un mini mapa, el cual es una versión a escala del principal, por lo que se hizo fue multiplicar las variables por un factor de escala y pintarlos nuevamente, con imágenes cargadas en tamaño reducido.
+
+
+
  #********************************** USO DE LA FUNCION POSICIONES *******************************
 
 
