@@ -65,6 +65,7 @@ Todos los mundos tienen como límite de desplazamiento de la bala el borde de la
 En el vacio y bajo la acción de un campo gravitatorio, un objeto lanzado experimentará un movimiento parabólico. De las leyes de Newton se obtienen el conjunto de ecuaciones necesarias para resolver el sistema. Considere un sistema coordenado cartesiano con origen en la posición inicial de la bala de cañon, el movimiento de la bala de cañon vendrá definido por el conjunto de ecuaciones:
 
  m*a_x = 0
+ 
  m*a_y = -m*g
 
 Aunque inicialmente en el espacio la gravedad es aproximadamente cero y para lograr acertar solo necesitará usar sus conocimientos básicos de trigonometría, en los siguientes niveles deberá recurrir a integrales para alcanzar el objetivo. 
@@ -72,6 +73,7 @@ Aunque inicialmente en el espacio la gravedad es aproximadamente cero y para log
 En los niveles en los cuales aparece un coeficiente de arrastre diferente de cero deberá considerar una aproximación para el efecto de la fuerza de fricción del aire sobre la bala cuando la velocidad de lanzamiento es baja, es decir se desprecian efectos debidos a la turbulencia. El coeficiente de arrastre (b) le es suministrado en la interfaz gráfica del juego. El conjunto de ecuaciones que deberá solucionar es el siguiente: 
 
  m*a_x = b*v_x
+ 
  m*a_y = -m*g + b*v_y
 
 Podrá usar técnicas de solución de ecuaciones diferenciales y es posible que adicionalmente emplee sus habilidades algebraicas para encontrar el ángulo y la velocidad de lanzamiento adecuadas para lograr el correspondiente punto. En cualquier caso deberá recurrir a su experiencia física.
