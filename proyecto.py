@@ -12,7 +12,7 @@ from pygame.constants import MOUSEBUTTONDOWN
 import codecs
 import menu
 import mov
-import math
+import sys
 
 ###############################      DECLARACIONES INICIALES        ##################################
 # COLORES
@@ -131,11 +131,12 @@ def instrucciones_juego(numero_instruccion):
         for event in pygame.event.get():
             if event.type == pygame.QUIT :
                 pygame.quit()
-                quit()
+                sys.exit()
 
             elif event.type == pygame.KEYDOWN:
                 if event.key==pygame.K_ESCAPE:
-                    quit()
+                    pygame.quit()
+                    sys.exit()
 
             elif event.type==MOUSEBUTTONDOWN and event.button==1:
                 if boton_volver_intro.collidepoint(pygame.mouse.get_pos()):
@@ -185,12 +186,12 @@ def intro_game():                                                               
         for event in pygame.event.get():
             if event.type == pygame.QUIT :                                                                                          #Permite salir del juego desde la intro
                 pygame.quit()
-                quit()
+                sys.exit()
 
             elif event.type == pygame.KEYDOWN:
                 if event.key==pygame.K_ESCAPE:
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
             elif event.type==MOUSEBUTTONDOWN and event.button==1:                                                                   #Si se hace click izquierdo:
                 if play.collidepoint(pygame.mouse.get_pos()):                                                                       #Si el click se hizo sobre el botón jugar, continuar con el juego
@@ -205,7 +206,7 @@ def intro_game():                                                               
 
                 elif exit.collidepoint(pygame.mouse.get_pos()):                                                                     #Si el click se hizo en salir...
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
         menu.crear_boton(screen,play,'Jugar',letra_botones ,green,yellow,blue,blue)                                                      #Los botones se ponen dentro del while para que puedan cambiar de color cuando tienen el cursor encima
         menu.crear_boton(screen,exit,'Salir',letra_botones ,green,yellow,blue,blue)
@@ -248,17 +249,17 @@ def creditos():                                                                 
         for event in pygame.event.get():
             if event.type == pygame.QUIT :                                                                                          #Permite salir del juego desde la intro
                 pygame.quit()
-                quit()
+                sys.exit()
 
             elif event.type == pygame.KEYDOWN:
                 if event.key==pygame.K_ESCAPE:
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
             elif event.type==MOUSEBUTTONDOWN and event.button==1:                                                                   #Si se hace click izquierdo:
                 if exit_creditos.collidepoint(pygame.mouse.get_pos()):                                                                       #Si el click se hizo sobre el botón jugar, continuar con el juego
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
                 elif return_creditos.collidepoint(pygame.mouse.get_pos()):
                     sonidofondo.stop()
@@ -294,12 +295,12 @@ def outro(titulo,estado):                                                       
         for event in pygame.event.get():
             if event.type == pygame.QUIT :                                                                                          #Permite salir del juego desde la outro
                 pygame.quit()
-                quit()
+                sys.exit()
 
             elif event.type == pygame.KEYDOWN:
                 if event.key==pygame.K_ESCAPE:                                                                                      #Tecla  esc sale del juego (NO ESTÁ FUNCIONANDO)
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
             elif event.type==MOUSEBUTTONDOWN and event.button==1:                                                                   #Si se hace click derecho:
                 if replay.collidepoint(pygame.mouse.get_pos()):                                                                     #Si el click se hizo sobre el botón volver a  jugar, vuelve a la intro
@@ -308,7 +309,7 @@ def outro(titulo,estado):                                                       
 
                 elif exit1.collidepoint(pygame.mouse.get_pos()):                                                                    #Si el click se hiz en salir...
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
                 elif re_intro.collidepoint(pygame.mouse.get_pos()):
                     game_over=False
@@ -533,7 +534,7 @@ class mundo:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:                                                          #Permite salir del juego
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
                 #INTERACCIONES POR MEDIO DE TECLADO EN EL JUEGO
                 elif event.type == pygame.KEYDOWN:                                                     #Evento presionar tecla
