@@ -110,6 +110,9 @@ Podrá usar técnicas de solución de ecuaciones diferenciales y es posible que 
 * Kepler 22b: Este nivel simula las condiciones del primer exoplaneta descubierto en una zona habitable y con posibles condiciones para encontrar agua en estado liquido. El planeta se encuentra a 600 años luz de la tierra y orbita al rededor de la estrella Kepler 22. Su radio y masa son similares a la de la tierra, sin embargo de manera interactiva en el juego se considera una gravedad de 20 m/s^2 y un coeficiente de restitución de 0.8. Dada la posible presencia de agua, fue considerada una atmósfera densa que incrementa el grado de dificultad de acierto, este nivel presenta un coeficiente de arrastre de 0.3 N*s/m. 
 * Invasión alien: El nivel final del juego representa una invasión alienigena de naves esféricas a la ciudad de Tokio, en este nivel la bala de cañon puede rebotar con las naves. Las condiciones son iguales a la del nivel tierra, con la diferencia que le es asignado un valor del coeficiente de restitución igual a 0.8. Las cinco naves aparecerán de manera aleatoria en el espacio jugable e impediran el acierto. Es el nivel más dificil del juego ya que aparecen efectos de fricción del aire y rebotes con obstáculos estáticos.
 
+***
+***
+
 # Introducción al código
 Parabolic Shot es un juego construido mediante la libreria Pygame y en apoyo con librerias como Numpy y Math. El juego se contruyó a partir de la superposición de imagenes cuyas posiciones son dadas por un conjunto de vectores que presentan todas las posiciones de los objetos. El juego se encuentra enfocado en la programación orientada a objetos y se encuentra totalmente escrito en lenguaje Python.
 
